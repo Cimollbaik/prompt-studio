@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#0D0B14;--card:#16121E;--card-hover:#1A1624;--elevated:#1E1A28;
+--border:#2A2438;--border-hover:#3A3448;
+--gold:#E8B84B;--gold-dim:#C49A38;--gold-soft:rgba(232,184,75,0.12);--gold-border:rgba(232,184,75,0.25);
+--purple:#7C6FE8;--purple-soft:rgba(124,111,232,0.12);--purple-border:rgba(124,111,232,0.25);
+--sage:#4FB89E;--sage-soft:rgba(79,184,158,0.12);--sage-border:rgba(79,184,158,0.25);
+--coral:#E85C7C;--coral-soft:rgba(232,92,124,0.12);
+--text:#F5F0E8;--text-soft:#A89E92;--text-dim:#6B6258;
+--radius:12px;--radius-lg:18px;--radius-xl:24px;
+--shadow-lg:0 20px 60px rgba(0,0,0,0.5);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px;font-size:14px;-webkit-font-smoothing:antialiased}
+.app{max-width:1280px;margin:0 auto;min-height:calc(100vh - 40px);display:flex;flex-direction:column;gap:16px}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
+.logo-group{display:flex;align-items:center;gap:14px}
+.logo-mark{width:42px;height:42px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#0D0B14;font-family:'Fraunces',serif;font-weight:800;font-size:20px;box-shadow:0 8px 24px rgba(232,184,75,0.3)}
+.logo-title{font-family:'Fraunces',serif;font-weight:700;font-size:19px;letter-spacing:-0.02em}
+.logo-sub{font-size:11px;color:var(--text-dim);font-weight:500;margin-top:2px;letter-spacing:0.04em;text-transform:uppercase}
+.header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search-box{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:9px 16px 9px 38px;color:var(--text);font-family:inherit;font-size:12.5px;outline:none;width:200px;transition:all 0.2s;background-image:url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236B6258' stroke-width='2.5' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:14px center}
+.search-box:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.search-box::placeholder{color:var(--text-dim)}
+.btn-icon{background:var(--card);border:1px solid var(--border);color:var(--text-soft);padding:9px 16px;border-radius:100px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-icon:hover{border-color:var(--gold);color:var(--gold)}
+.btn-icon.primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);color:#0D0B14;border-color:transparent;box-shadow:0 4px 14px rgba(232,184,75,0.25)}
+.btn-icon.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,0.4)}
+
+/* MAIN GRID */
+.main-grid{flex:1;display:grid;grid-template-columns:240px 1fr;gap:20px;min-height:0}
+
+/* SIDEBAR */
+.sidebar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 0;display:flex;flex-direction:column;gap:4px;height:fit-content;position:sticky;top:20px}
+.sidebar-title{font-family:'Fraunces',serif;font-weight:600;font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;padding:0 20px 10px;margin-top:6px}
+.sidebar-title:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 20px;color:var(--text-soft);font-size:13.5px;font-weight:500;cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;user-select:none}
+.nav-item:hover{background:var(--card-hover);color:var(--text)}
+.nav-item.active{background:var(--card-hover);color:var(--text);border-left-color:var(--gold);font-weight:600}
+.nav-icon{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.nav-icon-core{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)}
+.nav-icon-prompt{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border)}
+.nav-icon-script{background:var(--sage-soft);color:var(--sage);border:1px solid var(--sage-border)}
+.nav-icon-bookmark{background:var(--coral-soft);color:var(--coral);border:1px solid rgba(232,92,124,0.25)}
+.nav-count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:100px;background:var(--elevated);color:var(--text-dim);font-weight:600}
+.sidebar-divider{height:1px;background:var(--border);margin:10px 20px}
+
+/* CONTENT */
+.content{display:flex;flex-direction:column;gap:14px;min-width:0}
+.content-header{display:flex;justify-content:space-between;align-items:center;padding:0 4px;flex-wrap:wrap;gap:10px}
+.content-title{font-family:'Fraunces',serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
+.content-title-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.content-subtitle{font-size:12px;color:var(--text-dim);margin-top:2px;font-weight:500}
+.content-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);background:var(--card);border:1px solid var(--border);padding:6px 12px;border-radius:100px}
+
+/* SECTION TITLE */
+.section-header{display:flex;align-items:center;gap:10px;padding:8px 4px;margin-top:6px}
+.section-header-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.section-header-icon.core{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)}
+.section-header-icon.prompt{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border)}
+.section-header-icon.script{background:var(--sage-soft);color:var(--sage);border:1px solid var(--sage-border)}
+.section-header-text{font-family:'Fraunces',serif;font-weight:700;font-size:14px;color:var(--text)}
+.section-header-sub{font-size:11px;color:var(--text-dim);font-weight:500;margin-left:auto;font-family:'JetBrains Mono',monospace}
+.section-header-divider{flex:1;height:1px;background:var(--border);margin:0 4px}
+
+/* PROMPT CARD */
+.prompt-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:all 0.25s ease;cursor:pointer;position:relative}
+.prompt-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.3)}
+.prompt-card.core{border-left:3px solid var(--gold)}
+.prompt-card.prompt{border-left:3px solid var(--purple)}
+.prompt-card.script{border-left:3px solid var(--sage)}
+.prompt-header{padding:18px 22px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--border)}
+.prompt-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.prompt-icon-2d{background:rgba(124,111,232,0.15);color:#7C6FE8;border:1px solid rgba(124,111,232,0.25)}
+.prompt-icon-3d{background:rgba(232,92,124,0.15);color:#E85C7C;border:1px solid rgba(232,92,124,0.25)}
+.prompt-icon-svg{background:rgba(79,184,158,0.15);color:#4FB89E;border:1px solid rgba(79,184,158,0.25)}
+.prompt-icon-icon{background:rgba(232,145,75,0.15);color:#E8914B;border:1px solid rgba(232,145,75,0.25)}
+.prompt-icon-upload-prompt{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border)}
+.prompt-icon-upload-script{background:var(--sage-soft);color:var(--sage);border:1px solid var(--sage-border)}
+.prompt-info{flex:1;min-width:0}
+.prompt-title{font-family:'Fraunces',serif;font-weight:700;font-size:16px;letter-spacing:-0.01em;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.prompt-source-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em;font-family:'JetBrains Mono',monospace}
+.prompt-source-tag.core{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)}
+.prompt-source-tag.prompt{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border)}
+.prompt-source-tag.script{background:var(--sage-soft);color:var(--sage);border:1px solid var(--sage-border)}
+.prompt-desc{font-size:12px;color:var(--text-soft);line-height:1.5;margin-bottom:6px}
+.prompt-meta{display:flex;gap:12px;align-items:center;font-size:10.5px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-weight:500;flex-wrap:wrap}
+.prompt-actions{display:flex;gap:6px;flex-shrink:0}
+.btn-action{width:34px;height:34px;border-radius:9px;background:var(--elevated);border:1px solid var(--border);color:var(--text-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s}
+.btn-action:hover{background:var(--gold-soft);border-color:var(--gold-border);color:var(--gold)}
+.btn-action.danger:hover{background:var(--coral-soft);border-color:rgba(232,92,124,0.4);color:var(--coral)}
+.btn-action.bookmarked{background:var(--gold-soft);border-color:var(--gold-border);color:var(--gold)}
+.btn-copy-main{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);border:none;color:#0D0B14;padding:9px 18px;border-radius:100px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(232,184,75,0.25);height:34px}
+.btn-copy-main:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,0.4)}
+.prompt-preview{padding:16px 22px;background:var(--elevated);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-soft);line-height:1.7;max-height:110px;overflow:hidden;position:relative;white-space:pre-wrap;word-break:break-word}
+.prompt-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(transparent,var(--elevated));pointer-events:none}
+.prompt-footer{padding:12px 22px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);flex-wrap:wrap;gap:8px}
+.prompt-footer-left{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+
+/* EMPTY STATE */
+.empty-state{padding:32px 24px;text-align:center;background:var(--card);border:1px dashed var(--border-hover);border-radius:var(--radius-lg);display:flex;flex-direction:column;align-items:center;gap:12px}
+.empty-state-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.empty-state-icon.prompt{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border)}
+.empty-state-icon.script{background:var(--sage-soft);color:var(--sage);border:1px solid var(--sage-border)}
+.empty-state-title{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--text)}
+.empty-state-sub{font-size:12px;color:var(--text-dim);max-width:400px;line-height:1.5}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,11,20,0.85);backdrop-filter:blur(8px);z-index:999;justify-content:center;align-items:center;padding:20px}
+.modal-overlay.show{display:flex;animation:fadeIn 0.2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--card);border:1px solid var(--border-hover);border-radius:var(--radius-xl);max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.modal.wide{max-width:800px}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:1}
+.modal-title{font-family:'Fraunces',serif;font-weight:700;font-size:17px;color:var(--text)}
+.modal-close{background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1}
+.modal-body{padding:24px}
+.dropzone{padding:36px 20px;border:2px dashed var(--border-hover);border-radius:var(--radius-lg);text-align:center;cursor:pointer;transition:all 0.2s;background:var(--elevated)}
+.dropzone:hover{border-color:var(--gold);background:var(--gold-soft)}
+.dropzone.dragover{border-color:var(--gold);background:var(--gold-soft)}
+.dropzone-icon{width:56px;height:56px;background:var(--gold-soft);color:var(--gold);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;border:1px solid var(--gold-border)}
+.dropzone-title{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px}
+.dropzone-sub{font-size:12px;color:var(--text-dim);line-height:1.5}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;position:sticky;bottom:0;background:var(--card)}
+.btn-modal{padding:9px 18px;border-radius:100px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-soft);transition:all 0.2s}
+.btn-modal:hover{border-color:var(--gold);color:var(--gold)}
+.btn-modal.primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);color:#0D0B14;border-color:transparent}
+.btn-modal.primary:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,184,75,0.3)}
+
+/* DETAIL MODAL */
+.detail-content{padding:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-soft);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:60vh;overflow-y:auto;background:var(--elevated);border-radius:var(--radius);border:1px solid var(--border)}
+
+/* TOAST */
+.toast{position:fixed;bottom:30px;right:30px;left:30px;max-width:360px;margin-left:auto;background:var(--card);border:1px solid var(--gold-border);border-radius:var(--radius);padding:14px 20px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-lg);font-size:12.5px;font-weight:500;z-index:1000;transition:all 0.3s;transform:translateY(120px);opacity:0}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{border-color:rgba(232,92,124,0.4)}
+.toast-icon{width:28px;height:28px;background:var(--gold-soft);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.toast.error .toast-icon{background:var(--coral-soft)}
+.toast-text{flex:1}
+.toast-title{font-weight:600;color:var(--text);margin-bottom:1px}
+.toast-sub{font-size:11px;color:var(--text-dim)}
+
+/* LOADING */
+.loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:'Fraunces',serif;font-weight:700;color:var(--gold);font-size:14px}
+.loading.hide{display:none}
+
+/* RESPONSIVE */
+@media (max-width:900px){
+.main-grid{grid-template-columns:1fr;gap:14px}
+.sidebar{position:static;flex-direction:row;padding:8px 12px;overflow-x:auto;scrollbar-width:none;border-radius:100px}
+.sidebar::-webkit-scrollbar{display:none}
+.sidebar-title{display:none}
+.sidebar-divider{display:none}
+.nav-item{padding:8px 14px;border-left:none;border-radius:100px;white-space:nowrap;flex-shrink:0;font-size:12px}
+.nav-item.active{background:var(--gold-soft);border-color:transparent}
+.nav-count{display:none}
+}
+@media (max-width:640px){
+body{padding:12px}
+.header{padding:12px 0}
+.logo-title{font-size:17px}
+.logo-sub{display:none}
+.search-box{width:100%;order:3}
+.prompt-header{padding:14px 16px;flex-wrap:wrap}
+.prompt-actions{width:100%;justify-content:flex-end;margin-top:4px}
+.prompt-preview{padding:12px 16px;font-size:10px;max-height:90px}
+.prompt-footer{padding:10px 16px;gap:8px}
+.content-title{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="loading" id="loading">⏳ Memuat Prompt Studio...</div>
+
+<div class="app">
+
+<header class="header">
+<div class="logo-group">
+<div class="logo-mark">P</div>
+<div>
+<div class="logo-title">Prompt Studio</div>
+<div class="logo-sub">Microstock Collection</div>
+</div>
+</div>
+<div class="header-actions">
+<input type="text" class="search-box" id="search-input" placeholder="Cari...">
+<button class="btn-icon" id="btn-export">📦 Export</button>
+<button class="btn-icon" id="btn-import">📥 Import</button>
+<button class="btn-icon primary" id="btn-upload">📤 Upload</button>
+</div>
+</header>
+
+<div class="main-grid">
+
+<aside class="sidebar">
+<div class="sidebar-title">Koleksi</div>
+<a class="nav-item active" data-filter="all">
+<span class="nav-icon nav-icon-core">📌</span>
+<span>Semua</span>
+<span class="nav-count" id="count-all">0</span>
+</a>
+<a class="nav-item" data-filter="core">
+<span class="nav-icon nav-icon-core">🎯</span>
+<span>Prompt Utama</span>
+<span class="nav-count" id="count-core">0</span>
+</a>
+<a class="nav-item" data-filter="prompt">
+<span class="nav-icon nav-icon-prompt">📤</span>
+<span>Prompt Tambahan</span>
+<span class="nav-count" id="count-prompt">0</span>
+</a>
+<a class="nav-item" data-filter="script">
+<span class="nav-icon nav-icon-script">🎬</span>
+<span>Script Hasil</span>
+<span class="nav-count" id="count-script">0</span>
+</a>
+
+<div class="sidebar-divider"></div>
+
+<div class="sidebar-title">Lainnya</div>
+<a class="nav-item" data-filter="bookmark">
+<span class="nav-icon nav-icon-bookmark">⭐</span>
+<span>Bookmark</span>
+<span class="nav-count" id="count-bookmark">0</span>
+</a>
+</aside>
+
+<main class="content">
+<div class="content-header">
+<div>
+<div class="content-title"><span class="content-title-dot"></span><span id="page-title">Semua Koleksi</span></div>
+<div class="content-subtitle" id="page-subtitle">Loading...</div>
+</div>
+<div class="content-count" id="page-count">0</div>
+</div>
+
+<div id="prompts-container"></div>
+
+</main>
+</div>
+</div>
+
+<!-- MODAL: UPLOAD -->
+<div class="modal-overlay" id="upload-modal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title">📤 Upload File</div>
+<button class="modal-close" onclick="closeUploadModal()">✕</button>
+</div>
+<div class="modal-body">
+<div class="dropzone" id="dropzone">
+<div class="dropzone-icon">📁</div>
+<div class="dropzone-title">Drop file di sini</div>
+<div class="dropzone-sub">Atau klik untuk pilih file<br>
+<b>.txt</b> → Prompt Tambahan · <b>.js / .html</b> → Script Hasil</div>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn-modal" onclick="closeUploadModal()">Batal</button>
+</div>
+</div>
+<input type="file" id="file-input" multiple accept=".txt,.js,.html,.md,.json" style="display:none">
+<input type="file" id="import-input" accept=".json" style="display:none">
+</div>
+
+<!-- MODAL: DETAIL -->
+<div class="modal-overlay" id="detail-modal">
+<div class="modal wide">
+<div class="modal-header">
+<div class="modal-title" id="detail-title">Detail</div>
+<button class="modal-close" onclick="closeDetailModal()">✕</button>
+</div>
+<div class="modal-body">
+<div class="detail-content" id="detail-content"></div>
+</div>
+<div class="modal-footer">
+<button class="btn-modal" onclick="closeDetailModal()">Tutup</button>
+<button class="btn-modal primary" id="detail-copy-btn">📋 Copy Semua</button>
+</div>
+</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+<div class="toast-icon" id="toast-icon">✅</div>
+<div class="toast-text">
+<div class="toast-title" id="toast-title">Copied!</div>
+<div class="toast-sub" id="toast-sub">—</div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// DATA PROMPT UTAMA (Hardcoded)
+// ============================================================
+const CORE_PROMPTS = [
+  {
+    id: 'core-2d',
+    name: '2D Universal Theme',
+    desc: 'Panduan animasi 2D Canvas untuk Time Motion Studio. Alur wawancara 6 langkah, aturan animasi, cerita & kamera.',
+    category: '2D Animation',
+    icon: '🎬',
+    ext: '.txt',
+    content: `[PASTE ISI FILE "2D Universal Theme ✅.txt" DI SINI]`
+  },
+  {
+    id: 'core-3d',
+    name: 'Universal 3D Theme',
+    desc: 'Panduan animasi 3D Three.js untuk Time Motion Studio. Load Three.js di Web Worker, aturan WebGLRenderer, hero action.',
+    category: '3D Animation',
+    icon: '🎥',
+    ext: '.txt',
+    content: `[PASTE ISI FILE "Universal 3D Theme ✅.txt" DI SINI]`
+  },
+  {
+    id: 'core-svg',
+    name: 'SVG Recraft',
+    desc: 'Prompt generator Recraft V3 (mode Vector). Template tanpa wajah, konsep/adegan, aturan vector-safe.',
+    category: 'SVG Vector',
+    icon: '🎨',
+    ext: '.txt',
+    content: `[PASTE ISI FILE "SVG Recraft ✅.txt" DI SINI]`
+  },
+  {
+    id: 'core-icon',
+    name: 'Icon Line Art',
+    desc: 'Prompt generator icon line art untuk Vectralcon AI. Single & set. Aturan trace-safe & template.',
+    category: 'Icon Line Art',
+    icon: '✒️',
+    ext: '.txt',
+    content: `[PASTE ISI FILE "Icon Line Art ✅.txt" DI SINI]`
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  uploaded: [],   // { id, name, desc, category, icon, ext, content, type: 'prompt'|'script', uploadedAt, lastUsed }
+  bookmarks: [],  // [id, id]
+  currentFilter: 'all',
+  currentDetail: null,
+  db: null
+};
+
+// ============================================================
+// INDEXEDDB
+// ============================================================
+const DB_NAME = 'PromptStudioDB';
+const DB_VER = 1;
+
+const openDB = () => new Promise((res, rej) => {
+  const r = indexedDB.open(DB_NAME, DB_VER);
+  r.onupgradeneeded = (e) => {
+    const db = e.target.result;
+    if (!db.objectStoreNames.contains('data')) db.createObjectStore('data');
+  };
+  r.onsuccess = (e) => { state.db = e.target.result; res(); };
+  r.onerror = (e) => rej(e.target.error);
+});
+
+const dbSet = (key, val) => new Promise((res, rej) => {
+  const tx = state.db.transaction('data', 'readwrite');
+  tx.objectStore('data').put(val, key);
+  tx.oncomplete = res;
+  tx.onerror = (e) => rej(e.target.error);
+});
+
+const dbGet = (key) => new Promise((res, rej) => {
+  const tx = state.db.transaction('data', 'readonly');
+  const r = tx.objectStore('data').get(key);
+  r.onsuccess = () => res(r.result);
+  r.onerror = (e) => rej(e.target.error);
+});
+
+const persist = async () => {
+  if (!state.db) return;
+  try {
+    await dbSet('uploaded', state.uploaded);
+    await dbSet('bookmarks', state.bookmarks);
+  } catch (e) { console.error(e); }
+};
+
+// ============================================================
+// UTILITY
+// ============================================================
+const esc = (s) => (s || '').toString()
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+
+const fmtSize = (bytes) => {
+  if (bytes === 0) return '0 B';
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return parseFloat((bytes / Math.pow(1024, i)).toFixed(1)) + ' ' + ['B', 'KB', 'MB'][i];
+};
+
+const fmtDate = (ts) => {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const m = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  return `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;
+};
+
+const genId = () => Math.random().toString(36).substr(2, 9);
+
+const showToast = (title, sub, isError = false) => {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-sub').textContent = sub;
+  document.getElementById('toast-icon').textContent = isError ? '❌' : '✅';
+  t.classList.toggle('error', isError);
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+};
+
+const copyToClipboard = (text, title) => {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('Tersalin!', `${title} · ${text.length.toLocaleString('id-ID')} karakter`);
+  } catch (e) {
+    showToast('Gagal copy', e.message, true);
+  }
+  document.body.removeChild(ta);
+};
+
+// ============================================================
+// DETEKSI KATEGORI DARI EKSTENSI
+// ============================================================
+const detectType = (filename) => {
+  const ext = filename.split('.').pop().toLowerCase();
+  if (['js', 'html', 'json'].includes(ext)) return 'script';
+  if (['txt', 'md'].includes(ext)) return 'prompt';
+  return 'prompt'; // default
+};
+
+const detectIcon = (filename, type) => {
+  const name = filename.toLowerCase();
+  if (name.includes('2d')) return '🎬';
+  if (name.includes('3d')) return '🎥';
+  if (name.includes('svg')) return '🎨';
+  if (name.includes('icon')) return '✒️';
+  if (name.includes('christmas') || name.includes('natal')) return '🎄';
+  if (name.includes('halloween')) return '🎃';
+  if (name.includes('ramadan') || name.includes('eid')) return '🌙';
+  if (name.includes('autumn') || name.includes('fall')) return '🍂';
+  if (name.includes('spring')) return '🌸';
+  if (name.includes('summer')) return '☀️';
+  if (name.includes('winter')) return '❄️';
+  if (type === 'script') return '📜';
+  return '📄';
+};
+
+const detectCategory = (filename) => {
+  const name = filename.toLowerCase();
+  if (name.includes('2d')) return '2D Animation';
+  if (name.includes('3d')) return '3D Animation';
+  if (name.includes('svg') || name.includes('vector')) return 'SVG Vector';
+  if (name.includes('icon')) return 'Icon Line Art';
+  if (name.includes('christmas') || name.includes('natal')) return 'Christmas';
+  if (name.includes('halloween')) return 'Halloween';
+  if (name.includes('ramadan') || name.includes('eid')) return 'Ramadan';
+  return 'Umum';
+};
+
+// ============================================================
+// RENDER
+// ============================================================
+const getFilteredItems = () => {
+  const all = [
+    ...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })),
+    ...state.uploaded
+  ];
+
+  if (state.currentFilter === 'all') return all;
+  if (state.currentFilter === 'bookmark') return all.filter(i => state.bookmarks.includes(i.id));
+  return all.filter(i => i.type === state.currentFilter);
+};
+
+const searchItems = (items) => {
+  const q = document.getElementById('search-input').value.trim().toLowerCase();
+  if (!q) return items;
+  return items.filter(i =>
+    i.name.toLowerCase().includes(q) ||
+    (i.desc || '').toLowerCase().includes(q) ||
+    (i.content || '').toLowerCase().includes(q)
+  );
+};
+
+const renderCard = (item) => {
+  const isBookmarked = state.bookmarks.includes(item.id);
+  const isCore = item.type === 'core';
+  const isPrompt = item.type === 'prompt';
+  const isScript = item.type === 'script';
+  const tagClass = isCore ? 'core' : isPrompt ? 'prompt' : 'script';
+  const tagLabel = isCore ? 'Core' : isPrompt ? 'Prompt' : 'Script';
+  const cardClass = isCore ? 'core' : isPrompt ? 'prompt' : 'script';
+  const iconClass = isCore
+    ? (item.id === 'core-2d' ? 'prompt-icon-2d' : item.id === 'core-3d' ? 'prompt-icon-3d' : item.id === 'core-svg' ? 'prompt-icon-svg' : 'prompt-icon-icon')
+    : (isPrompt ? 'prompt-icon-upload-prompt' : 'prompt-icon-upload-script');
+
+  const size = item.content ? item.content.length : 0;
+  const preview = item.content ? item.content.substring(0, 400) : '';
+  const metaExtra = isCore
+    ? ''
+    : `<span>·</span><span>🕐 Upload: ${fmtDate(item.uploadedAt)}</span>`;
+
+  return `
+    <div class="prompt-card ${cardClass}" data-id="${item.id}">
+      <div class="prompt-header">
+        <div class="prompt-icon ${iconClass}">${item.icon || '📄'}</div>
+        <div class="prompt-info">
+          <div class="prompt-title">
+            ${esc(item.name)}
+            <span class="prompt-source-tag ${tagClass}">${tagLabel}</span>
+          </div>
+          <div class="prompt-desc">${esc(item.desc || '(belum ada deskripsi)')}</div>
+          <div class="prompt-meta">
+            <span>📏 ${size.toLocaleString('id-ID')} karakter</span>
+            ${item.ext ? `<span>·</span><span>🔷 ${esc(item.ext)}</span>` : ''}
+            ${metaExtra}
+          </div>
+        </div>
+        <div class="prompt-actions" onclick="event.stopPropagation()">
+          <button class="btn-action ${isBookmarked ? 'bookmarked' : ''}" data-action="bookmark" data-id="${item.id}" title="Bookmark">⭐</button>
+          ${!isCore ? `<button class="btn-action danger" data-action="delete" data-id="${item.id}" title="Hapus">🗑</button>` : ''}
+          <button class="btn-copy-main" data-action="copy" data-id="${item.id}">📋 Copy</button>
+        </div>
+      </div>
+      <div class="prompt-preview">${esc(preview)}${size > 400 ? '\n...' : ''}</div>
+      <div class="prompt-footer">
+        <div class="prompt-footer-left">
+          ${item.lastUsed ? `<span>🕐 Terakhir dipakai: ${fmtDate(item.lastUsed)}</span>` : ''}
+        </div>
+        <span>Klik card untuk lihat lengkap</span>
+      </div>
+    </div>
+  `;
+};
+
+const render = () => {
+  const container = document.getElementById('prompts-container');
+  let items = getFilteredItems();
+  items = searchItems(items);
+
+  // Update counts
+  const all = [...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })), ...state.uploaded];
+  document.getElementById('count-all').textContent = all.length;
+  document.getElementById('count-core').textContent = all.filter(i => i.type === 'core').length;
+  document.getElementById('count-prompt').textContent = all.filter(i => i.type === 'prompt').length;
+  document.getElementById('count-script').textContent = all.filter(i => i.type === 'script').length;
+  document.getElementById('count-bookmark').textContent = state.bookmarks.length;
+
+  // Update header
+  const titles = {
+    'all': 'Semua Koleksi',
+    'core': 'Prompt Utama',
+    'prompt': 'Prompt Tambahan',
+    'script': 'Script Hasil',
+    'bookmark': 'Bookmark'
+  };
+  document.getElementById('page-title').textContent = titles[state.currentFilter] || 'Koleksi';
+
+  const subtitle = `${all.filter(i => i.type === 'core').length} prompt utama · ${all.filter(i => i.type === 'prompt').length} prompt tambahan · ${all.filter(i => i.type === 'script').length} script hasil`;
+  document.getElementById('page-subtitle').textContent = subtitle;
+  document.getElementById('page-count').textContent = items.length + ' PROMPT';
+
+  if (items.length === 0) {
+    let emptyHtml = '';
+    if (state.currentFilter === 'prompt') {
+      emptyHtml = `<div class="empty-state">
+        <div class="empty-state-icon prompt">📤</div>
+        <div class="empty-state-title">Belum ada prompt tambahan</div>
+        <div class="empty-state-sub">Klik <b>📤 Upload</b> di header untuk menambahkan file <b>.txt</b>. Prompt akan tersimpan di browser.</div>
+      </div>`;
+    } else if (state.currentFilter === 'script') {
+      emptyHtml = `<div class="empty-state">
+        <div class="empty-state-icon script">🎬</div>
+        <div class="empty-state-title">Belum ada script hasil</div>
+        <div class="empty-state-sub">Klik <b>📤 Upload</b> di header untuk menambahkan file <b>.js / .html</b>. Script akan tersimpan di browser.</div>
+      </div>`;
+    } else if (state.currentFilter === 'bookmark') {
+      emptyHtml = `<div class="empty-state">
+        <div class="empty-state-icon prompt">⭐</div>
+        <div class="empty-state-title">Belum ada bookmark</div>
+        <div class="empty-state-sub">Klik ⭐ di card untuk menambahkan ke bookmark.</div>
+      </div>`;
+    } else {
+      emptyHtml = `<div class="empty-state">
+        <div class="empty-state-icon prompt">🔍</div>
+        <div class="empty-state-title">Tidak ada hasil</div>
+        <div class="empty-state-sub">Coba kata kunci lain.</div>
+      </div>`;
+    }
+    container.innerHTML = emptyHtml;
+    return;
+  }
+
+  // Group by section
+  const core = items.filter(i => i.type === 'core');
+  const prompts = items.filter(i => i.type === 'prompt');
+  const scripts = items.filter(i => i.type === 'script');
+
+  let html = '';
+
+  if (core.length > 0) {
+    html += `<div class="section-header">
+      <div class="section-header-icon core">📌</div>
+      <div class="section-header-text">Prompt Utama</div>
+      <div class="section-header-divider"></div>
+      <div class="section-header-sub">${core.length} · dari code</div>
+    </div>`;
+    html += core.map(renderCard).join('');
+  }
+  if (prompts.length > 0) {
+    html += `<div class="section-header">
+      <div class="section-header-icon prompt">📤</div>
+      <div class="section-header-text">Prompt Tambahan</div>
+      <div class="section-header-divider"></div>
+      <div class="section-header-sub">${prompts.length} · dari upload</div>
+    </div>`;
+    html += prompts.map(renderCard).join('');
+  }
+  if (scripts.length > 0) {
+    html += `<div class="section-header">
+      <div class="section-header-icon script">🎬</div>
+      <div class="section-header-text">Script Hasil</div>
+      <div class="section-header-divider"></div>
+      <div class="section-header-sub">${scripts.length} · dari upload</div>
+    </div>`;
+    html += scripts.map(renderCard).join('');
+  }
+
+  container.innerHTML = html;
+
+  // Attach listeners
+  container.querySelectorAll('.prompt-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.prompt-actions')) return;
+      const id = card.dataset.id;
+      openDetailModal(id);
+    });
+  });
+
+  container.querySelectorAll('[data-action="copy"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      copyItem(id);
+    });
+  });
+
+  container.querySelectorAll('[data-action="bookmark"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      toggleBookmark(id);
+    });
+  });
+
+  container.querySelectorAll('[data-action="delete"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.dataset.id;
+      deleteItem(id);
+    });
+  });
+};
+
+// ============================================================
+// ACTIONS
+// ============================================================
+const getAllItems = () => [
+  ...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })),
+  ...state.uploaded
+];
+
+const getItemById = (id) => getAllItems().find(i => i.id === id);
+
+const copyItem = (id) => {
+  const item = getItemById(id);
+  if (!item) return;
+  copyToClipboard(item.content || '', item.name);
+
+  // Update lastUsed for uploaded items
+  if (item.type !== 'core') {
+    const idx = state.uploaded.findIndex(i => i.id === id);
+    if (idx !== -1) {
+      state.uploaded[idx].lastUsed = Date.now();
+      persist();
+      render();
+    }
+  }
+};
+
+const toggleBookmark = (id) => {
+  const idx = state.bookmarks.indexOf(id);
+  if (idx === -1) {
+    state.bookmarks.push(id);
+    showToast('Ditambahkan ke bookmark', getItemById(id)?.name || '');
+  } else {
+    state.bookmarks.splice(idx, 1);
+    showToast('Dihapus dari bookmark', getItemById(id)?.name || '');
+  }
+  persist();
+  render();
+};
+
+const deleteItem = (id) => {
+  const item = state.uploaded.find(i => i.id === id);
+  if (!item) return;
+  if (!confirm(`Hapus "${item.name}" dari koleksi?`)) return;
+  state.uploaded = state.uploaded.filter(i => i.id !== id);
+  state.bookmarks = state.bookmarks.filter(b => b !== id);
+  persist();
+  render();
+  showToast('Dihapus', item.name);
+};
+
+// ============================================================
+// MODAL: UPLOAD
+// ============================================================
+const openUploadModal = () => {
+  document.getElementById('upload-modal').classList.add('show');
+};
+const closeUploadModal = () => {
+  document.getElementById('upload-modal').classList.remove('show');
+};
+
+const handleFiles = async (files) => {
+  if (!files || files.length === 0) return;
+  let added = 0;
+  for (const file of files) {
+    try {
+      const content = await file.text();
+      const type = detectType(file.name);
+      const name = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+      const item = {
+        id: genId(),
+        name: name,
+        desc: `${type === 'script' ? 'Script' : 'Prompt'} · ${file.name}`,
+        category: detectCategory(file.name),
+        icon: detectIcon(file.name, type),
+        ext: '.' + file.name.split('.').pop().toLowerCase(),
+        content: content,
+        type: type,
+        uploadedAt: Date.now(),
+        lastUsed: null
+      };
+      state.uploaded.push(item);
+      added++;
+    } catch (e) {
+      console.error('Failed to read', file.name, e);
+    }
+  }
+  await persist();
+  render();
+  closeUploadModal();
+  showToast(`${added} file ditambahkan`, 'Cek di kategori masing-masing');
+};
+
+// ============================================================
+// MODAL: DETAIL
+// ============================================================
+const openDetailModal = (id) => {
+  const item = getItemById(id);
+  if (!item) return;
+  state.currentDetail = id;
+  document.getElementById('detail-title').textContent = item.name;
+  document.getElementById('detail-content').textContent = item.content || '(kosong)';
+  document.getElementById('detail-copy-btn').onclick = () => {
+    copyItem(id);
+    closeDetailModal();
+  };
+  document.getElementById('detail-modal').classList.add('show');
+};
+const closeDetailModal = () => {
+  document.getElementById('detail-modal').classList.remove('show');
+  state.currentDetail = null;
+};
+
+// ============================================================
+// EXPORT / IMPORT
+// ============================================================
+const exportBackup = () => {
+  const data = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    uploaded: state.uploaded,
+    bookmarks: state.bookmarks
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `prompt-studio-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup ter-download', `${state.uploaded.length} file`);
+};
+
+const importBackup = () => {
+  document.getElementById('import-input').click();
+};
+
+const handleImport = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!data.version || !Array.isArray(data.uploaded)) {
+      throw new Error('File bukan backup Prompt Studio.');
+    }
+    if (!confirm(`Import akan MENIMPA ${state.uploaded.length} file saat ini dengan ${data.uploaded.length} file dari backup.\n\nLanjutkan?`)) {
+      e.target.value = '';
+      return;
+    }
+    state.uploaded = data.uploaded || [];
+    state.bookmarks = data.bookmarks || [];
+    await persist();
+    render();
+    showToast('Import berhasil', `${state.uploaded.length} file`);
+  } catch (err) {
+    showToast('Import gagal', err.message, true);
+  }
+  e.target.value = '';
+};
+
+// ============================================================
+// INIT
+// ============================================================
+const init = async () => {
+  try {
+    await openDB();
+    const uploaded = await dbGet('uploaded');
+    const bookmarks = await dbGet('bookmarks');
+    if (uploaded) state.uploaded = uploaded;
+    if (bookmarks) state.bookmarks = bookmarks;
+  } catch (e) {
+    console.error('DB init failed:', e);
+  }
+  document.getElementById('loading').classList.add('hide');
+  render();
+};
+
+// Event listeners
+document.getElementById('search-input').addEventListener('input', render);
+document.getElementById('btn-export').addEventListener('click', exportBackup);
+document.getElementById('btn-import').addEventListener('click', importBackup);
+document.getElementById('btn-upload').addEventListener('click', openUploadModal);
+document.getElementById('import-input').addEventListener('change', handleImport);
+document.getElementById('file-input').addEventListener('change', (e) => {
+  handleFiles(e.target.files);
+  e.target.value = '';
+});
+
+// Dropzone
+const dz = document.getElementById('dropzone');
+const fileInput = document.getElementById('file-input');
+dz.addEventListener('click', () => fileInput.click());
+dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('dragover'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+dz.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dz.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+// Sidebar navigation
+document.querySelectorAll('.nav-item[data-filter]').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    state.currentFilter = item.dataset.filter;
+    render();
+  });
+});
+
+// Modal close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('show');
+    }
+  });
+});
+
+// Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('show'));
+  }
+});
+
+// Start
+init();
+</script>
+</body>
+</html>
