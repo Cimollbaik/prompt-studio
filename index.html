@@ -21,8 +21,6 @@
 html,body{height:100%}
 body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px;font-size:14px;-webkit-font-smoothing:antialiased}
 .app{max-width:1280px;margin:0 auto;min-height:calc(100vh - 40px);display:flex;flex-direction:column;gap:16px}
-
-/* HEADER */
 .header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
 .logo-group{display:flex;align-items:center;gap:14px}
 .logo-mark{width:42px;height:42px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#0D0B14;font-family:'Fraunces',serif;font-weight:800;font-size:20px;box-shadow:0 8px 24px rgba(232,184,75,0.3)}
@@ -36,11 +34,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-icon:hover{border-color:var(--gold);color:var(--gold)}
 .btn-icon.primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);color:#0D0B14;border-color:transparent;box-shadow:0 4px 14px rgba(232,184,75,0.25)}
 .btn-icon.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,0.4)}
-
-/* MAIN GRID */
 .main-grid{flex:1;display:grid;grid-template-columns:240px 1fr;gap:20px;min-height:0}
-
-/* SIDEBAR */
 .sidebar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 0;display:flex;flex-direction:column;gap:4px;height:fit-content;position:sticky;top:20px}
 .sidebar-title{font-family:'Fraunces',serif;font-weight:600;font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;padding:0 20px 10px;margin-top:6px}
 .sidebar-title:first-child{margin-top:0}
@@ -54,16 +48,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .nav-icon-bookmark{background:var(--coral-soft);color:var(--coral);border:1px solid rgba(232,92,124,0.25)}
 .nav-count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:100px;background:var(--elevated);color:var(--text-dim);font-weight:600}
 .sidebar-divider{height:1px;background:var(--border);margin:10px 20px}
-
-/* CONTENT */
 .content{display:flex;flex-direction:column;gap:14px;min-width:0}
 .content-header{display:flex;justify-content:space-between;align-items:center;padding:0 4px;flex-wrap:wrap;gap:10px}
 .content-title{font-family:'Fraunces',serif;font-weight:700;font-size:22px;letter-spacing:-0.02em;display:flex;align-items:center;gap:10px}
 .content-title-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
 .content-subtitle{font-size:12px;color:var(--text-dim);margin-top:2px;font-weight:500}
 .content-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);background:var(--card);border:1px solid var(--border);padding:6px 12px;border-radius:100px}
-
-/* SECTION TITLE */
 .section-header{display:flex;align-items:center;gap:10px;padding:8px 4px;margin-top:6px}
 .section-header-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px}
 .section-header-icon.core{background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)}
@@ -72,8 +62,6 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .section-header-text{font-family:'Fraunces',serif;font-weight:700;font-size:14px;color:var(--text)}
 .section-header-sub{font-size:11px;color:var(--text-dim);font-weight:500;margin-left:auto;font-family:'JetBrains Mono',monospace}
 .section-header-divider{flex:1;height:1px;background:var(--border);margin:0 4px}
-
-/* PROMPT CARD */
 .prompt-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:all 0.25s ease;cursor:pointer;position:relative}
 .prompt-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.3)}
 .prompt-card.core{border-left:3px solid var(--gold)}
@@ -106,16 +94,12 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .prompt-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(transparent,var(--elevated));pointer-events:none}
 .prompt-footer{padding:12px 22px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);flex-wrap:wrap;gap:8px}
 .prompt-footer-left{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-
-/* EMPTY STATE */
 .empty-state{padding:32px 24px;text-align:center;background:var(--card);border:1px dashed var(--border-hover);border-radius:var(--radius-lg);display:flex;flex-direction:column;align-items:center;gap:12px}
 .empty-state-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px}
 .empty-state-icon.prompt{background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border)}
 .empty-state-icon.script{background:var(--sage-soft);color:var(--sage);border:1px solid var(--sage-border)}
 .empty-state-title{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--text)}
 .empty-state-sub{font-size:12px;color:var(--text-dim);max-width:400px;line-height:1.5}
-
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(13,11,20,0.85);backdrop-filter:blur(8px);z-index:999;justify-content:center;align-items:center;padding:20px}
 .modal-overlay.show{display:flex;animation:fadeIn 0.2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -136,11 +120,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-modal:hover{border-color:var(--gold);color:var(--gold)}
 .btn-modal.primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);color:#0D0B14;border-color:transparent}
 .btn-modal.primary:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,184,75,0.3)}
-
-/* DETAIL MODAL */
 .detail-content{padding:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-soft);line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:60vh;overflow-y:auto;background:var(--elevated);border-radius:var(--radius);border:1px solid var(--border)}
-
-/* TOAST */
 .toast{position:fixed;bottom:30px;right:30px;left:30px;max-width:360px;margin-left:auto;background:var(--card);border:1px solid var(--gold-border);border-radius:var(--radius);padding:14px 20px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-lg);font-size:12.5px;font-weight:500;z-index:1000;transition:all 0.3s;transform:translateY(120px);opacity:0}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.error{border-color:rgba(232,92,124,0.4)}
@@ -149,12 +129,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .toast-text{flex:1}
 .toast-title{font-weight:600;color:var(--text);margin-bottom:1px}
 .toast-sub{font-size:11px;color:var(--text-dim)}
-
-/* LOADING */
 .loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:'Fraunces',serif;font-weight:700;color:var(--gold);font-size:14px}
 .loading.hide{display:none}
-
-/* RESPONSIVE */
 @media (max-width:900px){
 .main-grid{grid-template-columns:1fr;gap:14px}
 .sidebar{position:static;flex-direction:row;padding:8px 12px;overflow-x:auto;scrollbar-width:none;border-radius:100px}
@@ -181,9 +157,7 @@ body{padding:12px}
 </head>
 <body>
 <div class="loading" id="loading">⏳ Memuat Prompt Studio...</div>
-
 <div class="app">
-
 <header class="header">
 <div class="logo-group">
 <div class="logo-mark">P</div>
@@ -199,42 +173,17 @@ body{padding:12px}
 <button class="btn-icon primary" id="btn-upload">📤 Upload</button>
 </div>
 </header>
-
 <div class="main-grid">
-
 <aside class="sidebar">
 <div class="sidebar-title">Koleksi</div>
-<a class="nav-item active" data-filter="all">
-<span class="nav-icon nav-icon-core">📌</span>
-<span>Semua</span>
-<span class="nav-count" id="count-all">0</span>
-</a>
-<a class="nav-item" data-filter="core">
-<span class="nav-icon nav-icon-core">🎯</span>
-<span>Prompt Utama</span>
-<span class="nav-count" id="count-core">0</span>
-</a>
-<a class="nav-item" data-filter="prompt">
-<span class="nav-icon nav-icon-prompt">📤</span>
-<span>Prompt Tambahan</span>
-<span class="nav-count" id="count-prompt">0</span>
-</a>
-<a class="nav-item" data-filter="script">
-<span class="nav-icon nav-icon-script">🎬</span>
-<span>Script Hasil</span>
-<span class="nav-count" id="count-script">0</span>
-</a>
-
+<a class="nav-item active" data-filter="all"><span class="nav-icon nav-icon-core">📌</span><span>Semua</span><span class="nav-count" id="count-all">0</span></a>
+<a class="nav-item" data-filter="core"><span class="nav-icon nav-icon-core">🎯</span><span>Prompt Utama</span><span class="nav-count" id="count-core">0</span></a>
+<a class="nav-item" data-filter="prompt"><span class="nav-icon nav-icon-prompt">📤</span><span>Prompt Tambahan</span><span class="nav-count" id="count-prompt">0</span></a>
+<a class="nav-item" data-filter="script"><span class="nav-icon nav-icon-script">🎬</span><span>Script Hasil</span><span class="nav-count" id="count-script">0</span></a>
 <div class="sidebar-divider"></div>
-
 <div class="sidebar-title">Lainnya</div>
-<a class="nav-item" data-filter="bookmark">
-<span class="nav-icon nav-icon-bookmark">⭐</span>
-<span>Bookmark</span>
-<span class="nav-count" id="count-bookmark">0</span>
-</a>
+<a class="nav-item" data-filter="bookmark"><span class="nav-icon nav-icon-bookmark">⭐</span><span>Bookmark</span><span class="nav-count" id="count-bookmark">0</span></a>
 </aside>
-
 <main class="content">
 <div class="content-header">
 <div>
@@ -243,62 +192,36 @@ body{padding:12px}
 </div>
 <div class="content-count" id="page-count">0</div>
 </div>
-
 <div id="prompts-container"></div>
-
 </main>
 </div>
 </div>
-
-<!-- MODAL: UPLOAD -->
 <div class="modal-overlay" id="upload-modal">
 <div class="modal">
-<div class="modal-header">
-<div class="modal-title">📤 Upload File</div>
-<button class="modal-close" onclick="closeUploadModal()">✕</button>
-</div>
+<div class="modal-header"><div class="modal-title">📤 Upload File</div><button class="modal-close" onclick="closeUploadModal()">✕</button></div>
 <div class="modal-body">
 <div class="dropzone" id="dropzone">
 <div class="dropzone-icon">📁</div>
 <div class="dropzone-title">Drop file di sini</div>
-<div class="dropzone-sub">Atau klik untuk pilih file<br>
-<b>.txt</b> → Prompt Tambahan · <b>.js / .html</b> → Script Hasil</div>
+<div class="dropzone-sub">Atau klik untuk pilih file<br><b>.txt</b> → Prompt Tambahan · <b>.js / .html</b> → Script Hasil</div>
 </div>
 </div>
-<div class="modal-footer">
-<button class="btn-modal" onclick="closeUploadModal()">Batal</button>
-</div>
+<div class="modal-footer"><button class="btn-modal" onclick="closeUploadModal()">Batal</button></div>
 </div>
 <input type="file" id="file-input" multiple accept=".txt,.js,.html,.md,.json" style="display:none">
 <input type="file" id="import-input" accept=".json" style="display:none">
 </div>
-
-<!-- MODAL: DETAIL -->
 <div class="modal-overlay" id="detail-modal">
 <div class="modal wide">
-<div class="modal-header">
-<div class="modal-title" id="detail-title">Detail</div>
-<button class="modal-close" onclick="closeDetailModal()">✕</button>
-</div>
-<div class="modal-body">
-<div class="detail-content" id="detail-content"></div>
-</div>
-<div class="modal-footer">
-<button class="btn-modal" onclick="closeDetailModal()">Tutup</button>
-<button class="btn-modal primary" id="detail-copy-btn">📋 Copy Semua</button>
+<div class="modal-header"><div class="modal-title" id="detail-title">Detail</div><button class="modal-close" onclick="closeDetailModal()">✕</button></div>
+<div class="modal-body"><div class="detail-content" id="detail-content"></div></div>
+<div class="modal-footer"><button class="btn-modal" onclick="closeDetailModal()">Tutup</button><button class="btn-modal primary" id="detail-copy-btn">📋 Copy Semua</button></div>
 </div>
 </div>
-</div>
-
-<!-- TOAST -->
 <div class="toast" id="toast">
 <div class="toast-icon" id="toast-icon">✅</div>
-<div class="toast-text">
-<div class="toast-title" id="toast-title">Copied!</div>
-<div class="toast-sub" id="toast-sub">—</div>
+<div class="toast-text"><div class="toast-title" id="toast-title">Copied!</div><div class="toast-sub" id="toast-sub">—</div></div>
 </div>
-</div>
-
 <script>
 // ============================================================
 // DATA PROMPT UTAMA (Hardcoded)
@@ -489,9 +412,9 @@ ENVIRONMENT TIME MOTION STUDIO (JANGAN DIUBAH)
 ### Function signature WAJIB:
 function draw(ctx, time, width, height) { ... }
 
-- `time` = DETIK (0, 1, 2, ...) — BUKAN milidetik
+- \`time\` = DETIK (0, 1, 2, ...) — BUKAN milidetik
 - JANGAN pakai requestAnimationFrame / performance.now / Date.now
-- `ctx` = Canvas 2D context
+- \`ctx\` = Canvas 2D context
 
 ### Capabilities (SUDAH DITES):
 ✅ fetch            → bisa load dari CDN
@@ -860,8 +783,8 @@ Jangan buat judul upload atau keyword upload kecuali user memintanya.`
 // STATE
 // ============================================================
 const state = {
-  uploaded: [],   // { id, name, desc, category, icon, ext, content, type: 'prompt'|'script', uploadedAt, lastUsed }
-  bookmarks: [],  // [id, id]
+  uploaded: [],
+  bookmarks: [],
   currentFilter: 'all',
   currentDetail: null,
   db: null
@@ -912,12 +835,6 @@ const esc = (s) => (s || '').toString()
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 
-const fmtSize = (bytes) => {
-  if (bytes === 0) return '0 B';
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return parseFloat((bytes / Math.pow(1024, i)).toFixed(1)) + ' ' + ['B', 'KB', 'MB'][i];
-};
-
 const fmtDate = (ts) => {
   if (!ts) return '—';
   const d = new Date(ts);
@@ -951,14 +868,11 @@ const copyToClipboard = (text, title) => {
   document.body.removeChild(ta);
 };
 
-// ============================================================
-// DETEKSI KATEGORI DARI EKSTENSI
-// ============================================================
 const detectType = (filename) => {
   const ext = filename.split('.').pop().toLowerCase();
   if (['js', 'html', 'json'].includes(ext)) return 'script';
   if (['txt', 'md'].includes(ext)) return 'prompt';
-  return 'prompt'; // default
+  return 'prompt';
 };
 
 const detectIcon = (filename, type) => {
@@ -990,15 +904,8 @@ const detectCategory = (filename) => {
   return 'Umum';
 };
 
-// ============================================================
-// RENDER
-// ============================================================
 const getFilteredItems = () => {
-  const all = [
-    ...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })),
-    ...state.uploaded
-  ];
-
+  const all = [...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })), ...state.uploaded];
   if (state.currentFilter === 'all') return all;
   if (state.currentFilter === 'bookmark') return all.filter(i => state.bookmarks.includes(i.id));
   return all.filter(i => i.type === state.currentFilter);
@@ -1028,25 +935,16 @@ const renderCard = (item) => {
 
   const size = item.content ? item.content.length : 0;
   const preview = item.content ? item.content.substring(0, 400) : '';
-  const metaExtra = isCore
-    ? ''
-    : `<span>·</span><span>🕐 Upload: ${fmtDate(item.uploadedAt)}</span>`;
+  const metaExtra = isCore ? '' : `<span>·</span><span>🕐 Upload: ${fmtDate(item.uploadedAt)}</span>`;
 
   return `
     <div class="prompt-card ${cardClass}" data-id="${item.id}">
       <div class="prompt-header">
         <div class="prompt-icon ${iconClass}">${item.icon || '📄'}</div>
         <div class="prompt-info">
-          <div class="prompt-title">
-            ${esc(item.name)}
-            <span class="prompt-source-tag ${tagClass}">${tagLabel}</span>
-          </div>
+          <div class="prompt-title">${esc(item.name)}<span class="prompt-source-tag ${tagClass}">${tagLabel}</span></div>
           <div class="prompt-desc">${esc(item.desc || '(belum ada deskripsi)')}</div>
-          <div class="prompt-meta">
-            <span>📏 ${size.toLocaleString('id-ID')} karakter</span>
-            ${item.ext ? `<span>·</span><span>🔷 ${esc(item.ext)}</span>` : ''}
-            ${metaExtra}
-          </div>
+          <div class="prompt-meta"><span>📏 ${size.toLocaleString('id-ID')} karakter</span>${item.ext ? `<span>·</span><span>🔷 ${esc(item.ext)}</span>` : ''}${metaExtra}</div>
         </div>
         <div class="prompt-actions" onclick="event.stopPropagation()">
           <button class="btn-action ${isBookmarked ? 'bookmarked' : ''}" data-action="bookmark" data-id="${item.id}" title="Bookmark">⭐</button>
@@ -1056,9 +954,7 @@ const renderCard = (item) => {
       </div>
       <div class="prompt-preview">${esc(preview)}${size > 400 ? '\n...' : ''}</div>
       <div class="prompt-footer">
-        <div class="prompt-footer-left">
-          ${item.lastUsed ? `<span>🕐 Terakhir dipakai: ${fmtDate(item.lastUsed)}</span>` : ''}
-        </div>
+        <div class="prompt-footer-left">${item.lastUsed ? `<span>🕐 Terakhir dipakai: ${fmtDate(item.lastUsed)}</span>` : ''}</div>
         <span>Klik card untuk lihat lengkap</span>
       </div>
     </div>
@@ -1070,7 +966,6 @@ const render = () => {
   let items = getFilteredItems();
   items = searchItems(items);
 
-  // Update counts
   const all = [...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })), ...state.uploaded];
   document.getElementById('count-all').textContent = all.length;
   document.getElementById('count-core').textContent = all.filter(i => i.type === 'core').length;
@@ -1078,159 +973,76 @@ const render = () => {
   document.getElementById('count-script').textContent = all.filter(i => i.type === 'script').length;
   document.getElementById('count-bookmark').textContent = state.bookmarks.length;
 
-  // Update header
-  const titles = {
-    'all': 'Semua Koleksi',
-    'core': 'Prompt Utama',
-    'prompt': 'Prompt Tambahan',
-    'script': 'Script Hasil',
-    'bookmark': 'Bookmark'
-  };
+  const titles = { 'all': 'Semua Koleksi', 'core': 'Prompt Utama', 'prompt': 'Prompt Tambahan', 'script': 'Script Hasil', 'bookmark': 'Bookmark' };
   document.getElementById('page-title').textContent = titles[state.currentFilter] || 'Koleksi';
-
-  const subtitle = `${all.filter(i => i.type === 'core').length} prompt utama · ${all.filter(i => i.type === 'prompt').length} prompt tambahan · ${all.filter(i => i.type === 'script').length} script hasil`;
-  document.getElementById('page-subtitle').textContent = subtitle;
+  document.getElementById('page-subtitle').textContent = `${all.filter(i => i.type === 'core').length} prompt utama · ${all.filter(i => i.type === 'prompt').length} prompt tambahan · ${all.filter(i => i.type === 'script').length} script hasil`;
   document.getElementById('page-count').textContent = items.length + ' PROMPT';
 
   if (items.length === 0) {
     let emptyHtml = '';
-    if (state.currentFilter === 'prompt') {
-      emptyHtml = `<div class="empty-state">
-        <div class="empty-state-icon prompt">📤</div>
-        <div class="empty-state-title">Belum ada prompt tambahan</div>
-        <div class="empty-state-sub">Klik <b>📤 Upload</b> di header untuk menambahkan file <b>.txt</b>. Prompt akan tersimpan di browser.</div>
-      </div>`;
-    } else if (state.currentFilter === 'script') {
-      emptyHtml = `<div class="empty-state">
-        <div class="empty-state-icon script">🎬</div>
-        <div class="empty-state-title">Belum ada script hasil</div>
-        <div class="empty-state-sub">Klik <b>📤 Upload</b> di header untuk menambahkan file <b>.js / .html</b>. Script akan tersimpan di browser.</div>
-      </div>`;
-    } else if (state.currentFilter === 'bookmark') {
-      emptyHtml = `<div class="empty-state">
-        <div class="empty-state-icon prompt">⭐</div>
-        <div class="empty-state-title">Belum ada bookmark</div>
-        <div class="empty-state-sub">Klik ⭐ di card untuk menambahkan ke bookmark.</div>
-      </div>`;
-    } else {
-      emptyHtml = `<div class="empty-state">
-        <div class="empty-state-icon prompt">🔍</div>
-        <div class="empty-state-title">Tidak ada hasil</div>
-        <div class="empty-state-sub">Coba kata kunci lain.</div>
-      </div>`;
-    }
+    if (state.currentFilter === 'prompt') emptyHtml = `<div class="empty-state"><div class="empty-state-icon prompt">📤</div><div class="empty-state-title">Belum ada prompt tambahan</div><div class="empty-state-sub">Klik <b>📤 Upload</b> di header untuk menambahkan file <b>.txt</b>.</div></div>`;
+    else if (state.currentFilter === 'script') emptyHtml = `<div class="empty-state"><div class="empty-state-icon script">🎬</div><div class="empty-state-title">Belum ada script hasil</div><div class="empty-state-sub">Klik <b>📤 Upload</b> di header untuk menambahkan file <b>.js / .html</b>.</div></div>`;
+    else if (state.currentFilter === 'bookmark') emptyHtml = `<div class="empty-state"><div class="empty-state-icon prompt">⭐</div><div class="empty-state-title">Belum ada bookmark</div><div class="empty-state-sub">Klik ⭐ di card untuk menambahkan ke bookmark.</div></div>`;
+    else emptyHtml = `<div class="empty-state"><div class="empty-state-icon prompt">🔍</div><div class="empty-state-title">Tidak ada hasil</div><div class="empty-state-sub">Coba kata kunci lain.</div></div>`;
     container.innerHTML = emptyHtml;
     return;
   }
 
-  // Group by section
   const core = items.filter(i => i.type === 'core');
   const prompts = items.filter(i => i.type === 'prompt');
   const scripts = items.filter(i => i.type === 'script');
 
   let html = '';
-
   if (core.length > 0) {
-    html += `<div class="section-header">
-      <div class="section-header-icon core">📌</div>
-      <div class="section-header-text">Prompt Utama</div>
-      <div class="section-header-divider"></div>
-      <div class="section-header-sub">${core.length} · dari code</div>
-    </div>`;
+    html += `<div class="section-header"><div class="section-header-icon core">📌</div><div class="section-header-text">Prompt Utama</div><div class="section-header-divider"></div><div class="section-header-sub">${core.length} · dari code</div></div>`;
     html += core.map(renderCard).join('');
   }
   if (prompts.length > 0) {
-    html += `<div class="section-header">
-      <div class="section-header-icon prompt">📤</div>
-      <div class="section-header-text">Prompt Tambahan</div>
-      <div class="section-header-divider"></div>
-      <div class="section-header-sub">${prompts.length} · dari upload</div>
-    </div>`;
+    html += `<div class="section-header"><div class="section-header-icon prompt">📤</div><div class="section-header-text">Prompt Tambahan</div><div class="section-header-divider"></div><div class="section-header-sub">${prompts.length} · dari upload</div></div>`;
     html += prompts.map(renderCard).join('');
   }
   if (scripts.length > 0) {
-    html += `<div class="section-header">
-      <div class="section-header-icon script">🎬</div>
-      <div class="section-header-text">Script Hasil</div>
-      <div class="section-header-divider"></div>
-      <div class="section-header-sub">${scripts.length} · dari upload</div>
-    </div>`;
+    html += `<div class="section-header"><div class="section-header-icon script">🎬</div><div class="section-header-text">Script Hasil</div><div class="section-header-divider"></div><div class="section-header-sub">${scripts.length} · dari upload</div></div>`;
     html += scripts.map(renderCard).join('');
   }
 
   container.innerHTML = html;
 
-  // Attach listeners
   container.querySelectorAll('.prompt-card').forEach(card => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('.prompt-actions')) return;
-      const id = card.dataset.id;
-      openDetailModal(id);
+      openDetailModal(card.dataset.id);
     });
   });
-
   container.querySelectorAll('[data-action="copy"]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.id;
-      copyItem(id);
-    });
+    btn.addEventListener('click', (e) => { e.stopPropagation(); copyItem(btn.dataset.id); });
   });
-
   container.querySelectorAll('[data-action="bookmark"]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.id;
-      toggleBookmark(id);
-    });
+    btn.addEventListener('click', (e) => { e.stopPropagation(); toggleBookmark(btn.dataset.id); });
   });
-
   container.querySelectorAll('[data-action="delete"]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.dataset.id;
-      deleteItem(id);
-    });
+    btn.addEventListener('click', (e) => { e.stopPropagation(); deleteItem(btn.dataset.id); });
   });
 };
 
-// ============================================================
-// ACTIONS
-// ============================================================
-const getAllItems = () => [
-  ...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })),
-  ...state.uploaded
-];
-
+const getAllItems = () => [...CORE_PROMPTS.map(p => ({ ...p, type: 'core' })), ...state.uploaded];
 const getItemById = (id) => getAllItems().find(i => i.id === id);
 
 const copyItem = (id) => {
   const item = getItemById(id);
   if (!item) return;
   copyToClipboard(item.content || '', item.name);
-
-  // Update lastUsed for uploaded items
   if (item.type !== 'core') {
     const idx = state.uploaded.findIndex(i => i.id === id);
-    if (idx !== -1) {
-      state.uploaded[idx].lastUsed = Date.now();
-      persist();
-      render();
-    }
+    if (idx !== -1) { state.uploaded[idx].lastUsed = Date.now(); persist(); render(); }
   }
 };
 
 const toggleBookmark = (id) => {
   const idx = state.bookmarks.indexOf(id);
-  if (idx === -1) {
-    state.bookmarks.push(id);
-    showToast('Ditambahkan ke bookmark', getItemById(id)?.name || '');
-  } else {
-    state.bookmarks.splice(idx, 1);
-    showToast('Dihapus dari bookmark', getItemById(id)?.name || '');
-  }
-  persist();
-  render();
+  if (idx === -1) { state.bookmarks.push(id); showToast('Ditambahkan ke bookmark', getItemById(id)?.name || ''); }
+  else { state.bookmarks.splice(idx, 1); showToast('Dihapus dari bookmark', getItemById(id)?.name || ''); }
+  persist(); render();
 };
 
 const deleteItem = (id) => {
@@ -1239,20 +1051,12 @@ const deleteItem = (id) => {
   if (!confirm(`Hapus "${item.name}" dari koleksi?`)) return;
   state.uploaded = state.uploaded.filter(i => i.id !== id);
   state.bookmarks = state.bookmarks.filter(b => b !== id);
-  persist();
-  render();
+  persist(); render();
   showToast('Dihapus', item.name);
 };
 
-// ============================================================
-// MODAL: UPLOAD
-// ============================================================
-const openUploadModal = () => {
-  document.getElementById('upload-modal').classList.add('show');
-};
-const closeUploadModal = () => {
-  document.getElementById('upload-modal').classList.remove('show');
-};
+const openUploadModal = () => document.getElementById('upload-modal').classList.add('show');
+const closeUploadModal = () => document.getElementById('upload-modal').classList.remove('show');
 
 const handleFiles = async (files) => {
   if (!files || files.length === 0) return;
@@ -1262,43 +1066,29 @@ const handleFiles = async (files) => {
       const content = await file.text();
       const type = detectType(file.name);
       const name = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
-      const item = {
-        id: genId(),
-        name: name,
+      state.uploaded.push({
+        id: genId(), name: name,
         desc: `${type === 'script' ? 'Script' : 'Prompt'} · ${file.name}`,
         category: detectCategory(file.name),
         icon: detectIcon(file.name, type),
         ext: '.' + file.name.split('.').pop().toLowerCase(),
-        content: content,
-        type: type,
-        uploadedAt: Date.now(),
-        lastUsed: null
-      };
-      state.uploaded.push(item);
+        content: content, type: type,
+        uploadedAt: Date.now(), lastUsed: null
+      });
       added++;
-    } catch (e) {
-      console.error('Failed to read', file.name, e);
-    }
+    } catch (e) { console.error('Failed to read', file.name, e); }
   }
-  await persist();
-  render();
-  closeUploadModal();
+  await persist(); render(); closeUploadModal();
   showToast(`${added} file ditambahkan`, 'Cek di kategori masing-masing');
 };
 
-// ============================================================
-// MODAL: DETAIL
-// ============================================================
 const openDetailModal = (id) => {
   const item = getItemById(id);
   if (!item) return;
   state.currentDetail = id;
   document.getElementById('detail-title').textContent = item.name;
   document.getElementById('detail-content').textContent = item.content || '(kosong)';
-  document.getElementById('detail-copy-btn').onclick = () => {
-    copyItem(id);
-    closeDetailModal();
-  };
+  document.getElementById('detail-copy-btn').onclick = () => { copyItem(id); closeDetailModal(); };
   document.getElementById('detail-modal').classList.add('show');
 };
 const closeDetailModal = () => {
@@ -1306,16 +1096,8 @@ const closeDetailModal = () => {
   state.currentDetail = null;
 };
 
-// ============================================================
-// EXPORT / IMPORT
-// ============================================================
 const exportBackup = () => {
-  const data = {
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    uploaded: state.uploaded,
-    bookmarks: state.bookmarks
-  };
+  const data = { version: 1, exportedAt: new Date().toISOString(), uploaded: state.uploaded, bookmarks: state.bookmarks };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1326,9 +1108,7 @@ const exportBackup = () => {
   showToast('Backup ter-download', `${state.uploaded.length} file`);
 };
 
-const importBackup = () => {
-  document.getElementById('import-input').click();
-};
+const importBackup = () => document.getElementById('import-input').click();
 
 const handleImport = async (e) => {
   const file = e.target.files[0];
@@ -1336,27 +1116,16 @@ const handleImport = async (e) => {
   try {
     const text = await file.text();
     const data = JSON.parse(text);
-    if (!data.version || !Array.isArray(data.uploaded)) {
-      throw new Error('File bukan backup Prompt Studio.');
-    }
-    if (!confirm(`Import akan MENIMPA ${state.uploaded.length} file saat ini dengan ${data.uploaded.length} file dari backup.\n\nLanjutkan?`)) {
-      e.target.value = '';
-      return;
-    }
+    if (!data.version || !Array.isArray(data.uploaded)) throw new Error('File bukan backup Prompt Studio.');
+    if (!confirm(`Import akan MENIMPA ${state.uploaded.length} file saat ini dengan ${data.uploaded.length} file dari backup.\n\nLanjutkan?`)) { e.target.value = ''; return; }
     state.uploaded = data.uploaded || [];
     state.bookmarks = data.bookmarks || [];
-    await persist();
-    render();
+    await persist(); render();
     showToast('Import berhasil', `${state.uploaded.length} file`);
-  } catch (err) {
-    showToast('Import gagal', err.message, true);
-  }
+  } catch (err) { showToast('Import gagal', err.message, true); }
   e.target.value = '';
 };
 
-// ============================================================
-// INIT
-// ============================================================
 const init = async () => {
   try {
     await openDB();
@@ -1364,37 +1133,25 @@ const init = async () => {
     const bookmarks = await dbGet('bookmarks');
     if (uploaded) state.uploaded = uploaded;
     if (bookmarks) state.bookmarks = bookmarks;
-  } catch (e) {
-    console.error('DB init failed:', e);
-  }
+  } catch (e) { console.error('DB init failed:', e); }
   document.getElementById('loading').classList.add('hide');
   render();
 };
 
-// Event listeners
 document.getElementById('search-input').addEventListener('input', render);
 document.getElementById('btn-export').addEventListener('click', exportBackup);
 document.getElementById('btn-import').addEventListener('click', importBackup);
 document.getElementById('btn-upload').addEventListener('click', openUploadModal);
 document.getElementById('import-input').addEventListener('change', handleImport);
-document.getElementById('file-input').addEventListener('change', (e) => {
-  handleFiles(e.target.files);
-  e.target.value = '';
-});
+document.getElementById('file-input').addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
 
-// Dropzone
 const dz = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');
 dz.addEventListener('click', () => fileInput.click());
 dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('dragover'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-dz.addEventListener('drop', (e) => {
-  e.preventDefault();
-  dz.classList.remove('dragover');
-  handleFiles(e.dataTransfer.files);
-});
+dz.addEventListener('drop', (e) => { e.preventDefault(); dz.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
 
-// Sidebar navigation
 document.querySelectorAll('.nav-item[data-filter]').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -1404,23 +1161,14 @@ document.querySelectorAll('.nav-item[data-filter]').forEach(item => {
   });
 });
 
-// Modal close on overlay click
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.classList.remove('show');
-    }
-  });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('show'); });
 });
 
-// Escape key
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('show'));
-  }
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(o => o.classList.remove('show'));
 });
 
-// Start
 init();
 </script>
 </body>
