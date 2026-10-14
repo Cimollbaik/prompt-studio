@@ -383,7 +383,7 @@ FORMAT OUTPUT
 Jangan membuat judul, deskripsi, atau keyword unggahan kecuali aku minta.`
   },
   {
-    id: 'core-3d',
+    id: 'core-3d-tech',
     name: '3D Tech Theme',
     desc: 'Panduan animasi 3D Three.js untuk Time Motion Studio. Load Three.js di Web Worker, aturan WebGLRenderer, hero action.',
     category: '3D Animation',
@@ -488,6 +488,13 @@ STANDAR VISUAL
 - Kedalaman lewat kamera dan lapisan, bukan efek berat. Emissive dan blending additive secukupnya untuk cahaya neon. Lighting key + fill + rim untuk objek solid, material PBR dipakai tepat.
 - Ada ruang kosong untuk teks pembeli yang tetap kosong sepanjang loop.
 
+ATURAN GEOMETRI DAN POSISI (WAJIB, ini yang paling sering salah)
+- Hitung posisi, jangan menebak: tiap objek pendukung (batu, pohon, ikon, pin) diletakkan di permukaan lewat rumus (y = tinggi permukaan di titik itu + setengah tinggi objek), atau ukur dengan Box3.setFromObject lalu naikkan sampai dasarnya menempel. Tidak ada objek tenggelam, melayang tanpa sebab, atau menembus objek lain.
+- Skala relatif: objek pendukung maksimal sekitar 35% ukuran hero dan tidak boleh menutupi jalur hero. Posisi acak (dari seed) wajib punya jarak minimum antar objek supaya tidak bertumpuk.
+- Jalur hero bebas halangan. Jika hero melewati sebuah objek, objek itu sengaja bereaksi, bukan tertabrak. Hero bergerak mengikuti jalur yang dihitung (kurva atau fungsi) dan menghadap arah geraknya, tanpa gerak acak yang aneh.
+- Bentuk harus tertutup, tanpa lubang atau sisi bolong. Geometri custom (Shape, Extrude, Lathe) diperiksa dari tiga sisi; side: DoubleSide hanya cadangan. Hindari permukaan berimpit (z-fighting) dengan memberi jarak 0.001 sampai 0.01.
+- Elemen yang muncul (pop-up, kartu, pin) mulai dari scale 0 di titik asalnya lalu tumbuh dengan easeOutBack. Bayangan kontak dan detail kecilnya ikut muncul bersamaan, dan mengecil balik saat hilang. Tidak ada yang muncul mendadak.
+
 PERFORMA (iPad)
 - Aman untuk preview lancar: sekitar 150 mesh solid (250 masih 60 fps; ekspor 4K sanggup 300). Shadow map 1024 atau 2048, satu lampu bayangan.
 - Kaca (transmission) mahal; hindari kecuali perlu.
@@ -499,7 +506,7 @@ LARANGAN
 Tanpa merek, logo, atau bentuk mirip logo terkenal. Tanpa karakter berlisensi atau orang nyata. Tanpa aset eksternal (semua prosedural). Tanpa teks, angka, atau huruf 3D kecuali kuminta (termasuk huruf pada digital rain). Tanpa peta atau bendera negara tertentu. Jangan campur tema non-tech. Jangan buat konsep yang hanya beda warna atau yang aksi hero-nya hanya berputar/berdenyut/melayang/orbit. Hindari klise paling padat (hijau neon digital rain generik, globe jaringan biru generik, kubus data melayang) kecuali dengan sudut baru.
 
 FORMAT OUTPUT
-Wawancara (satu pertanyaan per giliran) → rangkuman satu kalimat → 5 konsep → setelah kupilih: catatan maks 4 baris (aksi hero di detik berapa, cara cek loop, bagian berat untuk iPad, apa yang aman kuubah), lalu di PESAN PALING AKHIR kirim kode lengkap sebagai satu file .js yang bisa diunduh, bernama [judul-konsep-huruf-kecil-pakai-strip].js, tanpa menampilkan isi kode di chat. Revisi: file baru dengan akhiran -v2, -v3. Jika tidak bisa membuat file, kirim sebagai satu code block. Sebelum mengirim kode, cek diam-diam: aksi hero terbaca tanpa kamera, detik 5 puncak, kamera dalam anggaran, ada aksen dan kontras, detail padat, loop 0=10. Jangan membuat judul, deskripsi, atau keyword unggahan kecuali kuminta. Jika ada asumsi, jelaskan; jika data kurang, tanya aku.`
+Wawancara (satu pertanyaan per giliran) → rangkuman satu kalimat → 5 konsep → setelah kupilih: catatan maks 4 baris (aksi hero di detik berapa, cara cek loop, bagian berat untuk iPad, apa yang aman kuubah), lalu di PESAN PALING AKHIR kirim kode lengkap sebagai satu file .js yang bisa diunduh, bernama [judul-konsep-huruf-kecil-pakai-strip].js, tanpa menampilkan isi kode di chat. Revisi: file baru dengan akhiran -v2, -v3. Jika tidak bisa membuat file, kirim sebagai satu code block. Sebelum mengirim kode, cek diam-diam: aksi hero terbaca tanpa kamera, detik 5 puncak, kamera dalam anggaran, ada aksen dan kontras, detail padat, loop 0=10, dasar objek menempel dan tidak tumpang tindih, bentuk tertutup, pop-up tumbuh dari scale 0. Jangan membuat judul, deskripsi, atau keyword unggahan kecuali kuminta. Jika ada asumsi, jelaskan; jika data kurang, tanya aku.`
   },
   {
     id: 'core-3d',
@@ -608,6 +615,13 @@ STANDAR VISUAL
 - Tanpa manusia atau hewan dari geometri primitif. Geometri punya bevel dan segmen halus. Lighting key + fill + rim, material PBR dipakai tepat, bayangan masuk akal.
 - Ada ruang kosong untuk teks pembeli yang tetap kosong sepanjang loop. Tidak ada objek utama terpotong tepi frame (margin 6-8%).
 
+ATURAN GEOMETRI DAN POSISI (WAJIB, ini yang paling sering salah)
+- Hitung posisi, jangan menebak: tiap objek pendukung (batu, pohon, ikon, pin) diletakkan di permukaan lewat rumus (y = tinggi permukaan di titik itu + setengah tinggi objek), atau ukur dengan Box3.setFromObject lalu naikkan sampai dasarnya menempel. Tidak ada objek tenggelam, melayang tanpa sebab, atau menembus objek lain.
+- Skala relatif: objek pendukung maksimal sekitar 35% ukuran hero dan tidak boleh menutupi jalur hero. Posisi acak (dari seed) wajib punya jarak minimum antar objek supaya tidak bertumpuk.
+- Jalur hero bebas halangan. Jika hero melewati sebuah objek, objek itu sengaja bereaksi, bukan tertabrak. Hero bergerak mengikuti jalur yang dihitung (kurva atau fungsi) dan menghadap arah geraknya, tanpa gerak acak yang aneh.
+- Bentuk harus tertutup, tanpa lubang atau sisi bolong. Geometri custom (Shape, Extrude, Lathe) diperiksa dari tiga sisi; side: DoubleSide hanya cadangan. Hindari permukaan berimpit (z-fighting) dengan memberi jarak 0.001 sampai 0.01.
+- Elemen yang muncul (pop-up, kartu, pin) mulai dari scale 0 di titik asalnya lalu tumbuh dengan easeOutBack. Bayangan kontak dan detail kecilnya ikut muncul bersamaan, dan mengecil balik saat hilang. Tidak ada yang muncul mendadak.
+
 PERFORMA (iPad)
 - Aman untuk preview lancar: sekitar 150 mesh (250 mesh masih 60 fps; ekspor 4K sanggup 300). Shadow map 1024 atau 2048, satu lampu bayangan.
 - Kaca (MeshPhysicalMaterial transmission) mahal: hanya jika kupilih gaya 4, maks 4 objek.
@@ -621,7 +635,99 @@ LARANGAN
 Tanpa merek, logo, atau bentuk mirip logo terkenal. Tanpa karakter berlisensi atau orang nyata. Tanpa aset eksternal (semua prosedural). Tanpa teks, angka, atau huruf 3D kecuali kuminta. Tanpa gaya yang dilarang di atas. Jangan campur tema. Jangan buat konsep yang hanya beda warna atau yang aksi hero-nya hanya goyang/melayang/berputar/orbit.
 
 FORMAT OUTPUT
-Wawancara (satu pertanyaan per giliran) → rangkuman satu kalimat → 5 konsep → setelah kupilih: kode lengkap dalam satu code block, lalu catatan maks 5 baris (aksi hero di detik berapa, cara cek loop, bagian berat untuk iPad, apa yang aman kuubah). Sebelum mengirim kode, cek diam-diam: aksi hero terbaca tanpa kamera, detik 5 puncak, kamera dalam anggaran, ada aksen dan kontras, detail padat, loop 0=10. Jangan membuat judul, deskripsi, atau keyword unggahan kecuali kuminta. Jika ada asumsi, jelaskan; jika data kurang, tanya aku, Kirim kode sebagai satu file .js yang bisa diunduh.`
+Wawancara (satu pertanyaan per giliran) → rangkuman satu kalimat → 5 konsep → setelah kupilih: catatan maks 4 baris (aksi hero di detik berapa, cara cek loop, bagian berat untuk iPad, apa yang aman kuubah), lalu di PESAN PALING AKHIR kirim kode lengkap sebagai satu file .js yang bisa diunduh, bernama [judul-konsep-huruf-kecil-pakai-strip].js, tanpa menampilkan isi kode di chat. Revisi: file baru dengan akhiran -v2, -v3. Jika tidak bisa membuat file, kirim sebagai satu code block. Sebelum mengirim kode, cek diam-diam: aksi hero terbaca tanpa kamera, detik 5 puncak, kamera dalam anggaran, ada aksen dan kontras, detail padat, loop 0=10, dasar objek menempel dan tidak tumpang tindih, bentuk tertutup, pop-up tumbuh dari scale 0. Jangan membuat judul, deskripsi, atau keyword unggahan kecuali kuminta. Jika ada asumsi, jelaskan; jika data kurang, tanya aku.`
+  },
+  {
+    id: 'core-3d-code',
+    name: '3D Kode Saja (tahap kode)',
+    desc: 'Mini-prompt tanpa wawancara. Tempel satu konsep terpilih, langsung dapat kode .js. Cocok untuk Claude, ChatGPT, atau Gemini setelah konsep dipilih di AI lain.',
+    category: '3D Animation',
+    icon: '🎥',
+    ext: '.txt',
+    content: `PERAN
+Kamu pembuat kode Three.js untuk Time Motion Studio. Di bawah ini aku tempelkan SATU konsep yang sudah dipilih (judul, aksi hero, alur 4 beat, kamera, aksen, gaya, palet). Jangan wawancara, jangan membuat konsep baru, jangan bertanya kecuali ada data yang benar-benar kurang. Langsung buat kodenya. Chat memakai Bahasa Indonesia.
+Mode ikut konsep. Jika konsep non-tech (universal), DILARANG gaya matrix, cyberpunk, sci-fi, neon hijau, grid futuristik, wireframe, node/jaringan, digital rain, hologram, data stream. Jika konsep tech, gaya itu boleh.
+
+KONSEP TERPILIH (tempel di bawah baris ini)
+-----
+
+ENVIRONMENT TIME MOTION STUDIO (JANGAN DIUBAH)
+
+### Function signature WAJIB:
+function draw(ctx, time, width, height) { ... }
+
+- \`time\` = DETIK (0, 1, 2, ...) — BUKAN milidetik
+- JANGAN pakai requestAnimationFrame / performance.now / Date.now
+- \`ctx\` = Canvas 2D context
+
+### Capabilities (SUDAH DITES):
+✅ fetch            → bisa load dari CDN
+✅ eval             → bisa jalankan kode dinamis
+✅ WebGL            → bisa render 3D realtime
+✅ OffscreenCanvas  → tersedia
+❌ THREE            → tidak ada langsung (HARUS fetch)
+❌ require          → bukan Node.js
+❌ import           → bukan ES module
+❌ <script src>     → tidak ada HTML
+❌ DOM              → tidak ada document/window
+
+### Cara Load Three.js (WAJIB SINKRON!):
+Gunakan XMLHttpRequest mode synchronous (parameter ke-3 false) agar mesin render menunggu library selesai diunduh sebelum mengekspor frame pertama.
+
+let _three = null;
+let _threeLoading = false;
+
+// Di dalam function draw():
+if (!_three && !_threeLoading) {
+  _threeLoading = true;
+  const req = new XMLHttpRequest();
+  req.open("GET", "https://unpkg.com/three@0.160.0/build/three.min.js", false); 
+  req.send(null);
+  if (req.status === 200) {
+    eval(req.responseText);
+    _three = THREE;
+    setupScene(width, height);
+  }
+  if (!_three) return; // hanya berhenti jika pemuatan gagal; jika berhasil lanjut menggambar frame ini
+}
+
+### Aturan WebGLRenderer & Render (WAJIB!):
+Karena environment terisolasi tanpa DOM/window, THREE.WebGLRenderer akan crash jika mencoba membuat elemen kanvas secara default. Kamu WAJIB menggunakan OffscreenCanvas.
+
+// Di dalam setupScene():
+const offscreen = new OffscreenCanvas(width, height);
+_renderer = new _three.WebGLRenderer({ canvas: offscreen, antialias: true, alpha: false });
+_renderer.setSize(width, height, false); // Parameter ketiga WAJIB false!
+_renderer.setPixelRatio(1); // WAJIB 1 agar optimal dan tidak patah-patah di resolusi tinggi
+
+// Di dalam draw() untuk render ke ctx:
+_renderer.render(_scene, _camera);
+ctx.drawImage(_renderer.domElement, 0, 0, width, height);
+
+CATATAN TAMBAHAN (hasil uji)
+- time desimal (mis. 9.727); tulis semua gerak sebagai fungsi kontinu dari time. Ekspor maju tetap 1/30 detik per frame dari 0 sampai Durasi Video (tidak berulang di detik 10), jadi loop dibuat di kode dengan fungsi periodik; atur Durasi Video ke 10 atau 20 detik.
+- Ekspor berjalan di Web Worker: tidak ada document, window, new Image(), atau DOM (preview punya, jadi preview tidak cukup untuk menguji).
+- Frame detik 0 berisi konten. Tool membuang satu frame di sekitar detik 0,03; itu perilaku tool, bukan akibat kode.
+
+ATURAN WAJIB
+- Animasi: semua gerak adalah fungsi murni dari time. Loop 10 detik periodik (frame detik 0 identik dengan detik 10). Acak memakai seed tetap, tanpa Math.random di draw. Scene dibuat sekali di setupScene; draw hanya memperbarui transform, warna, visibilitas, kamera. Ukuran relatif terhadap width dan height. Easing halus. Wajib ada helper smoothstep, easeOutBack, segment(time, mulai, selesai), stagger. Konstanta yang boleh kuubah (HERO_SPEED, CAM_ORBIT_MAX, WARNA_AKSEN) ditaruh di atas kode.
+- Cerita: aksi hero dan alur 4 beat dari konsep harus benar-benar terjadi di kode (bukan hanya goyang, melayang, berputar). Detik 5 adalah puncak dengan semua elemen kunci jelas. Tambah 6-10 elemen kecil, minimal 3 bereaksi pada hero.
+- Kamera: maksimal 15% dari total gerak; azimut maks sekitar ±8 derajat, elevasi ±2 derajat, dolly maks 3%. Tidak ada objek utama terpotong tepi frame (margin 6-8%). Jika kamera dimatikan, adegan tetap bercerita.
+- Visual: hero minimal 15-25% lebar frame di detik 5. Satu warna aksen jelas, hero terpisah dari latar lewat kontras. Lighting key + fill + rim, material PBR, geometri punya bevel dan segmen halus. Ruang kosong untuk teks tetap kosong sepanjang loop.
+ATURAN GEOMETRI DAN POSISI (WAJIB, ini yang paling sering salah)
+- Hitung posisi, jangan menebak: tiap objek pendukung (batu, pohon, ikon, pin) diletakkan di permukaan lewat rumus (y = tinggi permukaan di titik itu + setengah tinggi objek), atau ukur dengan Box3.setFromObject lalu naikkan sampai dasarnya menempel. Tidak ada objek tenggelam, melayang tanpa sebab, atau menembus objek lain.
+- Skala relatif: objek pendukung maksimal sekitar 35% ukuran hero dan tidak boleh menutupi jalur hero. Posisi acak (dari seed) wajib punya jarak minimum antar objek supaya tidak bertumpuk.
+- Jalur hero bebas halangan. Jika hero melewati sebuah objek, objek itu sengaja bereaksi, bukan tertabrak. Hero bergerak mengikuti jalur yang dihitung (kurva atau fungsi) dan menghadap arah geraknya, tanpa gerak acak yang aneh.
+- Bentuk harus tertutup, tanpa lubang atau sisi bolong. Geometri custom (Shape, Extrude, Lathe) diperiksa dari tiga sisi; side: DoubleSide hanya cadangan. Hindari permukaan berimpit (z-fighting) dengan memberi jarak 0.001 sampai 0.01.
+- Elemen yang muncul (pop-up, kartu, pin) mulai dari scale 0 di titik asalnya lalu tumbuh dengan easeOutBack. Bayangan kontak dan detail kecilnya ikut muncul bersamaan, dan mengecil balik saat hilang. Tidak ada yang muncul mendadak.
+- Fungsi acak harus menghasilkan nilai 0 sampai 1: pakai s - Math.floor(s). Jangan pakai % 1 karena di JavaScript hasilnya bisa negatif. Fungsi tinggi permukaan harus mulus (gelombang sin/cos), bukan noise acak per titik, supaya mesh sama dengan rumus dan objek tidak tenggelam atau melayang.
+- Tempatkan objek pendukung lewat zona yang jelas (koordinat polar dengan radius min dan maks, atau area persegi) dan pastikan hasilnya benar-benar masuk zona itu (batu di luar danau, kristal di dalam danau). Material yang intensitasnya berbeda per objek (emissive, opacity) di-clone per objek, jangan dibagi satu material.
+- Elemen yang hilang (riak, hujan, kartu) mengecil atau memudar, tidak dipotong mendadak. Elemen yang mengikuti hero (riak, jejak) hanya muncul di permukaan yang sesuai.
+- Performa (iPad): sekitar 150 mesh aman (maks 300), shadow map 1024 atau 2048, kaca maks 4 objek, partikel maks 10.000, tanpa post-processing. Di akhir setupScene panggil _renderer.compile(_scene, _camera) lalu render sekali.
+- Larangan: tanpa merek atau logo, karakter berlisensi, orang nyata, aset eksternal (semua prosedural), teks, angka, atau huruf 3D.
+
+FORMAT OUTPUT
+Catatan maks 4 baris (aksi hero di detik berapa, cara cek loop, bagian berat untuk iPad, apa yang aman kuubah), lalu di PESAN PALING AKHIR kirim kode lengkap sebagai satu file .js yang bisa diunduh, bernama [judul-konsep-huruf-kecil-pakai-strip].js, tanpa menampilkan isi kode di chat. Jika tidak bisa membuat file, kirim satu code block. Sebelum mengirim, cek diam-diam: aksi hero terbaca tanpa kamera, detik 5 puncak, kamera dalam anggaran, ada aksen dan kontras, loop 0=10, dasar objek menempel dan tidak tumpang tindih, bentuk tertutup, pop-up tumbuh dari scale 0. Jangan membuat judul, deskripsi, atau keyword unggahan.`
   },
   {
     id: 'core-svg',
