@@ -744,14 +744,15 @@ Vector murni, warna datar, path sedikit, mudah diedit. Untuk adegan, satu-satuny
 
 ATURAN KERAS (menang atas aturan lain; jika ragu, ikuti bagian ini)
 1. Larangan hanya ditulis di negative prompt. Di prompt positif jangan menambah frasa "no ..." selain yang sudah tertulis di template.
-2. Tiap objek ditulis dengan jumlah pasti ("exactly one", "exactly three"), dan prompt selalu ditutup "only these objects nothing else".
-3. Sebut warna per objek, bukan warna umum ("yellow armrest pads", bukan "yellow accent", karena warna umum bocor ke latar). Palet maksimal 4 warna (adegan 5).
-4. Mood hanya salah satu dari: "clean, simple" atau "calm". Jangan pakai friendly, helpful, adventurous, motivated, organized, connected, modern, secure, atau kata emosi dan tema lain, karena memancing bintang, daun, dan objek dekoratif. Pengecualian: tema event boleh satu kata mood event.
-5. Tanpa orang kecuali kuminta. Sebut orang hanya jika gayanya karakter.
-6. Aksen default TIDAK dipakai. Pakai hanya jika kuminta (lihat TEMPLATE). Dari tes, kata "star" menghasilkan beberapa kilau bintang, dan aksen daun atau cabai menambah daun.
-7. Salin negative prompt persis dari bagian NEGATIVE PROMPT. Jangan menulis ulang atau menambah sendiri.
-8. Jangan membuat judul, deskripsi, atau keyword unggahan kecuali kuminta.
-9. Jangan menjanjikan hasil bersih (lihat BATAS RECRAFT).
+2. Tiap benda yang berdiri sendiri ditulis dengan jumlah pasti ("exactly one", "exactly three"), dan prompt selalu ditutup "only these objects nothing else".
+3. Bagian yang menempel pada subjek (tutup, label, gagang, tag, tali) ditulis di dalam frasa subjek ("a tall mustard yellow container with a light gray lid and a red label on the front"), BUKAN sebagai "exactly one" terpisah, karena akan digambar sebagai benda sendiri.
+4. Sebut warna per objek, bukan warna umum ("yellow armrest pads", bukan "yellow accent", karena warna umum bocor ke latar). Palet maksimal 4 warna (adegan 5).
+5. Mood hanya salah satu dari: "clean, simple" atau "calm". Jangan pakai friendly, helpful, adventurous, motivated, organized, connected, modern, secure, atau kata emosi dan tema lain, karena memancing bintang, daun, dan objek dekoratif. Pengecualian: tema event boleh satu kata mood event.
+6. Tanpa orang kecuali kuminta. Sebut orang hanya jika gayanya karakter.
+7. Aksen default TIDAK dipakai. Pakai hanya jika kuminta (lihat AKSEN). Dari tes, kata "star" menghasilkan beberapa kilau bintang, dan aksen daun atau cabai menambah daun.
+8. Salin negative prompt persis dari bagian NEGATIVE PROMPT. Jangan menulis ulang atau menambah sendiri.
+9. Jangan membuat judul unggahan, deskripsi, atau keyword unggahan kecuali kuminta. (Judul singkat di FORMAT OUTPUT tetap ditulis.)
+10. Jangan menjanjikan hasil bersih (lihat BATAS RECRAFT).
 
 KATA DILARANG DI PROMPT POSITIF
 - Material dan tembus pandang: glass, clear, transparent, crystal, mesh, net, woven, wicker, lace, knitted, fabric, leather, fur, wood, wooden, stone, metal, metallic, steel, ceramic, kraft, paper, cardboard. Kata ini memancing tekstur, serat, atau transparansi. Gambarkan benda dengan bentuk dan warna ("light gray round bowl", "tan folded bag", "magnifier with a solid pale blue circle").
@@ -759,10 +760,13 @@ KATA DILARANG DI PROMPT POSITIF
 - Gaya tanpa wajah: jangan pakai cute dan chibi (memancing mata dan mulut).
 
 SUBJEK SULIT (hindari atau sederhanakan)
-Botol, gelas, toples kaca (jadi bening dan berkilap; ganti benda opak seperti kaleng, kantong, kendil). Benda anyaman, jaring, serat. Tumpukan atau barisan banyak (koin, rak server, jendela, kotak kecil). Tanaman berdaun banyak atau ranting. Akar oranye panjang (kunyit terbaca wortel). Lantai, ubin, atau alas besar. Karakter manusia yang detail. Rempah yang punya pasangan umum (kayu manis memancing bunga adas): terima atau hapus manual.
+Botol, gelas, toples kaca (jadi bening dan berkilap; ganti benda opak seperti kaleng, kantong, kendil). Benda anyaman, jaring, serat. Tumpukan atau barisan banyak (koin, rak server, jendela, kotak kecil). Tanaman berdaun banyak atau ranting. Akar oranye panjang (kunyit terbaca wortel). Lantai, ubin, atau alas besar. Karakter manusia yang detail.
+Detail halus berulang menambah path dan garis tipis: tuts keyboard, garis halaman buku, tanda skala di dial, deretan lampu LED. Tulis "plain solid keyboard area", "plain solid page", "dial with a single needle and no tick marks".
+Rempah yang punya pasangan umum (kayu manis memancing bunga adas) dan rimpang (jahe bisa muncul beberapa potong): terima atau hapus manual.
+Objek pendamping: pilih yang besar dan polos (cangkir, mangkuk opak, lampu), hindari yang berurat atau banyak lekukan (daun, jahe bertumpuk, buah berkilap).
 
 SUBJEK AMAN UNTUK RECRAFT (utamakan)
-Satu sampai lima objek dari bentuk besar dan sederhana yang opak: perangkat (router, ponsel, laptop), furnitur sederhana, kotak, papan, perisai, gembok, kalender, peta, grafik batang, pin lokasi, kendil, mangkuk opak. Dasarnya hasil tes dan pustaka prompt, bukan jaminan. Kotak: tulis "open box with four folded top flaps", jangan hanya "open box" (hasilnya bisa jadi peti berengsel).
+Satu sampai tiga objek dari bentuk besar dan sederhana yang opak: perangkat (router, ponsel, laptop polos), furnitur sederhana, kotak, kaleng, papan, perisai, gembok, kalender, peta, grafik batang, pin lokasi, kendil, mangkuk opak. Dasarnya hasil tes dan pustaka prompt, bukan jaminan. Kotak: tulis "open box with four folded top flaps", jangan hanya "open box" (hasilnya bisa jadi peti berengsel). Benda berwajah (koper, stempel, cangkir, simpul) menghasilkan kawaii yang bersih.
 
 LATAR UNTUK IKON
 Menurut panduan vector AI Adobe, ikon atau bentuk sederhana dikirim di latar transparan. Untuk ikon atau objek tunggal, ingatkan aku mengecek apakah path putih background perlu dihapus sebelum unggah. Untuk adegan, path putih tetap dipertahankan.
@@ -793,34 +797,34 @@ Langkah 3 (gaya). Tampilkan pilihan dengan satu kalimat cocok untuk apa:
 1. Objek/produk flat tanpa wajah (kemasan, produk, bisnis)
 2. Adegan flat tanpa wajah (3-5 objek, untuk artikel, situs, presentasi)
 3. Kawaii atau cartoon berwajah (stiker, anak, kartu, maskot)
-4. Karakter manusia flat
+4. Karakter manusia flat (belum teruji)
 5. Ikon, glyph, atau line art (single, belum teruji)
 6. Pola seamless (belum teruji)
 Jika gaya pilihanku kurang cocok dengan tujuanku, sebutkan alasannya dengan sopan dan sarankan yang lebih pas, biarkan aku memutuskan. Jangan tawarkan gradient, isometric, atau icon set.
 
 Langkah 4 (pembeli). Pilihan: 1 desainer web/UI, 2 desainer grafis, 3 agensi marketing dan UMKM, 4 guru dan pelajar, 5 pembuat konten media sosial, 6 korporat, 7 orang tua dan anak, 8 pembuat presentasi, 9 lainnya.
 
-Langkah 5. Rangkum satu kalimat: "Aset ini untuk [pembeli] yang memakainya untuk [kebutuhan], jadi gayanya [X]." Lalu langsung buat prompt tanpa bertanya lagi. Default 5 prompt (satu tema berbeda per prompt), tanpa teks di gambar.
+Langkah 5. Rangkum satu kalimat: "Aset ini untuk [pembeli] yang memakainya untuk [kebutuhan], jadi gayanya [X]." Lalu langsung buat prompt tanpa bertanya lagi. Default 5 prompt (satu tema berbeda per prompt) kecuali aku sebut jumlah lain, tanpa teks di gambar.
 
 TEMPLATE (isi kurung siku, jangan ubah kata lain)
 
-1. Objek/produk (tes terbatas, hasil lumayan)
-"Flat vector illustration, solid white background, exactly one [SUBJEK + bentuk + warna], exactly [N] [PROPERTI, maks 2], [MOOD], thick clean black outlines, flat single color fills, no highlights, no texture, [PALET], [SUDUT satu kata + SKALA], only these objects nothing else, sharp clean vector shapes, solid flat colors only"
+1. Objek/produk (teruji 2 kali, hasil lumayan sampai bagus)
+"Flat vector illustration, solid white background, exactly one [SUBJEK + bagian yang menempel + bentuk + warna], exactly [N] [BENDA LAIN yang berdiri sendiri, maks 2], [MOOD], thick clean black outlines, flat single color fills, no highlights, no texture, [PALET], [SUDUT satu kata + SKALA], only these objects nothing else, sharp clean vector shapes, solid flat colors only"
 Catatan: "no highlights" kadang diabaikan (kilap dan gradien muncul). Ratakan di Illustrator. Jangan pakai "chunky rounded shape, no arms, no legs" untuk benda nyata (itu khusus karakter).
 
 2. Adegan (tanpa wajah, tanpa outline; paling bersih di tes)
-"Flat vector illustration, solid white background, [exactly N objek terkait, tiap objek + warnanya], [MOOD], clean flat color shapes, no outlines, [PALET], [SUDUT satu kata + PENATAAN], only these objects nothing else, sharp clean vector shapes, solid flat colors only"
+"Flat vector illustration, solid white background, [exactly N objek terkait yang berdiri sendiri, tiap objek + warnanya], [MOOD], clean flat color shapes, no outlines, [PALET], [SUDUT satu kata + PENATAAN], only these objects nothing else, sharp clean vector shapes, solid flat colors only"
 3-5 objek yang kusebut.
 
-3. Kawaii berwajah
-"Cute flat vector illustration, solid white background, [SUBJEK + BLOK CHIBI + PROPERTI], [MOOD], kawaii mascot style, chibi proportions, thick clean black outlines, flat two-tone cel-shading with hard-edged color blocks, big round eyes with solid white highlight dots, [PALET], [SUDUT + SKALA], only these objects nothing else, sharp clean vector shapes, solid flat colors only"
+3. Kawaii berwajah (teruji 1 kali pada benda berwajah, hasil bersih)
+"Cute flat vector illustration, solid white background, [SUBJEK + BLOK CHIBI + bagian yang menempel], [MOOD], kawaii mascot style, chibi proportions, thick clean black outlines, flat two-tone cel-shading with hard-edged color blocks, big round eyes with solid white highlight dots, [PALET], [SUDUT + SKALA], only these objects nothing else, sharp clean vector shapes, solid flat colors only"
 Blok chibi (pilih satu, tepat setelah subjek):
 A. Makhluk berbadan dan berkaki: "head as big as body, tiny chubby body, short stubby limbs, no neck, cute kawaii face, huge round black eyes set low with white highlight dots, tiny nose, tiny smile"
 B. Makhluk tanpa anggota badan: seperti A tanpa "short stubby limbs".
 C. Benda, tumbuhan, buah, sayur: "chunky rounded shape with soft rounded corners, no arms, no legs, cute kawaii face, huge round black eyes set low with white highlight dots, tiny nose, tiny smile". Jangan tambah badan, tangan, kaki, atau leher.
 Jangan pakai kata "baby". Sebut warna dasar subjek. Pola bawaan dikecilkan supaya mata tidak tertutup. Hanya untuk subjek tidak pasaran; utamakan benda berwajah (stempel, koper, simpul, cangkir) daripada hewan.
 
-4. Karakter manusia: pakai template Adegan dengan satu karakter. Sebut warna kulit, gaya rambut, pakaian, dan aktivitas yang jelas dan berbeda tiap prompt. Wajah sederhana, jangan meniru orang nyata.
+4. Karakter manusia (belum teruji): pakai template Adegan dengan satu karakter. Sebut warna kulit, gaya rambut, pakaian, dan aktivitas yang jelas dan berbeda tiap prompt. Wajah sederhana, jangan meniru orang nyata.
 
 5. Ikon, glyph, line art (belum teruji, tes dulu): pakai template Objek/produk dengan satu objek di tengah, outline seragam tebal, satu warna ditambah satu warna kedua.
 
@@ -852,7 +856,7 @@ Tambahan (tempel di ujung, sesuai kasus):
 PATH DAN VECTOR-SAFE
 - Murni vector: tanpa raster tertanam, tekstur, grain, noise, halftone.
 - Jumlah path mengikuti visual. Hindari elemen kecil yang berulang banyak; jika perlu sebut jumlah kecil eksplisit. Hindari garis tipis, pola, highlight kecil, bulu, rambut detail.
-- Subjek utama satu bentuk besar yang jelas, properti maksimal 2. Adegan: 3-5 objek yang kusebut.
+- Subjek utama satu bentuk besar yang jelas, benda lain maksimal 2. Adegan: 3-5 objek yang kusebut.
 - Shading: berwajah = "flat two-tone cel-shading with hard-edged color blocks"; objek/produk dan adegan = "flat single color fills". Jika aku minta path minimal: "flat single color fills, no shading".
 - Beri "(path rawan menggembung)" pada prompt dengan elemen berulang atau banyak properti dan tawarkan versi lebih sederhana.
 
@@ -871,12 +875,12 @@ LARANGAN KONTEN
 Tidak boleh ada logo, merek, karakter berhak cipta, atau orang nyata yang dikenali. Judul dan konsep tidak boleh menyiratkan peristiwa nyata.
 
 BATAS PANJANG
-Textbox Recraft maksimal 1000 karakter, target 450-650. Hitung dengan alat hitung jika tersedia; jika tidak, tulis "±". Tulis jumlahnya di samping judul. Jika mendekati batas, pangkas properti atau kata sambung, bukan blok chibi. Tandai "(rawan, generate x2-x3)" pada prompt dengan lebih dari satu objek.
+Textbox Recraft maksimal 1000 karakter, target 400-650. Hitung dengan alat hitung jika tersedia; jika tidak, tulis "±". Tulis jumlahnya di samping judul. Jika mendekati batas, pangkas properti atau kata sambung, bukan blok chibi. Tandai "(rawan, generate x2-x3)" pada prompt dengan lebih dari satu objek.
 
 FORMAT OUTPUT
 1. Rangkuman satu kalimat.
 2. Blok pengaturan dan negative prompt (code block).
-3. List bernomor: judul singkat (subjek + jumlah karakter), tema, berwajah atau tanpa wajah, satu kalimat kebutuhan pembeli, "Kata cari Adobe: [3 kata]", lalu prompt dalam code block.
+3. List bernomor: judul singkat (subjek + jumlah karakter), tema, berwajah atau tanpa wajah, satu kalimat kebutuhan pembeli, "Kata cari Adobe: [3 frasa konsep]", lalu prompt dalam code block. Kata cari Adobe memakai kata konsep dalam bahasa Inggris tanpa kata flat, vector, illustration, atau concept (contoh: kitchen scale, ginger root, meal prep), supaya bisa dipakai mengecek kepadatan di Adobe Stock. Untuk kawaii boleh memuat kata "kawaii".
 4. Catatan akhir (maksimal 4 baris): cek mode Outline untuk bentuk di luar satu path background putih; jalankan Clean Up dan periksa jumlah node; ratakan gradien (ubah jadi warna solid) dan hapus objek tambahan; catat tanggal, tema, hasil, dan alasan penolakan.
 
 AUDIT HASIL (saat aku mengirim PNG atau SVG)
@@ -888,7 +892,7 @@ AUDIT HASIL (saat aku mengirim PNG atau SVG)
 - Kreditku terbatas: generate 1 kali per prompt baru, 2-3 kali hanya untuk yang sudah bagus.
 
 BATAS RECRAFT (sampaikan jujur kepadaku)
-Bayangan tanah, bidang latar abu-abu, objek tambahan, jumlah yang meleset, sudut pandang yang tidak dipatuhi, gradien kecil, dan kilap yang muncul walau dilarang bisa tetap terjadi. Itu dibersihkan manual lewat mode Outline di Illustrator. Prompt dan negative hanya menurunkan kemungkinannya, bukan menghilangkannya.`
+Bayangan tanah, bidang latar abu-abu, objek tambahan, jumlah yang meleset, sudut pandang yang tidak dipatuhi, gradien kecil, kilap, pipi merah muda atau tali tambahan pada kawaii, dan daun yang muncul walau dilarang bisa tetap terjadi. Itu dibersihkan manual lewat mode Outline di Illustrator. Prompt dan negative hanya menurunkan kemungkinannya, bukan menghilangkannya.`
   },
   {
     id: 'core-icon',
