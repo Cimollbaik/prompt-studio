@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt Studio</title>
+<title>Prompt Studio — Prompt & Stock</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -153,6 +153,47 @@ body{padding:12px}
 .prompt-footer{padding:10px 16px;gap:8px}
 .content-title{font-size:18px}
 }
+
+/* ===== Stock Generate ===== */
+.nav-icon-stock{background:rgba(110,181,214,0.12);color:#6EB5D6;border:1px solid rgba(110,181,214,0.28)}
+.section-header-icon.stock{background:rgba(110,181,214,0.12);color:#6EB5D6;border:1px solid rgba(110,181,214,0.28)}
+.stock-toolbar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:16px;display:flex;flex-direction:column;gap:12px}
+.stock-chips{display:flex;gap:8px;flex-wrap:wrap}
+.s-chip{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:100px;border:1px solid var(--border);background:var(--elevated);color:var(--text-soft);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .15s;user-select:none}
+.s-chip:hover{border-color:var(--border-hover);color:var(--text)}
+.s-chip.active{color:var(--text);border-color:var(--gold);background:var(--gold-soft)}
+.s-chip .dot{width:7px;height:7px;border-radius:50%}
+.s-chip .cnt{color:var(--text-dim);font-weight:500}
+.stock-progress{display:flex;align-items:center;gap:12px}
+.stock-bar{flex:1;height:6px;background:var(--elevated);border-radius:100px;overflow:hidden}
+.stock-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));width:0;transition:width .3s}
+.stock-progress-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-soft);white-space:nowrap}
+.stock-tools{display:flex;gap:8px;flex-wrap:wrap}
+.s-tool{font-family:inherit;font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--text-soft);cursor:pointer;transition:all .15s}
+.s-tool:hover{border-color:var(--gold);color:var(--gold)}
+.s-tool.on{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+.s-tool.danger:hover{border-color:rgba(232,92,124,.5);color:var(--coral)}
+.stock-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--sc,var(--gold));border-radius:var(--radius-lg);padding:16px 18px;margin-bottom:12px;transition:opacity .2s,border-color .2s}
+.stock-card:hover{border-color:var(--border-hover);border-left-color:var(--sc,var(--gold))}
+.stock-card.done{opacity:.42}
+.stock-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.stock-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim)}
+.stock-left b{color:var(--text);font-weight:600}
+.stock-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:100px;border:1px solid currentColor}
+.stock-copied{color:var(--sage);font-weight:600}
+.stock-right{display:flex;gap:6px}
+.stock-check{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--border-hover);background:transparent;color:transparent;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.stock-check:hover{border-color:var(--sage)}
+.stock-check.checked{background:var(--sage);border-color:var(--sage);color:#0D0B14}
+.stock-subject{font-family:'Fraunces',serif;font-weight:700;font-size:16px;margin-bottom:10px}
+.stock-prompt{font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.65;color:var(--text-soft);background:var(--elevated);border-radius:10px;padding:12px 14px;margin-bottom:12px;white-space:pre-wrap;word-break:break-word}
+.stock-btns{display:flex;gap:8px;flex-wrap:wrap}
+.stock-btn{font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:100px;border:1px solid var(--border);background:var(--elevated);color:var(--text);cursor:pointer;transition:all .15s}
+.stock-btn:hover{border-color:var(--gold);color:var(--gold)}
+.stock-btn.primary{background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dim) 100%);color:#0D0B14;border-color:transparent}
+.stock-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,.35);color:#0D0B14}
+.stock-btn:active{transform:scale(.97)}
+@media (max-width:640px){.stock-toolbar{padding:12px}.stock-card{padding:14px}.stock-btn{flex:1;text-align:center}}
 </style>
 </head>
 <body>
@@ -180,6 +221,9 @@ body{padding:12px}
 <a class="nav-item" data-filter="core"><span class="nav-icon nav-icon-core">🎯</span><span>Prompt Utama</span><span class="nav-count" id="count-core">0</span></a>
 <a class="nav-item" data-filter="prompt"><span class="nav-icon nav-icon-prompt">📤</span><span>Prompt Tambahan</span><span class="nav-count" id="count-prompt">0</span></a>
 <a class="nav-item" data-filter="script"><span class="nav-icon nav-icon-script">🎬</span><span>Script Hasil</span><span class="nav-count" id="count-script">0</span></a>
+<div class="sidebar-divider"></div>
+<div class="sidebar-title">Stock Studio</div>
+<a class="nav-item" data-filter="stock"><span class="nav-icon nav-icon-stock">🖼️</span><span>Stock Generate</span><span class="nav-count" id="count-stock">0</span></a>
 <div class="sidebar-divider"></div>
 <div class="sidebar-title">Lainnya</div>
 <a class="nav-item" data-filter="bookmark"><span class="nav-icon nav-icon-bookmark">⭐</span><span>Bookmark</span><span class="nav-count" id="count-bookmark">0</span></a>
@@ -1018,6 +1062,230 @@ Jangan buat judul upload atau keyword upload kecuali user memintanya.`
 ];
 
 // ============================================================
+// STOCK GENERATE DATA (200 frame, prompt = adegan + gaya kategori)
+// ============================================================
+const STOCK_CATS = {
+  eco:       { label: 'Eco',         color: '#6FBF8E' },
+  wellness:  { label: 'Wellness',    color: '#6EB5D6' },
+  diversity: { label: 'Diversity',   color: '#E8707C' },
+  food:      { label: 'Food',        color: '#E8B84B' },
+  remote:    { label: 'Remote Work', color: '#7C6FE8' },
+};
+const STOCK_STYLE = {
+  "eco": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of sage green, warm terracotta and cream white (60-30-10 rule), generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "wellness": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of soft teal, lavender and warm sand (60-30-10 rule), calm balanced composition, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "diversity": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm coral, golden yellow and deep navy (60-30-10 rule), inclusive and joyful mood, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "food": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm mustard, brick red and cream (60-30-10 rule), appetizing warm mood, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "remote": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of dusty blue, soft amber and off-white (60-30-10 rule), calm productive mood, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio."
+};
+const STOCK_RAW = [
+  ["eco","Solar Panel Installation","A worker installing solar panels on a house rooftop under a bright sky, small sun icon radiating clean energy lines toward the panels."],
+  ["eco","Planting a Tree Sapling","A person kneeling and planting a young tree sapling into soil, small watering can beside them, sprout and soil texture in flat shapes."],
+  ["eco","Recycling Sorting Bins","A set of three color-coded recycling bins with icons for plastic, paper and glass, a person sorting waste into the correct bin."],
+  ["eco","Electric Vehicle Charging","An electric car parked at a charging station with a charging cable connected, small leaf icon and lightning bolt symbol nearby."],
+  ["eco","Zero Waste Shopping","A tote bag filled with reusable glass jars, produce and a metal straw, small leaf accents, farmers market mood."],
+  ["eco","Wind Turbines on Hills","Rolling green hills dotted with simple wind turbines, soft clouds and a warm sun in flat geometric shapes."],
+  ["eco","Urban Community Garden","Raised wooden garden beds with vegetables and herbs in a small city courtyard, watering can and gardening tools nearby."],
+  ["eco","Ocean Plastic Cleanup","Two volunteers collecting plastic bottles and trash from a beach into cloth bags, gentle waves and seagulls in the background."],
+  ["eco","Eco-Friendly Packaging","Kraft paper boxes tied with natural twine, a small green leaf stamp, stacked on a wooden surface in flat illustration style."],
+  ["eco","Bicycle Commuting City","A cyclist riding through a green tree-lined city street with a bike lane, small leaf and cloud accents in flat shapes."],
+  ["wellness","Cross-Legged Meditation","A person sitting cross-legged in meditation pose with eyes closed, soft glowing aura and gentle swirl lines around the head."],
+  ["wellness","Yoga Pose Sequence","A silhouette figure moving through three simple yoga poses on a mat, soft pastel background with sun motif."],
+  ["wellness","Journaling with Tea","A person writing in a journal beside a cup of tea and a lit candle, small plant on the table, cozy evening mood."],
+  ["wellness","Peaceful Sleep","A person sleeping peacefully in bed under a blanket, crescent moon and stars in soft flat shapes above."],
+  ["wellness","Hydration Habit","A glass of water with lemon slice beside a water bottle, small droplet icons and a checklist tracking daily intake."],
+  ["wellness","Therapy Session","Two people sitting in cozy armchairs facing each other in a warm therapy office, plant and soft lamp light in the background."],
+  ["wellness","Home Workout Routine","A person doing a stretch or dumbbell exercise on a yoga mat at home, small heart rate and energy icons nearby."],
+  ["wellness","Deep Breathing Exercise","A person with hand on chest practicing deep breathing, simple lung illustration and soft radiating breath lines."],
+  ["wellness","Self-Care Bath Ritual","A bathtub filled with bubbles and candles around it, small potted plant and bath salts jar, calm spa mood."],
+  ["wellness","Digital Detox Outdoors","A phone placed inside a glass jar on a table while a person relaxes reading a book outdoors under a tree."],
+  ["diversity","Multicultural Team High-Five","A diverse group of coworkers of different ethnicities high-fiving around an office table, laptops and coffee cups nearby."],
+  ["diversity","Hands Together Unity Circle","Diverse hands of different skin tones stacked together in a circle, small heart and unity symbol above."],
+  ["diversity","Inclusive Office Workspace","A person using a wheelchair working at a desk with a laptop and accessible desk setup, colleague chatting beside them."],
+  ["diversity","Multigenerational Bonding","A grandparent and grandchild sitting together reading a book, warm smiles and a small plant on the table."],
+  ["diversity","Pride Celebration Group","A joyful group of diverse people holding a rainbow pride flag together, confetti and small heart icons around them."],
+  ["diversity","Women in Leadership Meeting","A group of women from different backgrounds seated around a meeting table discussing with charts on a screen."],
+  ["diversity","Cultural Festival Gathering","People wearing traditional clothing from different cultures standing together at an outdoor festival with bunting flags."],
+  ["diversity","Sign Language Conversation","Two colleagues communicating using sign language at a desk, speech bubble with a hand icon between them."],
+  ["diversity","Diverse Friends Laughing","A group of friends from different ethnic backgrounds sitting together outdoors laughing, sunny park setting with a picnic blanket."],
+  ["diversity","Interfaith Peaceful Gathering","A group of people representing different faiths standing together peacefully with symbolic small icons of harmony above them."],
+  ["food","Healthy Breakfast Bowl","A bowl of granola topped with sliced fruits, berries and a drizzle of honey, small spoon beside it on a table."],
+  ["food","Farmer Harvest Basket","A farmer holding a wicker basket full of fresh vegetables like carrots, tomatoes and lettuce, farmland in the background."],
+  ["food","Plant-Based Buddha Bowl","A colorful buddha bowl with quinoa, avocado, chickpeas and roasted vegetables arranged in sections, top down flat view."],
+  ["food","Food Delivery Scooter","A delivery rider on a scooter carrying a food delivery box, small steam and speed lines suggesting motion."],
+  ["food","Street Food Vendor Cart","A street food vendor cooking at a small cart with steam rising from a pan, colorful awning and hanging lights above."],
+  ["food","Family Dinner Table","A family of four gathered around a dinner table sharing a warm meal, dishes of food and a lit candle in the center."],
+  ["food","Kneading Bread Dough","Hands kneading fresh bread dough on a floured wooden countertop, small flour dust particles and rolling pin nearby."],
+  ["food","Meal Prep Containers","A set of meal prep containers with balanced portions of protein, vegetables and grains lined up on a kitchen counter."],
+  ["food","Barista Pouring Latte Art","A barista pouring milk into a coffee cup creating latte art, coffee beans and steam illustrated in soft flat shapes."],
+  ["food","Farm to Table Vegetable Crate","A wooden crate filled with freshly picked vegetables like carrots, peppers and leafy greens, rustic table background."],
+  ["remote","Cozy Home Office Desk","A tidy home office desk with a laptop, potted plant, coffee mug and desk lamp near a window with soft daylight."],
+  ["remote","Video Call Meeting Grid","A laptop screen showing a grid of colleagues in a video call meeting, small speech bubbles and a coffee cup beside the laptop."],
+  ["remote","Digital Nomad Tropical View","A person working on a laptop at an outdoor cafe table with a tropical palm tree and ocean view in the background."],
+  ["remote","Freelancer at Cafe","A freelancer sitting at a cafe table with a laptop, notebook and a cup of coffee, warm cafe interior in flat shapes."],
+  ["remote","Co-Working Space","Several people working at shared desks in an open co-working space, plants and large windows in the background."],
+  ["remote","Balancing Work and Family","A parent working on a laptop at a table while a child plays nearby with toys, warm home setting in flat shapes."],
+  ["remote","Virtual Team Celebration","A laptop screen showing a team video call with confetti and celebration icons popping around the screen."],
+  ["remote","Remote Worker with Headset","A person wearing a headset working at a laptop in a home office, small sound wave icons showing an active call."],
+  ["remote","Work Travel Essentials","A laptop bag, passport and boarding pass placed on top of a rolling suitcase, small airplane icon in the background."],
+  ["remote","Standing Desk Dual Monitor","An ergonomic standing desk setup with dual monitors, keyboard, plant and a mug, modern minimal home office in flat shapes."],
+  ["eco","Composting Food Scraps","A person scraping vegetable peels and food scraps into a compost bin, small worm and soil nutrient icons nearby."],
+  ["eco","Rainwater Harvesting Barrel","A rain barrel collecting water from a house gutter with a small watering can beside it, raindrop icons falling from a cloud."],
+  ["eco","Solar Powered Street Lamp","A street lamp topped with a small solar panel glowing at dusk, city skyline silhouette in the background."],
+  ["eco","Beekeeping and Pollinator Garden","A beekeeper in protective gear tending a hive beside a garden full of blooming flowers, bees flying in flat shapes."],
+  ["eco","Reusable Bottle Refill Station","A person filling a reusable water bottle at a public refill station, small droplet and no-plastic icons nearby."],
+  ["eco","Green Roof Garden","A rooftop covered with lush green plants and small trees on top of a city building, blue sky and clouds above."],
+  ["eco","Carpooling Ride Share","Three colleagues sharing a ride together in one car, small leaf icon above the car symbolizing reduced carbon footprint."],
+  ["eco","Upcycling Old Furniture","A person sanding and repainting an old wooden chair to give it new life, paint brush and cloth beside them."],
+  ["eco","Clothing Swap Thrift Event","A rack of secondhand clothes with people browsing and exchanging garments, small tag and hanger icons in flat shapes."],
+  ["eco","Seedling Nursery Trays","Rows of small seedling trays with young sprouts growing under sunlight, a watering can pouring gently over them."],
+  ["wellness","Nature Walk Therapy","A person walking along a forest trail surrounded by trees, small birds and sunlight filtering through leaves."],
+  ["wellness","Gratitude Journal Jar","A glass jar filled with folded gratitude notes beside an open journal and pen, warm soft lighting."],
+  ["wellness","Office Desk Stretch Break","A person standing beside a desk stretching their arms during a work break, small clock icon showing a short pause."],
+  ["wellness","Support Group Circle","A small circle of people sitting on chairs talking supportively, speech bubbles with heart icons above them."],
+  ["wellness","Aromatherapy Essential Oils","A diffuser releasing soft mist beside small bottles of essential oils and a lit candle, calm bedroom setting."],
+  ["wellness","Reading for Relaxation","A person curled up on a cozy chair reading a book with a warm blanket and cup of tea beside them."],
+  ["wellness","Sound Bath Singing Bowl","A person sitting cross-legged beside a singing bowl with sound wave ripples radiating outward, calm meditative mood."],
+  ["wellness","Affirmation Mirror Practice","A person standing in front of a mirror with a positive affirmation written on a sticky note, soft morning light."],
+  ["wellness","Cold Plunge Recovery","A person stepping into a cold plunge tub outdoors, steam rising and small snowflake icons indicating cold therapy."],
+  ["wellness","Mindful Eating Plate","A person sitting calmly at a table eating slowly and mindfully from a simple plate, small thought bubble showing focus."],
+  ["diversity","Inclusive Hiring Interview","A diverse candidate shaking hands with an interviewer across a desk, resume and laptop visible, welcoming office mood."],
+  ["diversity","Adaptive Sports Athlete","An athlete using a racing wheelchair competing on a track, small motion lines and a medal icon nearby."],
+  ["diversity","Multilingual Conversation","Two people talking with speech bubbles containing different language scripts and flags, symbolizing cross-cultural communication."],
+  ["diversity","Senior Citizen Using Technology","An elderly person smiling while using a tablet, a younger family member helping them beside a cozy living room."],
+  ["diversity","Refugee Family Welcomed","A family with suitcases being welcomed by community members with open arms, small heart and home icons nearby."],
+  ["diversity","Cross-Cultural Mentorship","A mentor and mentee from different cultural backgrounds sitting together reviewing notes, warm collaborative mood."],
+  ["diversity","Accessible Ramp Design","A building entrance with a wheelchair accessible ramp alongside stairs, a person in a wheelchair entering smoothly."],
+  ["diversity","Diverse Classroom Students","A group of students from different backgrounds sitting together in a classroom raising hands, teacher at a whiteboard."],
+  ["diversity","Sports Team Huddle Diversity","A diverse sports team huddled together before a match, hands stacked in the center, stadium lights in the background."],
+  ["diversity","Gender Equality Workplace","A man and woman shaking hands as equals in an office setting, small balance scale icon symbolizing fairness above them."],
+  ["food","Smoothie Bowl with Toppings","A vibrant smoothie bowl topped with sliced banana, berries, chia seeds and granola, top down flat composition."],
+  ["food","Vegetable Stir Fry Wok","A wok filled with colorful stir-fried vegetables over a flame, steam rising and a wooden spatula stirring."],
+  ["food","Picnic Basket Outdoors","A woven picnic basket filled with bread, fruit and a bottle, laid out on a checkered blanket in a sunny park."],
+  ["food","Sushi Rolling Preparation","Hands rolling a sushi roll on a bamboo mat with rice, seaweed and vegetables laid out beside it."],
+  ["food","Grilling Barbecue Outdoor","A person grilling skewers and vegetables on an outdoor barbecue, smoke rising and warm flame illustrated in flat shapes."],
+  ["food","Salad Bar Fresh Greens","A salad bar counter with bowls of fresh greens, tomatoes, nuts and dressings arranged neatly for self-serve."],
+  ["food","Baking Cookies Kitchen","A tray of freshly baked cookies coming out of the oven, mixing bowl and rolling pin on the counter beside it."],
+  ["food","Fruit Market Stall","A colorful market stall piled high with fresh tropical fruits like mango, pineapple and papaya under a striped awning."],
+  ["food","Tea Ceremony Pouring","A hand pouring tea from a traditional teapot into a small cup, steam rising gently, calm minimal table setting."],
+  ["food","Ingredient Flat Lay","A top-down flat lay of cooking ingredients including vegetables, spices and herbs arranged neatly on a wooden board."],
+  ["remote","Async Communication Chat","A laptop screen showing chat app message bubbles from teammates in different time zones, small clock icons beside each."],
+  ["remote","Remote Onboarding New Employee","A new employee smiling on a video call while a laptop screen shows a welcome message and company logo placeholder."],
+  ["remote","Time Zone World Clock Desk","A desk with several small clocks showing different time zones beside a laptop, world map in the background."],
+  ["remote","Noise-Cancelling Focus Work","A person wearing large noise-cancelling headphones focused on a laptop, small sound-blocking wave icons around the headphones."],
+  ["remote","Cloud File Syncing","A laptop with files flowing up into a cloud icon, small sync arrows and folder illustrations in flat shapes."],
+  ["remote","Remote Team Building Game","A group of small avatar icons playing an online game together on connected laptop screens, confetti and trophy icon above."],
+  ["remote","Ergonomic Chair Posture","A person sitting with correct posture on an ergonomic office chair at a home desk, small spine alignment guide beside them."],
+  ["remote","Outdoor Balcony Workspace","A person working on a laptop at a small table on a sunny balcony with potted plants around, relaxed remote work mood."],
+  ["remote","Digital Kanban Board","A laptop screen displaying a kanban board with task cards in to-do, in-progress and done columns, small checkmark icons."],
+  ["remote","Remote Job Interview Call","A candidate on a video call interview with a laptop, notepad and coffee cup on the desk, professional home background."],
+  ["eco","Circular Economy Business Meeting","Business people in a meeting room discussing a circular economy diagram on a screen showing recycle arrows connecting product lifecycle stages."],
+  ["eco","Carbon Footprint Tracking App","A smartphone screen displaying a carbon footprint tracking app with a leaf icon, charts showing reduced emissions, and a progress bar."],
+  ["eco","Sustainable Fashion Runway","A model walking a runway wearing a garment made from recycled fabric, with an audience silhouette and eco-fashion branding elements nearby."],
+  ["eco","Biodegradable Packaging Lab","A scientist in a lab coat examining a biodegradable plastic sample under a microscope, with test tubes and plant-based material nearby."],
+  ["eco","Green Building Certification","A modern eco-friendly building with solar panels and greenery, a certification badge with a checkmark floating above it."],
+  ["eco","Food Waste Reduction App","A smartphone showing a food waste tracking app with icons of leftover food items and a reminder to use them before they expire."],
+  ["eco","Vertical Farming Facility","An indoor vertical farm with stacked layers of leafy greens growing under LED grow lights inside a warehouse."],
+  ["eco","Sustainable Supply Chain Diagram","A conceptual diagram showing a supply chain from factory to store shelf, with eco icons like leaves and recycling symbols connecting each stage."],
+  ["eco","Electric Public Transit Bus","An electric city bus charging at a station with a charging cable connected, city buildings in the background."],
+  ["eco","Reforestation Drone Planting","A drone flying over a barren hillside dropping seed pods to plant trees, with young saplings already growing below."],
+  ["wellness","Financial Wellness Planning","A person calmly reviewing a budget planner and calculator at a table, with a small plant and cup of tea nearby."],
+  ["wellness","Digital Wellbeing Screen Time","A smartphone screen showing a screen time limit notification with a calm color palette, phone resting face-down on a table."],
+  ["wellness","Work-Life Balance Scale","A conceptual balance scale with a briefcase on one side and a home and family icon on the other, perfectly balanced."],
+  ["wellness","Community Wellness Walk","A small group of people walking together outdoors for a wellness walk, smiling and chatting along a park path."],
+  ["wellness","Sleep Hygiene Routine","A nightstand scene with a dimmed lamp, a phone placed away in a drawer, and a glass of water, representing a calming bedtime routine."],
+  ["wellness","Emotional Journaling App","A smartphone displaying a mood tracking app with emoji faces and a colorful mood calendar, resting on a wooden desk."],
+  ["wellness","Nature Sound Therapy","A person wearing headphones relaxing outdoors with sound wave icons flowing from a forest and stream in the background."],
+  ["wellness","Stress Management Workshop","A facilitator leading a small group workshop, standing beside a whiteboard with stress management tips, participants seated in a circle."],
+  ["wellness","Body Positivity Mirror Reflection","A person smiling warmly at their own reflection in a mirror, surrounded by soft light and small heart accents."],
+  ["wellness","Seasonal Affective Wellness","A person sitting near a bright light therapy lamp during a gray winter day, warm glow contrasting with cool tones outside the window."],
+  ["diversity","Neurodiversity in Workplace","A person wearing noise-cancelling headphones at a calm organized desk with sensory-friendly tools, colleague nearby giving a supportive thumbs up."],
+  ["diversity","Disability Pride Celebration","A joyful group of people with visible and invisible disabilities celebrating together, holding a disability pride flag."],
+  ["diversity","Cross-Generational Tech Mentorship","A young person teaching an older adult how to use a tablet, both smiling, sitting together at a table."],
+  ["diversity","Inclusive Playground Design","Children of different abilities playing together on an accessible playground with ramps and adaptive swings."],
+  ["diversity","Body Diversity Fitness Class","A group fitness class with people of different body types, ages, and abilities exercising together in a bright studio."],
+  ["diversity","Cultural Heritage Cooking Together","A multigenerational family cooking a traditional dish together in the kitchen, grandmother teaching grandchildren."],
+  ["diversity","Deaf Community Social Event","A group of people signing to each other at a lively social gathering, smiling and engaged in conversation."],
+  ["diversity","Economic Diversity Community Market","People from different economic backgrounds shopping and chatting together at a lively neighborhood market."],
+  ["diversity","Global Remote Team Video Call","A video call grid showing team members from different countries and cultures, each in their own time zone setting, smiling at the camera."],
+  ["diversity","Accessible Voting Booth","A person with a visible disability using an accessible voting booth independently, with assistive technology visible."],
+  ["food","Plant-Based Protein Display","A display of plant-based protein sources like tofu, tempeh, lentils, and chickpeas arranged on a wooden board."],
+  ["food","Fermented Foods Display","Jars of fermented foods like kimchi, kombucha, and sauerkraut arranged on a kitchen shelf."],
+  ["food","Food Allergy Label Reading","A person reading a nutrition label on a food package, with allergen warning icons highlighted."],
+  ["food","Ghost Kitchen Delivery Hub","A busy commercial kitchen with multiple cooks preparing food for several delivery orders lined up on a counter."],
+  ["food","Zero-Waste Cooking Scraps","A person using vegetable scraps like carrot tops and onion peels to make homemade broth in a pot."],
+  ["food","Craft Coffee Roasting","A person roasting coffee beans in a small artisanal roaster, checking the color of beans as they roast."],
+  ["food","Community Supported Agriculture Box","An open CSA delivery box filled with fresh seasonal vegetables and a handwritten note, sitting on a doorstep."],
+  ["food","Mocktail Bar Setup","A stylish bar setup with colorful non-alcoholic mocktails garnished with fruit and herbs, bar tools nearby."],
+  ["food","School Lunch Program","A healthy school lunch tray with balanced portions of vegetables, protein, and fruit, set on a cafeteria table."],
+  ["food","Food Styling Photography Setup","A flat lay photography setup with props, a camera, and a beautifully styled dish being photographed from above."],
+  ["remote","Cybersecurity Remote Work Setup","A laptop displaying a security shield icon and lock symbol, with a VPN connection graphic, on a home office desk."],
+  ["remote","AI Assistant Workflow","A person typing into an AI chatbot interface on a laptop screen, with subtle sparkle icons representing AI assistance."],
+  ["remote","Hybrid Work Schedule Planner","A calendar on a desk showing a weekly schedule with office days and home days color coded differently."],
+  ["remote","Virtual Reality Remote Meeting","A person wearing a VR headset in a home office, immersed in a virtual meeting room with avatar colleagues."],
+  ["remote","Remote Team Data Dashboard","A laptop screen showing an analytics dashboard with charts and graphs tracking remote team performance."],
+  ["remote","Workflow Automation Diagram","A conceptual diagram showing connected gears and workflow arrows representing automated business processes on a screen."],
+  ["remote","Remote Work Wellness Break","A remote worker stepping away from their desk to stretch by a window, laptop still open on the desk behind them."],
+  ["remote","Coworking Networking Event","People mingling and networking at a coworking space event, holding drinks and chatting in small groups."],
+  ["remote","Digital Nomad Visa Paperwork","A passport, laptop, and visa application documents laid out on a table, suggesting remote work travel planning."],
+  ["remote","Async Video Message Recording","A person recording a short video message at their desk using a laptop camera, speech bubble icon indicating async communication."],
+  ["eco","Geothermal Energy Plant","A geothermal power plant with steam rising from vents beside cooling towers, hills in the background under a clear sky."],
+  ["eco","Ocean Wave Tidal Energy Turbine","An underwater tidal energy turbine spinning with ocean waves above it, small fish swimming nearby."],
+  ["eco","ESG Corporate Sustainability Report","A tablet screen displaying an ESG sustainability report dashboard with charts, leaf icons, and a rising performance graph."],
+  ["eco","Water Conservation Smart Irrigation","A farmer checking a tablet displaying smart irrigation sensor data next to a sprinkler system watering crops efficiently."],
+  ["eco","Circular Fashion Repair Cafe","People gathered at a community mending cafe, repairing clothes together at tables with sewing kits and fabric scraps."],
+  ["eco","Regenerative Agriculture Soil Health","A farmer kneeling in a field examining healthy dark soil in their hand, cover crops growing in rows behind them."],
+  ["eco","Zero Emission Cargo Ship","A large hydrogen-powered cargo ship docked at a port, with clean energy symbols and cranes loading containers in the background."],
+  ["eco","Sustainable Data Center Cooling","A modern data center server room with green plants integrated into the cooling system design, energy efficiency icons nearby."],
+  ["eco","Corporate Tree Planting Volunteer Day","A group of colleagues in matching t-shirts planting trees together outdoors during a company volunteer day."],
+  ["eco","Renewable Energy Investment Growth Chart","An abstract rising bar chart made of solar panel and wind turbine icons, symbolizing growth in renewable energy investment."],
+  ["wellness","Telehealth Doctor Video Consultation","A warm and friendly doctor smiling during a video call consultation, patient visible on the laptop screen from a home setting."],
+  ["wellness","Preventive Health Checkup Visit","A friendly nurse taking a patient's blood pressure during a routine checkup, both smiling in a bright clinic room."],
+  ["wellness","Healthy Aging Active Senior","An active senior practicing tai chi in a park at sunrise, calm and balanced posture, trees in the background."],
+  ["wellness","Chronic Illness Support Community","A small support group sitting in a warm circle, listening supportively to one another, tea cups on a table nearby."],
+  ["wellness","Personalized Nutrition Plan","A nutritionist and client reviewing a customized meal plan together on a tablet at a bright office desk."],
+  ["wellness","Postpartum Wellness Support","A new parent resting comfortably while a supportive friend brings a warm meal and helps with household tasks."],
+  ["wellness","Workplace Mental Health First Aid","A colleague gently checking in on a coworker who looks stressed at their desk, offering a supportive hand on shoulder."],
+  ["wellness","Health Literacy Education Session","A community health educator presenting simple wellness information on a flip chart to a small attentive group."],
+  ["wellness","Mindful Parenting Moment","A parent sitting calmly on the floor playing gently with their child, warm light and a small rug with toys around them."],
+  ["wellness","Caregiver Self-Care Break","A family caregiver stepping outside for a quiet moment with a cup of tea, taking a brief pause from caregiving duties."],
+  ["diversity","Artisan Preserving Traditional Craft","An elder artisan teaching a young apprentice traditional pottery techniques at a wheel, cultural patterns painted on finished pieces nearby."],
+  ["diversity","Indigenous Knowledge Sharing Circle","An indigenous elder sharing traditional ecological knowledge with young listeners seated around a circle outdoors near a fire."],
+  ["diversity","Multicultural Textile Pattern Workshop","People from different cultural backgrounds weaving textile patterns together at a shared workshop table, colorful threads and fabrics around them."],
+  ["diversity","Global Folk Music Collaboration","Musicians from different cultural backgrounds playing traditional instruments together, blending sounds in a warm collaborative jam session."],
+  ["diversity","Intergenerational Trade Skills Workshop","A young apprentice learning woodworking from an experienced elder craftsman in a warm workshop filled with tools and wood shavings."],
+  ["diversity","Diverse Language Learning Exchange","Two people from different countries sitting together practicing each other's languages, notebooks and flashcards on the table."],
+  ["diversity","Wheelchair Basketball Team Celebration","A wheelchair basketball team celebrating a win together, high-fiving and cheering on the court."],
+  ["diversity","Multifaith Community Volunteer Day","People wearing different religious symbols working together on a community service project, packing donation boxes side by side."],
+  ["diversity","Deaf Artist Creating Visual Art","A deaf artist painting a large colorful canvas in a bright studio, fully absorbed in creative visual expression."],
+  ["diversity","Migrant Entrepreneur Small Business","A proud immigrant business owner standing in front of their small shop, arranging fresh products on display shelves."],
+  ["food","Allergy-Friendly Baking Kitchen","A baker preparing gluten-free and nut-free pastries in a clean kitchen, allergen-free ingredient labels visible on containers."],
+  ["food","Personalized Nutrition DNA Test Kit","A DNA test kit box next to a personalized nutrition report on a tablet, showing tailored food recommendations."],
+  ["food","Food Science Lab Innovation","A food scientist in a lab coat examining a new plant-based food sample under lab equipment, notes and test tubes nearby."],
+  ["food","Umami Flavor Pairing Chart","A conceptual flavor wheel diagram showing umami flavor pairings with icons of mushrooms, soy sauce, and aged cheese."],
+  ["food","Root-to-Stem Cooking Technique","A chef using an entire vegetable including roots, stems, and leaves to minimize waste while preparing a dish."],
+  ["food","Global Spice Market Display","A vibrant spice market stall with colorful piles of spices from around the world, displayed in wooden bowls and sacks."],
+  ["food","Bento Box Meal Prep","A neatly arranged Japanese bento box with compartments of rice, vegetables, and protein, chopsticks resting beside it."],
+  ["food","Kids Cooking Class Healthy Habits","Children wearing small aprons learning to prepare a healthy salad together in a bright kitchen classroom, an instructor guiding them."],
+  ["food","Wine and Cheese Pairing Table","An elegant table set with wine glasses and an assortment of cheeses, grapes, and crackers arranged for a tasting event."],
+  ["food","Food Rescue Volunteer Distribution","Volunteers sorting and distributing rescued surplus food into boxes for community members at a local food bank."],
+  ["remote","Abstract Data Network Visualization","An abstract illustration of glowing interconnected nodes and lines representing a digital data network on a dark background."],
+  ["remote","Digital Twin Technology Concept","A laptop screen showing a 3D digital twin model of a physical machine, mirrored data streams connecting the virtual and real object."],
+  ["remote","Retro-Futuristic Home Office Setup","A home office desk styled with retro 90s tech aesthetics, chunky monitor shapes and neon accent colors blended with modern laptop."],
+  ["remote","Quantum Computing Concept Illustration","An abstract illustration of a quantum computer with glowing qubits and circuit patterns representing quantum processing."],
+  ["remote","Blockchain Network Abstract Diagram","An abstract diagram of connected blockchain blocks with chain links, representing decentralized digital ledger technology."],
+  ["remote","Metaverse Digital Identity Avatar","A person sitting at a desk with a digital avatar representation floating above their laptop screen, representing virtual identity."],
+  ["remote","Sustainable Tech E-Waste Recycling","Workers at an e-waste recycling facility sorting old electronics and circuit boards for responsible disposal and material recovery."],
+  ["remote","Cross-Platform App Integration Icons","A conceptual diagram showing multiple app icons connected by lines to a central hub, representing seamless software integration."],
+  ["remote","Voice Assistant Smart Home Office","A person speaking to a voice-activated smart speaker on their desk, smart home icons like lights and thermostat responding around the room."],
+  ["remote","Digital Nomad Co-Living Space","A shared co-living house with several digital nomads working on laptops together in a communal living room with a shared kitchen."]
+];
+const stockItems = STOCK_RAW.map((r, i) => ({
+  id: 's' + (i + 1), n: i + 1, cat: r[0], subject: r[1],
+  prompt: `${r[2]} ${STOCK_STYLE[r[0]]}`,
+}));
+
+// ============================================================
 // STATE
 // ============================================================
 const state = {
@@ -1025,6 +1293,10 @@ const state = {
   bookmarks: [],
   currentFilter: 'all',
   currentDetail: null,
+  stockDone: [],
+  stockCopied: [],
+  stockCat: 'all',
+  stockHide: false,
   db: null
 };
 
@@ -1063,6 +1335,8 @@ const persist = async () => {
   try {
     await dbSet('uploaded', state.uploaded);
     await dbSet('bookmarks', state.bookmarks);
+    await dbSet('stockDone', state.stockDone);
+    await dbSet('stockCopied', state.stockCopied);
   } catch (e) { console.error(e); }
 };
 
@@ -1199,7 +1473,7 @@ const renderCard = (item) => {
   `;
 };
 
-const render = () => {
+const renderLibrary = () => {
   const container = document.getElementById('prompts-container');
   let items = getFilteredItems();
   items = searchItems(items);
@@ -1335,7 +1609,7 @@ const closeDetailModal = () => {
 };
 
 const exportBackup = () => {
-  const data = { version: 1, exportedAt: new Date().toISOString(), uploaded: state.uploaded, bookmarks: state.bookmarks };
+  const data = { version: 2, exportedAt: new Date().toISOString(), uploaded: state.uploaded, bookmarks: state.bookmarks, stockDone: state.stockDone, stockCopied: state.stockCopied };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1343,7 +1617,7 @@ const exportBackup = () => {
   a.download = `prompt-studio-backup-${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast('Backup ter-download', `${state.uploaded.length} file`);
+  showToast('Backup ter-download', `${state.uploaded.length} file · ${state.stockDone.length} frame selesai`);
 };
 
 const importBackup = () => document.getElementById('import-input').click();
@@ -1358,11 +1632,177 @@ const handleImport = async (e) => {
     if (!confirm(`Import akan MENIMPA ${state.uploaded.length} file saat ini dengan ${data.uploaded.length} file dari backup.\n\nLanjutkan?`)) { e.target.value = ''; return; }
     state.uploaded = data.uploaded || [];
     state.bookmarks = data.bookmarks || [];
+    state.stockDone = data.stockDone || [];
+    state.stockCopied = data.stockCopied || [];
     await persist(); render();
     showToast('Import berhasil', `${state.uploaded.length} file`);
   } catch (err) { showToast('Import gagal', err.message, true); }
   e.target.value = '';
 };
+
+
+// ============================================================
+// STOCK GENERATE — UI & LOGIC
+// ============================================================
+const searchQuery = () => document.getElementById('search-input').value.trim().toLowerCase();
+
+const stockCardHtml = (it, done, copied, bookmarked) => {
+  const c = STOCK_CATS[it.cat];
+  const num = String(it.n).padStart(3, '0');
+  return `
+    <div class="stock-card ${done ? 'done' : ''}" style="--sc:${c.color}">
+      <div class="stock-top">
+        <div class="stock-left">
+          <span><b>No. ${num}</b>/${stockItems.length}</span>
+          <span class="stock-cat" style="color:${c.color}">${c.label}</span>
+          ${copied ? '<span class="stock-copied">✓ Disalin</span>' : ''}
+        </div>
+        <div class="stock-right">
+          <button class="btn-action ${bookmarked ? 'bookmarked' : ''}" data-saction="star" data-id="${it.id}" title="Bookmark">⭐</button>
+          <button class="stock-check ${done ? 'checked' : ''}" data-saction="done" data-id="${it.id}" title="Tandai selesai">${done ? '✓' : ''}</button>
+        </div>
+      </div>
+      <div class="stock-subject">${esc(it.subject)}</div>
+      <div class="stock-prompt">${esc(it.prompt)}</div>
+      <div class="stock-btns">
+        <button class="stock-btn primary" data-saction="copydone" data-id="${it.id}">${done ? '📋 Copy lagi' : '✓ Copy & Selesai'}</button>
+        ${done ? '' : `<button class="stock-btn" data-saction="copy" data-id="${it.id}">📋 Copy saja</button>`}
+      </div>
+    </div>`;
+};
+
+const renderStock = () => {
+  const container = document.getElementById('prompts-container');
+  const done = new Set(state.stockDone);
+  const copied = new Set(state.stockCopied);
+  const bms = new Set(state.bookmarks);
+  const q = searchQuery();
+
+  const inScope = stockItems.filter(i => state.stockCat === 'all' || i.cat === state.stockCat);
+  const scopeDone = inScope.filter(i => done.has(i.id)).length;
+
+  let list = inScope;
+  if (q) list = list.filter(i => i.subject.toLowerCase().includes(q) || i.prompt.toLowerCase().includes(q));
+  if (state.stockHide) list = list.filter(i => !done.has(i.id));
+  list = [...list].sort((a, b) => (done.has(a.id) ? 1 : 0) - (done.has(b.id) ? 1 : 0));
+
+  const chips = [`<div class="s-chip ${state.stockCat === 'all' ? 'active' : ''}" data-saction="cat" data-cat="all"><span class="dot" style="background:var(--text-dim)"></span>Semua <span class="cnt">${state.stockDone.length}/${stockItems.length}</span></div>`]
+    .concat(Object.entries(STOCK_CATS).map(([k, c]) => {
+      const tot = stockItems.filter(i => i.cat === k).length;
+      const dn = stockItems.filter(i => i.cat === k && done.has(i.id)).length;
+      return `<div class="s-chip ${state.stockCat === k ? 'active' : ''}" data-saction="cat" data-cat="${k}"><span class="dot" style="background:${c.color}"></span>${c.label} <span class="cnt">${dn}/${tot}</span></div>`;
+    })).join('');
+
+  const pct = inScope.length ? (scopeDone / inScope.length * 100) : 0;
+  const toolbar = `
+    <div class="stock-toolbar">
+      <div class="stock-chips">${chips}</div>
+      <div class="stock-progress">
+        <div class="stock-bar"><div class="stock-bar-fill" style="width:${pct}%"></div></div>
+        <div class="stock-progress-label">${scopeDone}/${inScope.length} selesai</div>
+      </div>
+      <div class="stock-tools">
+        <button class="s-tool ${state.stockHide ? 'on' : ''}" data-saction="hide">${state.stockHide ? '✓ ' : ''}Sembunyikan yang selesai</button>
+        <button class="s-tool danger" data-saction="reset">↺ Reset progres${state.stockCat === 'all' ? '' : ' kategori ini'}</button>
+      </div>
+    </div>`;
+
+  document.getElementById('page-title').textContent = 'Stock Generate';
+  document.getElementById('page-subtitle').textContent = `${state.stockDone.length}/${stockItems.length} frame selesai · klik "Copy & Selesai" lalu tempel ke generator gambar`;
+  document.getElementById('page-count').textContent = list.length + ' FRAME';
+
+  const body = list.length
+    ? list.map(it => stockCardHtml(it, done.has(it.id), copied.has(it.id), bms.has(it.id))).join('')
+    : `<div class="empty-state"><div class="empty-state-icon prompt">${state.stockHide && !q ? '🎉' : '🔍'}</div><div class="empty-state-title">${state.stockHide && !q ? 'Semua frame di sini sudah selesai' : 'Tidak ada frame'}</div><div class="empty-state-sub">${state.stockHide && !q ? 'Matikan "Sembunyikan yang selesai" untuk melihat semuanya.' : 'Coba kata kunci atau kategori lain.'}</div></div>`;
+  container.innerHTML = toolbar + body;
+};
+
+const stockBookmarkSection = () => {
+  const bms = new Set(state.bookmarks);
+  const done = new Set(state.stockDone);
+  const copied = new Set(state.stockCopied);
+  const q = searchQuery();
+  return stockItems
+    .filter(i => bms.has(i.id))
+    .filter(i => !q || i.subject.toLowerCase().includes(q) || i.prompt.toLowerCase().includes(q))
+    .map(i => stockCardHtml(i, done.has(i.id), copied.has(i.id), true));
+};
+
+const render = () => {
+  const stockDoneCount = state.stockDone.length;
+  document.getElementById('count-stock').textContent = `${stockDoneCount}/${stockItems.length}`;
+
+  if (state.currentFilter === 'stock') { renderStock(); return; }
+
+  renderLibrary();
+
+  if (state.currentFilter === 'bookmark') {
+    const cards = stockBookmarkSection();
+    if (cards.length) {
+      const container = document.getElementById('prompts-container');
+      if (container.querySelector('.empty-state')) container.innerHTML = '';
+      container.insertAdjacentHTML('beforeend',
+        `<div class="section-header"><div class="section-header-icon stock">🖼️</div><div class="section-header-text">Stock Generate</div><div class="section-header-divider"></div><div class="section-header-sub">${cards.length} frame</div></div>` + cards.join(''));
+      const n = container.querySelectorAll('.prompt-card').length + cards.length;
+      document.getElementById('page-count').textContent = n + ' ITEM';
+    }
+  }
+};
+
+const stockById = (id) => stockItems.find(i => i.id === id);
+
+const stockCopy = async (id, markDone) => {
+  const it = stockById(id);
+  if (!it) return;
+  let ok = false;
+  try { await navigator.clipboard.writeText(it.prompt); ok = true; } catch (e) { /* fallback di bawah */ }
+  if (ok) showToast('Tersalin!', `${it.subject} · ${it.prompt.length.toLocaleString('id-ID')} karakter`);
+  else copyToClipboard(it.prompt, it.subject);
+  if (!state.stockCopied.includes(id)) state.stockCopied.push(id);
+  if (markDone && !state.stockDone.includes(id)) state.stockDone.push(id);
+  persist(); render();
+};
+
+const stockToggleDone = (id) => {
+  const i = state.stockDone.indexOf(id);
+  if (i === -1) state.stockDone.push(id); else state.stockDone.splice(i, 1);
+  persist(); render();
+};
+
+const stockToggleBookmark = (id) => {
+  const it = stockById(id);
+  const i = state.bookmarks.indexOf(id);
+  if (i === -1) { state.bookmarks.push(id); showToast('Ditambahkan ke bookmark', it ? it.subject : ''); }
+  else { state.bookmarks.splice(i, 1); showToast('Dihapus dari bookmark', it ? it.subject : ''); }
+  persist(); render();
+};
+
+const stockReset = () => {
+  const scope = stockItems.filter(i => state.stockCat === 'all' || i.cat === state.stockCat).map(i => i.id);
+  const label = state.stockCat === 'all' ? 'SEMUA kategori' : STOCK_CATS[state.stockCat].label;
+  if (!confirm(`Reset status selesai & disalin untuk ${label} (${scope.length} frame)?`)) return;
+  const s = new Set(scope);
+  state.stockDone = state.stockDone.filter(id => !s.has(id));
+  state.stockCopied = state.stockCopied.filter(id => !s.has(id));
+  persist(); render();
+  showToast('Progres direset', label);
+};
+
+document.getElementById('prompts-container').addEventListener('click', (e) => {
+  const el = e.target.closest('[data-saction]');
+  if (!el) return;
+  e.stopPropagation();
+  const id = el.dataset.id;
+  switch (el.dataset.saction) {
+    case 'cat': state.stockCat = el.dataset.cat; render(); break;
+    case 'hide': state.stockHide = !state.stockHide; render(); break;
+    case 'reset': stockReset(); break;
+    case 'copy': stockCopy(id, false); break;
+    case 'copydone': stockCopy(id, true); break;
+    case 'done': stockToggleDone(id); break;
+    case 'star': stockToggleBookmark(id); break;
+  }
+});
 
 const init = async () => {
   try {
@@ -1371,7 +1811,18 @@ const init = async () => {
     const bookmarks = await dbGet('bookmarks');
     if (uploaded) state.uploaded = uploaded;
     if (bookmarks) state.bookmarks = bookmarks;
+    const sd = await dbGet('stockDone');
+    const sc = await dbGet('stockCopied');
+    if (sd) state.stockDone = sd;
+    if (sc) state.stockCopied = sc;
+    state.lastView = await dbGet('lastView');
   } catch (e) { console.error('DB init failed:', e); }
+  const views = Array.from(document.querySelectorAll('.nav-item[data-filter]')).map(n => n.dataset.filter);
+  const start = location.hash.slice(1) || state.lastView;
+  if (start && views.includes(start)) {
+    state.currentFilter = start;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.filter === start));
+  }
   document.getElementById('loading').classList.add('hide');
   render();
 };
@@ -1395,6 +1846,8 @@ document.querySelectorAll('.nav-item[data-filter]').forEach(item => {
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     item.classList.add('active');
     state.currentFilter = item.dataset.filter;
+    try { history.replaceState(null, '', '#' + state.currentFilter); } catch (e) {}
+    if (state.db) dbSet('lastView', state.currentFilter).catch(() => {});
     render();
   });
 });
