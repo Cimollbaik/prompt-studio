@@ -194,6 +194,31 @@ body{padding:12px}
 .stock-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,.35);color:#0D0B14}
 .stock-btn:active{transform:scale(.97)}
 @media (max-width:640px){.stock-toolbar{padding:12px}.stock-card{padding:14px}.stock-btn{flex:1;text-align:center}}
+.stock-new{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:100px;background:var(--purple-soft);color:var(--purple);border:1px solid var(--purple-border);text-transform:uppercase;letter-spacing:.04em}
+.stock-textarea{width:100%;min-height:220px;resize:vertical;background:var(--elevated);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.6;padding:12px 14px;outline:none}
+.stock-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.stock-help{font-size:12px;color:var(--text-soft);line-height:1.65;margin-bottom:12px}
+.stock-help code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--elevated);border:1px solid var(--border);border-radius:6px;padding:1px 6px;color:var(--gold)}
+.stock-preview{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--sage);margin-top:10px;min-height:16px}
+#stock-modal .modal-footer{flex-wrap:wrap}
+.content-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tool-btn{font-family:inherit;font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:100px;border:1px solid var(--border);background:var(--card);color:var(--text-soft);cursor:pointer;transition:all .15s;white-space:nowrap}
+.tool-btn:hover{border-color:var(--gold);color:var(--gold)}
+.tool-btn.on{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+/* --- ciutkan kartu prompt --- */
+.prompt-card.collapsed .prompt-preview,.prompt-card.collapsed .prompt-footer,.prompt-card.collapsed .prompt-desc,.prompt-card.collapsed .prompt-meta{display:none}
+.prompt-card.collapsed .prompt-header{border-bottom:none;padding:12px 18px;align-items:center}
+.prompt-card.collapsed .prompt-icon{width:34px;height:34px;font-size:16px;border-radius:10px}
+.prompt-card.collapsed .prompt-title{margin-bottom:0;font-size:15px}
+.prompt-card.collapsed:hover{transform:none}
+.stock-card.collapsed{padding:12px 16px}
+.stock-card.collapsed .stock-top{margin-bottom:6px}
+.stock-card.collapsed .stock-body{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.stock-card.collapsed .stock-subject{margin-bottom:0;font-size:14.5px}
+.stock-card.collapsed .stock-prompt{display:none}
+.stock-card.collapsed .stock-btn{padding:7px 12px;font-size:12px}
+.stock-card.collapsed .stock-btns{flex-wrap:nowrap}
+@media (max-width:640px){.content-tools{width:100%}.prompt-card.collapsed .prompt-header{padding:10px 14px;flex-wrap:nowrap}.prompt-card.collapsed .prompt-actions{width:auto;margin-top:0}}
 </style>
 </head>
 <body>
@@ -234,7 +259,11 @@ body{padding:12px}
 <div class="content-title"><span class="content-title-dot"></span><span id="page-title">Semua Koleksi</span></div>
 <div class="content-subtitle" id="page-subtitle">Loading...</div>
 </div>
+<div class="content-tools">
+<button class="tool-btn" id="btn-collapse" title="Ciutkan / buka semua kartu">↕ Ciutkan semua</button>
+<button class="tool-btn" id="btn-list" title="Unduh daftar yang ada di tab ini (.txt)">⬇️ Unduh daftar</button>
 <div class="content-count" id="page-count">0</div>
+</div>
 </div>
 <div id="prompts-container"></div>
 </main>
@@ -246,14 +275,32 @@ body{padding:12px}
 <div class="modal-body">
 <div class="dropzone" id="dropzone">
 <div class="dropzone-icon">📁</div>
-<div class="dropzone-title">Drop file di sini</div>
-<div class="dropzone-sub">Atau klik untuk pilih file<br><b>.txt</b> → Prompt Tambahan · <b>.js / .html</b> → Script Hasil</div>
+<div class="dropzone-title">Drop file atau folder di sini</div>
+<div class="dropzone-sub">Klik untuk pilih <b>banyak file sekaligus</b> (tandai beberapa lalu Open)<br><b>.txt</b> → Prompt Tambahan · <b>.js / .html</b> → Script Hasil<br><b>.txt berawalan #stock</b> → Frame Stock Generate</div>
 </div>
 </div>
-<div class="modal-footer"><button class="btn-modal" onclick="closeUploadModal()">Batal</button></div>
+<div class="modal-footer"><button class="btn-modal" onclick="document.getElementById('folder-input').click()">📂 Pilih folder</button><button class="btn-modal" onclick="closeUploadModal()">Batal</button></div>
 </div>
 <input type="file" id="file-input" multiple accept=".txt,.js,.html,.md,.json" style="display:none">
+<input type="file" id="folder-input" webkitdirectory multiple style="display:none">
 <input type="file" id="import-input" accept=".json" style="display:none">
+</div>
+<div class="modal-overlay" id="stock-modal">
+<div class="modal wide">
+<div class="modal-header"><div class="modal-title">➕ Tambah Frame Stock Baru</div><button class="modal-close" onclick="closeStockModal()">✕</button></div>
+<div class="modal-body">
+<div class="stock-help">Satu frame per baris:<br><code>kategori | Subjek | Deskripsi adegan</code><br>Kategori baru? Tulis dulu: <code>@ Nama Kategori | palet warna | mood</code><br>Tempel hasil dari AI, atau pilih file <b>.txt</b>. Frame yang sama (kategori + subjek) otomatis dilewati.</div>
+<textarea id="stock-text" class="stock-textarea" placeholder="@ Travel | sunset orange, teal and sand | adventurous&#10;travel | Hot Air Balloon Valley | A colorful hot air balloon floating above a green valley with small mountains and a winding river below.&#10;eco | Community Garden | Neighbors tending raised garden beds with vegetables, a compost bin and rain barrel nearby."></textarea>
+<div class="stock-preview" id="stock-preview"></div>
+</div>
+<div class="modal-footer">
+<button class="btn-modal" onclick="copyStockMaker()">📝 Salin prompt pembuat</button>
+<button class="btn-modal" onclick="document.getElementById('stock-file').click()">📁 Pilih file</button>
+<button class="btn-modal" onclick="closeStockModal()">Batal</button>
+<button class="btn-modal primary" onclick="submitStockModal()">➕ Tambahkan</button>
+</div>
+</div>
+<input type="file" id="stock-file" accept=".txt,.md,.csv" multiple style="display:none">
 </div>
 <div class="modal-overlay" id="detail-modal">
 <div class="modal wide">
@@ -1280,10 +1327,28 @@ const STOCK_RAW = [
   ["remote","Voice Assistant Smart Home Office","A person speaking to a voice-activated smart speaker on their desk, smart home icons like lights and thermostat responding around the room."],
   ["remote","Digital Nomad Co-Living Space","A shared co-living house with several digital nomads working on laptops together in a communal living room with a shared kitchen."]
 ];
-const stockItems = STOCK_RAW.map((r, i) => ({
-  id: 's' + (i + 1), n: i + 1, cat: r[0], subject: r[1],
-  prompt: `${r[2]} ${STOCK_STYLE[r[0]]}`,
-}));
+const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+const STOCK_BASE_STYLE = (palette, mood) =>
+  `Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of ${palette} (60-30-10 rule), ${mood ? mood + ' mood, ' : ''}generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.`;
+const STOCK_DEFAULT_PALETTE = 'soft teal, warm sand and cream white';
+const STOCK_NEW_COLORS = ['#E8914B', '#4FB89E', '#C17A9E', '#8DB84F', '#5C8DE8', '#D4A24C', '#E85C7C'];
+let stockItems = [];
+
+// Gabungkan 200 frame bawaan + frame kustom hasil upload/tempel
+const rebuildStock = () => {
+  Object.keys(STOCK_CATS).forEach(k => { if (STOCK_CATS[k].custom) delete STOCK_CATS[k]; });
+  Object.entries(state.stockCats).forEach(([k, c]) => { STOCK_CATS[k] = { label: c.label, color: c.color, custom: true }; });
+  const base = STOCK_RAW.map((r, i) => ({
+    id: 's' + (i + 1), n: i + 1, cat: r[0], subject: r[1],
+    prompt: `${r[2]} ${STOCK_STYLE[r[0]]}`, custom: false,
+  }));
+  const extra = state.stockCustom.map((c, i) => ({
+    id: c.id, n: base.length + i + 1, cat: c.cat, subject: c.subject,
+    prompt: `${c.scene} ${has(STOCK_STYLE, c.cat) ? STOCK_STYLE[c.cat] : (state.stockCats[c.cat] ? state.stockCats[c.cat].style : '')}`,
+    custom: true,
+  }));
+  stockItems = base.concat(extra);
+};
 
 // ============================================================
 // STATE
@@ -1295,6 +1360,10 @@ const state = {
   currentDetail: null,
   stockDone: [],
   stockCopied: [],
+  stockCustom: [],
+  stockCats: {},
+  compact: false,
+  toggled: new Set(),
   stockCat: 'all',
   stockHide: false,
   db: null
@@ -1337,6 +1406,9 @@ const persist = async () => {
     await dbSet('bookmarks', state.bookmarks);
     await dbSet('stockDone', state.stockDone);
     await dbSet('stockCopied', state.stockCopied);
+    await dbSet('stockCustom', state.stockCustom);
+    await dbSet('stockCats', state.stockCats);
+    await dbSet('compact', state.compact);
   } catch (e) { console.error(e); }
 };
 
@@ -1450,7 +1522,7 @@ const renderCard = (item) => {
   const metaExtra = isCore ? '' : `<span>·</span><span>🕐 Upload: ${fmtDate(item.uploadedAt)}</span>`;
 
   return `
-    <div class="prompt-card ${cardClass}" data-id="${item.id}">
+    <div class="prompt-card ${cardClass}${isCollapsed(item.id) ? ' collapsed' : ''}" data-id="${item.id}" data-cid="${item.id}">
       <div class="prompt-header">
         <div class="prompt-icon ${iconClass}">${item.icon || '📄'}</div>
         <div class="prompt-info">
@@ -1459,6 +1531,7 @@ const renderCard = (item) => {
           <div class="prompt-meta"><span>📏 ${size.toLocaleString('id-ID')} karakter</span>${item.ext ? `<span>·</span><span>🔷 ${esc(item.ext)}</span>` : ''}${metaExtra}</div>
         </div>
         <div class="prompt-actions" onclick="event.stopPropagation()">
+          <button class="btn-action" data-action="collapse" data-id="${item.id}" title="Ciutkan / buka">${isCollapsed(item.id) ? '▸' : '▾'}</button>
           <button class="btn-action ${isBookmarked ? 'bookmarked' : ''}" data-action="bookmark" data-id="${item.id}" title="Bookmark">⭐</button>
           ${!isCore ? `<button class="btn-action danger" data-action="delete" data-id="${item.id}" title="Hapus">🗑</button>` : ''}
           <button class="btn-copy-main" data-action="copy" data-id="${item.id}">📋 Copy</button>
@@ -1570,28 +1643,61 @@ const deleteItem = (id) => {
 const openUploadModal = () => document.getElementById('upload-modal').classList.add('show');
 const closeUploadModal = () => document.getElementById('upload-modal').classList.remove('show');
 
+const ALLOWED_EXT = ['txt', 'md', 'js', 'html', 'json'];
+
 const handleFiles = async (files) => {
-  if (!files || files.length === 0) return;
-  let added = 0;
+  files = Array.from(files || []);
+  if (files.length === 0) return;
+  files.sort((x, y) => (x.webkitRelativePath || x.name).localeCompare(y.webkitRelativePath || y.name, undefined, { numeric: true }));
+  let added = 0, dup = 0, badType = 0, failed = 0, stockFrames = 0, stockDup = 0;
   for (const file of files) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (file.name.startsWith('.') || !ALLOWED_EXT.includes(ext)) { badType++; continue; }
     try {
       const content = await file.text();
+      if (/^\s*#stock\b/i.test(content)) {
+        const r = await importStockText(content, true);
+        stockFrames += r.added; stockDup += r.skipped;
+        continue;
+      }
       const type = detectType(file.name);
       const name = file.name.replace(/\.[^/.]+$/, '').replace(/_/g, ' ');
+      if (state.uploaded.some(u => u.name === name && u.content === content)) { dup++; continue; }
       state.uploaded.push({
         id: genId(), name: name,
-        desc: `${type === 'script' ? 'Script' : 'Prompt'} · ${file.name}`,
+        desc: `${type === 'script' ? 'Script' : 'Prompt'} · ${file.webkitRelativePath || file.name}`,
         category: detectCategory(file.name),
         icon: detectIcon(file.name, type),
-        ext: '.' + file.name.split('.').pop().toLowerCase(),
+        ext: '.' + ext,
         content: content, type: type,
         uploadedAt: Date.now(), lastUsed: null
       });
       added++;
-    } catch (e) { console.error('Failed to read', file.name, e); }
+    } catch (e) { failed++; console.error('Failed to read', file.name, e); }
   }
   await persist(); render(); closeUploadModal();
-  showToast(`${added} file ditambahkan`, 'Cek di kategori masing-masing');
+  const title = [added ? `${added} file ditambahkan` : '', stockFrames ? `${stockFrames} frame stock ditambahkan` : ''].filter(Boolean).join(' · ') || 'Tidak ada yang ditambahkan';
+  const sub = [dup ? `${dup} sudah ada` : '', stockDup ? `${stockDup} frame duplikat` : '', badType ? `${badType} file bukan teks dilewati` : '', failed ? `${failed} gagal dibaca` : ''].filter(Boolean).join(' · ') || 'Cek di kategori masing-masing';
+  showToast(title, sub, added + stockFrames === 0);
+};
+
+// Baca file dari drag & drop, termasuk isi folder (rekursif)
+const readEntry = (entry) => new Promise((resolve) => {
+  if (entry.isFile) { entry.file(f => resolve([f]), () => resolve([])); return; }
+  if (!entry.isDirectory) { resolve([]); return; }
+  const reader = entry.createReader();
+  const all = [];
+  const next = () => reader.readEntries(async (ents) => {
+    if (!ents.length) { resolve((await Promise.all(all.map(readEntry))).flat()); return; }
+    all.push(...ents); next();
+  }, () => resolve([]));
+  next();
+});
+const collectDropped = async (dt) => {
+  const entries = Array.from(dt.items || []).map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean); // harus sinkron
+  const plain = Array.from(dt.files || []);
+  if (!entries.length) return plain;
+  return (await Promise.all(entries.map(readEntry))).flat();
 };
 
 const openDetailModal = (id) => {
@@ -1609,7 +1715,7 @@ const closeDetailModal = () => {
 };
 
 const exportBackup = () => {
-  const data = { version: 2, exportedAt: new Date().toISOString(), uploaded: state.uploaded, bookmarks: state.bookmarks, stockDone: state.stockDone, stockCopied: state.stockCopied };
+  const data = { version: 2, exportedAt: new Date().toISOString(), uploaded: state.uploaded, bookmarks: state.bookmarks, stockDone: state.stockDone, stockCopied: state.stockCopied, stockCustom: state.stockCustom, stockCats: state.stockCats };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1617,7 +1723,7 @@ const exportBackup = () => {
   a.download = `prompt-studio-backup-${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast('Backup ter-download', `${state.uploaded.length} file · ${state.stockDone.length} frame selesai`);
+  showToast('Backup ter-download', `${state.uploaded.length} file · ${state.stockCustom.length} frame kustom · ${state.stockDone.length} selesai`);
 };
 
 const importBackup = () => document.getElementById('import-input').click();
@@ -1634,6 +1740,9 @@ const handleImport = async (e) => {
     state.bookmarks = data.bookmarks || [];
     state.stockDone = data.stockDone || [];
     state.stockCopied = data.stockCopied || [];
+    state.stockCustom = data.stockCustom || [];
+    state.stockCats = data.stockCats || {};
+    rebuildStock();
     await persist(); render();
     showToast('Import berhasil', `${state.uploaded.length} file`);
   } catch (err) { showToast('Import gagal', err.message, true); }
@@ -1650,23 +1759,28 @@ const stockCardHtml = (it, done, copied, bookmarked) => {
   const c = STOCK_CATS[it.cat];
   const num = String(it.n).padStart(3, '0');
   return `
-    <div class="stock-card ${done ? 'done' : ''}" style="--sc:${c.color}">
+    <div class="stock-card ${done ? 'done' : ''}${isCollapsed(it.id) ? ' collapsed' : ''}" data-cid="${it.id}" style="--sc:${c.color}">
       <div class="stock-top">
         <div class="stock-left">
           <span><b>No. ${num}</b>/${stockItems.length}</span>
           <span class="stock-cat" style="color:${c.color}">${c.label}</span>
+          ${it.custom ? '<span class="stock-new">Kustom</span>' : ''}
           ${copied ? '<span class="stock-copied">✓ Disalin</span>' : ''}
         </div>
         <div class="stock-right">
+          <button class="btn-action" data-saction="collapse" data-id="${it.id}" title="Ciutkan / buka">${isCollapsed(it.id) ? '▸' : '▾'}</button>
+          ${it.custom ? `<button class="btn-action danger" data-saction="delstock" data-id="${it.id}" title="Hapus frame kustom">🗑</button>` : ''}
           <button class="btn-action ${bookmarked ? 'bookmarked' : ''}" data-saction="star" data-id="${it.id}" title="Bookmark">⭐</button>
           <button class="stock-check ${done ? 'checked' : ''}" data-saction="done" data-id="${it.id}" title="Tandai selesai">${done ? '✓' : ''}</button>
         </div>
       </div>
+      <div class="stock-body">
       <div class="stock-subject">${esc(it.subject)}</div>
       <div class="stock-prompt">${esc(it.prompt)}</div>
       <div class="stock-btns">
         <button class="stock-btn primary" data-saction="copydone" data-id="${it.id}">${done ? '📋 Copy lagi' : '✓ Copy & Selesai'}</button>
         ${done ? '' : `<button class="stock-btn" data-saction="copy" data-id="${it.id}">📋 Copy saja</button>`}
+      </div>
       </div>
     </div>`;
 };
@@ -1702,13 +1816,14 @@ const renderStock = () => {
         <div class="stock-progress-label">${scopeDone}/${inScope.length} selesai</div>
       </div>
       <div class="stock-tools">
+        <button class="s-tool on" data-saction="addstock">➕ Tambah frame baru</button>
         <button class="s-tool ${state.stockHide ? 'on' : ''}" data-saction="hide">${state.stockHide ? '✓ ' : ''}Sembunyikan yang selesai</button>
         <button class="s-tool danger" data-saction="reset">↺ Reset progres${state.stockCat === 'all' ? '' : ' kategori ini'}</button>
       </div>
     </div>`;
 
   document.getElementById('page-title').textContent = 'Stock Generate';
-  document.getElementById('page-subtitle').textContent = `${state.stockDone.length}/${stockItems.length} frame selesai · klik "Copy & Selesai" lalu tempel ke generator gambar`;
+  document.getElementById('page-subtitle').textContent = `${state.stockDone.length}/${stockItems.length} frame selesai${state.stockCustom.length ? ' · ' + state.stockCustom.length + ' kustom' : ''} · klik "Copy & Selesai" lalu tempel ke generator gambar`;
   document.getElementById('page-count').textContent = list.length + ' FRAME';
 
   const body = list.length
@@ -1729,6 +1844,8 @@ const stockBookmarkSection = () => {
 };
 
 const render = () => {
+  document.getElementById('btn-collapse').textContent = state.compact ? '↕ Buka semua' : '↕ Ciutkan semua';
+  document.getElementById('btn-collapse').classList.toggle('on', state.compact);
   const stockDoneCount = state.stockDone.length;
   document.getElementById('count-stock').textContent = `${stockDoneCount}/${stockItems.length}`;
 
@@ -1788,6 +1905,142 @@ const stockReset = () => {
   showToast('Progres direset', label);
 };
 
+// ---------- Tambah frame baru (paste / upload) ----------
+const slug = (str) => str.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const titleCase = (str) => str.trim().replace(/\s+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+const unq = (str) => (str || '').trim().replace(/^["“”']+|["“”']+$/g, '').trim();
+
+// Format: "kategori | Subjek | Deskripsi adegan"  ·  definisi kategori baru: "@ Nama | palet warna | mood"
+const parseStockText = (text) => {
+  const out = { items: [], newCats: {}, skipped: 0, bad: 0 };
+  const lines = text.split(/\r?\n/)
+    .map(l => l.trim().replace(/^(?:[-*•]\s+|\d+[.)]\s+)/, ''))
+    .filter(l => l && !l.startsWith('#') && !l.startsWith('```'));
+
+  const makeCat = (name, palette, mood) => {
+    let key = slug(name);
+    if (key === 'remote-work') key = 'remote';
+    if (!key) return null;
+    if (has(STOCK_STYLE, key)) return key; // kategori bawaan: gayanya tetap
+    const prev = state.stockCats[key] || out.newCats[key];
+    const idx = Object.keys(state.stockCats).length + Object.keys(out.newCats).length;
+    out.newCats[key] = {
+      label: prev ? prev.label : titleCase(name),
+      color: prev ? prev.color : STOCK_NEW_COLORS[idx % STOCK_NEW_COLORS.length],
+      style: STOCK_BASE_STYLE(unq(palette) || STOCK_DEFAULT_PALETTE, unq(mood)),
+    };
+    return key;
+  };
+
+  lines.filter(l => l.startsWith('@')).forEach(l => {
+    const p = l.slice(1).split('|').map(x => x.trim());
+    if (p[0]) makeCat(p[0], p[1], p[2]);
+  });
+
+  const seen = new Set(stockItems.map(i => i.cat + '|' + i.subject.toLowerCase()));
+  lines.filter(l => !l.startsWith('@')).forEach(l => {
+    const p = l.split('|').map(x => x.trim());
+    if (p.length < 3 || !p[0] || !p[1] || !p[2]) { out.bad++; return; }
+    let key = slug(p[0]);
+    if (key === 'remote-work') key = 'remote';
+    if (!has(STOCK_CATS, key) && !has(out.newCats, key)) key = makeCat(p[0], null, null);
+    if (!key) { out.bad++; return; }
+    const sig = key + '|' + p[1].toLowerCase();
+    if (seen.has(sig)) { out.skipped++; return; }
+    seen.add(sig);
+    out.items.push({ cat: key, subject: p[1], scene: p.slice(2).join(' | ') });
+  });
+  return out;
+};
+
+const importStockText = async (text, quiet = false) => {
+  const r = parseStockText(text);
+  const res = { ok: false, added: 0, skipped: r.skipped, newCats: 0 };
+  if (!r.items.length) {
+    if (!quiet) showToast('Tidak ada frame baru', r.skipped ? `${r.skipped} duplikat dilewati` : 'Cek format: kategori | subjek | deskripsi', true);
+    return res;
+  }
+  Object.assign(state.stockCats, r.newCats);
+  r.items.forEach(it => state.stockCustom.push({ id: 'c' + genId(), ...it }));
+  rebuildStock();
+  res.ok = true; res.added = r.items.length; res.newCats = Object.keys(r.newCats).length;
+  if (!quiet) {
+    await persist();
+    render();
+    showToast(`${r.items.length} frame ditambahkan`,
+      `${r.skipped ? r.skipped + ' duplikat dilewati · ' : ''}${res.newCats ? res.newCats + ' kategori baru · ' : ''}Total ${stockItems.length} frame`);
+  }
+  return res;
+};
+
+const stockMakerPrompt = () => {
+  const cats = Object.entries(STOCK_CATS).map(([k, c]) => `${k} (${c.label})`).join(', ');
+  const subjects = stockItems.map(i => i.subject).join('; ');
+  return `Buatkan 50 ide frame ILUSTRASI STOCK BARU untuk microstock (Adobe Stock), gaya flat vector.
+Fokus kategori: (isi di sini, atau biarkan campur)
+
+FORMAT WAJIB: satu frame per baris, tanpa nomor, tanpa penjelasan lain, semuanya dalam satu code block:
+kategori | Subjek singkat | Deskripsi adegan (1-2 kalimat, bahasa Inggris, jelas apa yang digambar)
+
+Kategori yang sudah ada: ${cats}
+Kalau butuh kategori baru, tulis dulu satu baris definisi sebelum frame-nya:
+@ Nama Kategori | palet 3 warna dalam bahasa Inggris (contoh: sage green, warm terracotta and cream white) | mood (opsional)
+
+ATURAN:
+- Tiap frame harus berbeda jelas dari yang lain, bukan variasi tipis.
+- Tanpa merek, logo, karakter berlisensi, orang nyata, atau teks di dalam gambar.
+- Adegan sederhana yang mudah digambar dengan bentuk datar; hindari kerumunan dan tangan close-up yang rumit.
+- Jangan mengulang subjek yang sudah ada ini: ${subjects}`;
+};
+
+const copyStockMaker = async () => {
+  const t = stockMakerPrompt();
+  try { await navigator.clipboard.writeText(t); showToast('Prompt pembuat tersalin', 'Tempel ke chat AI, lalu salin hasilnya ke sini'); }
+  catch (e) { copyToClipboard(t, 'Prompt pembuat'); }
+};
+
+const previewStock = () => {
+  const t = document.getElementById('stock-text').value;
+  const el = document.getElementById('stock-preview');
+  if (!t.trim()) { el.textContent = ''; return; }
+  const r = parseStockText(t);
+  const nc = Object.keys(r.newCats).filter(k => !state.stockCats[k]).length;
+  el.textContent = `✓ ${r.items.length} frame baru` + (r.skipped ? ` · ${r.skipped} duplikat` : '') + (nc ? ` · ${nc} kategori baru` : '') + (r.bad ? ` · ${r.bad} baris dilewati (format salah)` : '');
+};
+
+const openStockModal = () => { document.getElementById('stock-modal').classList.add('show'); previewStock(); };
+const closeStockModal = () => document.getElementById('stock-modal').classList.remove('show');
+const submitStockModal = async () => {
+  const ta = document.getElementById('stock-text');
+  if ((await importStockText(ta.value)).ok) { ta.value = ''; previewStock(); closeStockModal(); }
+};
+
+const stockDelete = (id) => {
+  const it = stockById(id);
+  if (!it || !it.custom) return;
+  if (!confirm(`Hapus frame kustom "${it.subject}"?`)) return;
+  state.stockCustom = state.stockCustom.filter(c => c.id !== id);
+  state.stockDone = state.stockDone.filter(x => x !== id);
+  state.stockCopied = state.stockCopied.filter(x => x !== id);
+  state.bookmarks = state.bookmarks.filter(x => x !== id);
+  Object.keys(state.stockCats).forEach(k => { if (!state.stockCustom.some(c => c.cat === k)) delete state.stockCats[k]; });
+  rebuildStock();
+  if (state.stockCat !== 'all' && !has(STOCK_CATS, state.stockCat)) state.stockCat = 'all';
+  persist(); render();
+  showToast('Frame dihapus', it.subject);
+};
+
+document.getElementById('stock-text').addEventListener('input', previewStock);
+document.getElementById('stock-file').addEventListener('change', async (e) => {
+  const ta = document.getElementById('stock-text');
+  const files = Array.from(e.target.files || []).sort((x, y) => x.name.localeCompare(y.name, undefined, { numeric: true }));
+  for (const f of files) {
+    ta.value = (ta.value ? ta.value.trimEnd() + '\n' : '') + await f.text();
+  }
+  if (files.length) previewStock();
+  e.target.value = '';
+});
+
 document.getElementById('prompts-container').addEventListener('click', (e) => {
   const el = e.target.closest('[data-saction]');
   if (!el) return;
@@ -1801,8 +2054,99 @@ document.getElementById('prompts-container').addEventListener('click', (e) => {
     case 'copydone': stockCopy(id, true); break;
     case 'done': stockToggleDone(id); break;
     case 'star': stockToggleBookmark(id); break;
+    case 'addstock': openStockModal(); break;
+    case 'collapse': toggleCardCollapse(id); break;
+    case 'delstock': stockDelete(id); break;
   }
 });
+
+// ---------- Ciutkan kartu ----------
+const isCollapsed = (id) => state.compact !== state.toggled.has(id);
+
+const toggleCardCollapse = (id) => {
+  if (state.toggled.has(id)) state.toggled.delete(id); else state.toggled.add(id);
+  const col = isCollapsed(id);
+  document.querySelectorAll(`[data-cid="${id}"]`).forEach(el => {
+    el.classList.toggle('collapsed', col);
+    const b = el.querySelector('[data-action="collapse"], [data-saction="collapse"]');
+    if (b) b.textContent = col ? '▸' : '▾';
+  });
+};
+
+const toggleCompactAll = () => {
+  state.compact = !state.compact;
+  state.toggled.clear();
+  persist(); render();
+};
+
+// library: tombol ▾ ada di dalam .prompt-actions (yang menghentikan bubbling), jadi pakai fase capture
+document.getElementById('prompts-container').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-action="collapse"]');
+  if (!b) return;
+  e.stopPropagation();
+  toggleCardCollapse(b.dataset.id);
+}, true);
+
+// ---------- Unduh daftar ----------
+const todayStr = () => new Date().toISOString().split('T')[0];
+
+const downloadText = (filename, text) => {
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+const buildListText = () => {
+  const f = state.currentFilter;
+  const d = todayStr();
+  const lines = [];
+  const stockLines = (items) => {
+    Object.entries(STOCK_CATS).forEach(([k, c]) => {
+      const its = items.filter(i => i.cat === k);
+      if (!its.length) return;
+      lines.push(`## ${c.label} (${its.length})`);
+      its.forEach(i => lines.push(`${k} | ${i.subject}`));
+      lines.push('');
+    });
+  };
+
+  if (f === 'stock') {
+    lines.push(`# Daftar Stock Generate — ${stockItems.length} frame · ${d}`);
+    lines.push('# Format: kategori | Subjek. Pakai daftar ini sebagai "jangan diulang" saat membuat prompt baru.', '');
+    stockLines(stockItems);
+    return { text: lines.join('\n'), count: stockItems.length, name: `daftar-stock-generate-${d}.txt` };
+  }
+
+  const titles = { all: 'Semua Koleksi', core: 'Prompt Utama', prompt: 'Prompt Tambahan', script: 'Script Hasil', bookmark: 'Bookmark' };
+  const items = getFilteredItems();
+  const stockBm = f === 'bookmark' ? stockItems.filter(i => state.bookmarks.includes(i.id)) : [];
+  const total = items.length + stockBm.length;
+  lines.push(`# Daftar ${titles[f] || 'Koleksi'} — ${total} item · ${d}`);
+  lines.push('# Pakai daftar ini sebagai "jangan diulang" saat membuat prompt baru.', '');
+  const groups = [['core', 'Prompt Utama'], ['prompt', 'Prompt Tambahan'], ['script', 'Script Hasil']];
+  groups.forEach(([t, label]) => {
+    const g = items.filter(i => i.type === t);
+    if (!g.length) return;
+    lines.push(`## ${label} (${g.length})`);
+    g.forEach(i => lines.push(`- ${i.name}  [${i.category || 'Umum'}${i.ext ? ' · ' + i.ext : ''}]`));
+    lines.push('');
+  });
+  if (stockBm.length) { lines.push(`## Stock Generate (${stockBm.length})`); stockBm.forEach(i => lines.push(`${i.cat} | ${i.subject}`)); lines.push(''); }
+  return { text: lines.join('\n'), count: total, name: `daftar-${(titles[f] || f).toLowerCase().replace(/\s+/g, '-')}-${d}.txt` };
+};
+
+const downloadList = () => {
+  const r = buildListText();
+  if (!r.count) { showToast('Daftar kosong', 'Belum ada item di tab ini', true); return; }
+  downloadText(r.name, r.text);
+  showToast('Daftar ter-download', `${r.count} item · ${r.name}`);
+};
+
+document.getElementById('btn-collapse').addEventListener('click', toggleCompactAll);
+document.getElementById('btn-list').addEventListener('click', downloadList);
 
 const init = async () => {
   try {
@@ -1815,8 +2159,14 @@ const init = async () => {
     const sc = await dbGet('stockCopied');
     if (sd) state.stockDone = sd;
     if (sc) state.stockCopied = sc;
+    const scu = await dbGet('stockCustom');
+    const sca = await dbGet('stockCats');
+    if (scu) state.stockCustom = scu;
+    if (sca) state.stockCats = sca;
+    state.compact = !!(await dbGet('compact'));
     state.lastView = await dbGet('lastView');
   } catch (e) { console.error('DB init failed:', e); }
+  rebuildStock();
   const views = Array.from(document.querySelectorAll('.nav-item[data-filter]')).map(n => n.dataset.filter);
   const start = location.hash.slice(1) || state.lastView;
   if (start && views.includes(start)) {
@@ -1839,7 +2189,8 @@ const fileInput = document.getElementById('file-input');
 dz.addEventListener('click', () => fileInput.click());
 dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('dragover'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
-dz.addEventListener('drop', (e) => { e.preventDefault(); dz.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+dz.addEventListener('drop', async (e) => { e.preventDefault(); dz.classList.remove('dragover'); handleFiles(await collectDropped(e.dataTransfer)); });
+document.getElementById('folder-input').addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
 
 document.querySelectorAll('.nav-item[data-filter]').forEach(item => {
   item.addEventListener('click', () => {
