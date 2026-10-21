@@ -1973,24 +1973,68 @@ const importStockText = async (text, quiet = false) => {
   return res;
 };
 
+const stockStyleOf = (k) => has(STOCK_STYLE, k) ? STOCK_STYLE[k] : (state.stockCats[k] ? state.stockCats[k].style : '');
+
+// Contoh baris format untuk kategori bawaan (adegan saja, tanpa gaya)
+const STOCK_BASE_EXAMPLES = {
+  eco:       ['Solar Panel Installation', 'A worker installing solar panels on a house rooftop under a bright sky, small sun icon radiating clean energy lines toward the panels.'],
+  wellness:  ['Seated Meditation', 'A person sitting cross-legged in meditation pose with eyes closed, soft glowing aura and gentle swirl lines around the head.'],
+  diversity: ['Team High-Five', 'Three coworkers of different ethnicities high-fiving around an office table, laptops and coffee cups nearby.'],
+  food:      ['Granola Bowl', 'A bowl of granola topped with sliced fruits, berries and a drizzle of honey, small spoon beside it on a table.'],
+  remote:    ['Tidy Home Desk', 'A tidy home office desk with a laptop, potted plant, coffee mug and desk lamp near a window with soft daylight.'],
+};
+
 const stockMakerPrompt = () => {
-  const cats = Object.entries(STOCK_CATS).map(([k, c]) => `${k} (${c.label})`).join(', ');
+  const keys = Object.keys(STOCK_CATS);
+  const examples = keys.map(k => {
+    if (has(STOCK_BASE_EXAMPLES, k)) return `${k} | ${STOCK_BASE_EXAMPLES[k][0]} | ${STOCK_BASE_EXAMPLES[k][1]}`;
+    const c = state.stockCustom.find(x => x.cat === k);
+    return c ? `${k} | ${c.subject} | ${c.scene}` : null;
+  }).filter(Boolean).join('\n');
+  const styleRef = keys.map(k => `- ${k} (${STOCK_CATS[k].label}): ${stockStyleOf(k)}`).join('\n');
   const subjects = stockItems.map(i => i.subject).join('; ');
-  return `Buatkan 50 ide frame ILUSTRASI STOCK BARU untuk microstock (Adobe Stock), gaya flat vector.
+
+  return `Buatkan 30 ide frame ILUSTRASI STOCK BARU untuk microstock (Adobe Stock), gaya flat vector.
 Fokus kategori: (isi di sini, atau biarkan campur)
 
-FORMAT WAJIB: satu frame per baris, tanpa nomor, tanpa penjelasan lain, semuanya dalam satu code block:
-kategori | Subjek singkat | Deskripsi adegan (1-2 kalimat, bahasa Inggris, jelas apa yang digambar)
+FORMAT OUTPUT (WAJIB):
+- Satu file .txt (kalau tidak bisa membuat file, satu code block saja), tanpa penjelasan apa pun di luar itu.
+- Baris pertama persis: #stock
+- Setelah itu satu frame per baris, tanpa nomor dan tanpa bullet:
+kategori | Subjek | Deskripsi adegan
+- Subjek: 2-5 kata, bahasa Inggris. Deskripsi: 1-2 kalimat bahasa Inggris (sekitar 20-30 kata) yang menjelaskan apa yang digambar.
+- Jangan pakai karakter | di dalam teks.
 
-Kategori yang sudah ada: ${cats}
-Kalau butuh kategori baru, tulis dulu satu baris definisi sebelum frame-nya:
-@ Nama Kategori | palet 3 warna dalam bahasa Inggris (contoh: sage green, warm terracotta and cream white) | mood (opsional)
+PENTING: aplikasi menambahkan sendiri gaya, palet, "no text", dan "16:9" ke setiap deskripsi. Tulis HANYA adegannya. Jangan tulis "flat vector", palet warna, atau ukuran gambar di deskripsi.
 
-ATURAN:
-- Tiap frame harus berbeda jelas dari yang lain, bukan variasi tipis.
-- Tanpa merek, logo, karakter berlisensi, orang nyata, atau teks di dalam gambar.
-- Adegan sederhana yang mudah digambar dengan bentuk datar; hindari kerumunan dan tangan close-up yang rumit.
-- Jangan mengulang subjek yang sudah ada ini: ${subjects}`;
+Contoh baris yang benar (adegan saja):
+${examples}
+
+REFERENSI GAYA & PALET YANG SUDAH ADA (hanya untuk dipelajari, JANGAN ditulis ulang di deskripsi; ini teks yang nanti ditambahkan aplikasi ke tiap adegan):
+${styleRef}
+
+Kategori yang sudah ada (tulis persis): ${keys.join(', ')}
+
+Kategori baru: tulis satu baris definisi SEBELUM frame-nya:
+@ Nama Kategori | palet 3 warna bahasa Inggris | mood
+Contoh: @ Travel | sunset orange, teal and sand | adventurous and free
+- Format palet persis seperti referensi di atas: "warna dominan, warna pendukung and warna aksen" (aturan 60-30-10).
+- Mood cukup 2-4 kata sifat TANPA kata "mood" (aplikasi sudah menambahkannya).
+
+PALET KATEGORI BARU (PENTING): palet harus selaras dan konsisten dengan kategori yang sudah ada.
+- Pelajari pola referensi di atas: warna lembut dan teredam (muted/earthy/pastel), saturasi sedang, tidak neon, tidak kontras ekstrem, semuanya enak dilihat di latar terang polos.
+- Tiga warna dengan peran jelas: dominan (60%), pendukung (30%), aksen (10%).
+- Jangan menyalin palet yang sudah ada dan jangan memakai warna dominan yang sama dengan kategori lain, tetapi hasilnya harus terasa satu keluarga dengan yang lama.
+- Pilih palet yang cocok dengan tema kategori barunya (alam, makanan, teknologi, dst).
+
+ATURAN KONTEN:
+- Tiap frame berbeda jelas dari yang lain (objek utama, situasi, atau sudut), bukan variasi tipis.
+- Tanpa merek, logo, karakter berlisensi, orang nyata, atau teks/huruf di dalam gambar.
+- Adegan sederhana yang mudah dibuat dengan bentuk datar. Maksimal 3 orang per adegan; hindari kerumunan dan close-up tangan.
+- Hindari klise microstock yang paling padat (bohlam ide, jabat tangan, globe, panah naik).
+- Periksa daftar subjek di bawah: jangan pakai subjek yang sama DAN jangan buat konsep yang mirip dengan yang ada di sana, termasuk antar frame baru.
+
+SUBJEK YANG SUDAH ADA (${stockItems.length} frame): ${subjects}`;
 };
 
 const copyStockMaker = async () => {
