@@ -1119,11 +1119,11 @@ const STOCK_CATS = {
   remote:    { label: 'Remote Work', color: '#7C6FE8' },
 };
 const STOCK_STYLE = {
-  "eco": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of sage green, warm terracotta and cream white (60-30-10 rule), generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
-  "wellness": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of soft teal, lavender and warm sand (60-30-10 rule), calm balanced composition, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
-  "diversity": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm coral, golden yellow and deep navy (60-30-10 rule), inclusive and joyful mood, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
-  "food": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm mustard, brick red and cream (60-30-10 rule), appetizing warm mood, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
-  "remote": "Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of dusty blue, soft amber and off-white (60-30-10 rule), calm productive mood, generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio."
+  "eco": "Flat vector illustration on a solid pure white background (#FFFFFF), minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of sage green, warm terracotta and cream white (60-30-10 rule), generous negative space, isolated cut-out composition with no backdrop shapes or scenery, no floor or ground plane, no cast shadows, no gradients, crisp clean edges with clear separation between objects, light areas in soft cream or light grey with a thin darker outline so nothing blends into the white background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "wellness": "Flat vector illustration on a solid pure white background (#FFFFFF), minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of soft teal, lavender and warm sand (60-30-10 rule), calm balanced composition, generous negative space, isolated cut-out composition with no backdrop shapes or scenery, no floor or ground plane, no cast shadows, no gradients, crisp clean edges with clear separation between objects, light areas in soft cream or light grey with a thin darker outline so nothing blends into the white background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "diversity": "Flat vector illustration on a solid pure white background (#FFFFFF), minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm coral, golden yellow and deep navy (60-30-10 rule), inclusive and joyful mood, generous negative space, isolated cut-out composition with no backdrop shapes or scenery, no floor or ground plane, no cast shadows, no gradients, crisp clean edges with clear separation between objects, light areas in soft cream or light grey with a thin darker outline so nothing blends into the white background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "food": "Flat vector illustration on a solid pure white background (#FFFFFF), minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm mustard, brick red and cream (60-30-10 rule), appetizing warm mood, generous negative space, isolated cut-out composition with no backdrop shapes or scenery, no floor or ground plane, no cast shadows, no gradients, crisp clean edges with clear separation between objects, light areas in soft cream or light grey with a thin darker outline so nothing blends into the white background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.",
+  "remote": "Flat vector illustration on a solid pure white background (#FFFFFF), minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of dusty blue, soft amber and off-white (60-30-10 rule), calm productive mood, generous negative space, isolated cut-out composition with no backdrop shapes or scenery, no floor or ground plane, no cast shadows, no gradients, crisp clean edges with clear separation between objects, light areas in soft cream or light grey with a thin darker outline so nothing blends into the white background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio."
 };
 const STOCK_RAW = [
   ["eco","Solar Panel Installation","A worker installing solar panels on a house rooftop under a bright sky, small sun icon radiating clean energy lines toward the panels."],
@@ -1329,7 +1329,7 @@ const STOCK_RAW = [
 ];
 const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
 const STOCK_BASE_STYLE = (palette, mood) =>
-  `Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of ${palette} (60-30-10 rule), ${mood ? mood + ' mood, ' : ''}generous negative space, isolated on plain light background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.`;
+  `Flat vector illustration on a solid pure white background (#FFFFFF), minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of ${palette} (60-30-10 rule), ${mood ? mood + ' mood, ' : ''}generous negative space, isolated cut-out composition with no backdrop shapes or scenery, no floor or ground plane, no cast shadows, no gradients, crisp clean edges with clear separation between objects, light areas in soft cream or light grey with a thin darker outline so nothing blends into the white background, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.`;
 const STOCK_DEFAULT_PALETTE = 'soft teal, warm sand and cream white';
 const STOCK_NEW_COLORS = ['#E8914B', '#4FB89E', '#C17A9E', '#8DB84F', '#5C8DE8', '#D4A24C', '#E85C7C'];
 let stockItems = [];
@@ -1337,7 +1337,11 @@ let stockItems = [];
 // Gabungkan 200 frame bawaan + frame kustom hasil upload/tempel
 const rebuildStock = () => {
   Object.keys(STOCK_CATS).forEach(k => { if (STOCK_CATS[k].custom) delete STOCK_CATS[k]; });
-  Object.entries(state.stockCats).forEach(([k, c]) => { STOCK_CATS[k] = { label: c.label, color: c.color, custom: true }; });
+  Object.entries(state.stockCats).forEach(([k, c]) => {
+    const m = (c.style || '').match(/color palette of (.+?) \(60-30-10 rule\), (?:(.+?) mood, )?generous negative space/);
+    if (m) c.style = STOCK_BASE_STYLE(m[1], m[2]); // selalu pakai templat terbaru
+    STOCK_CATS[k] = { label: c.label, color: c.color, custom: true };
+  });
   const base = STOCK_RAW.map((r, i) => ({
     id: 's' + (i + 1), n: i + 1, cat: r[0], subject: r[1],
     prompt: `${r[2]} ${STOCK_STYLE[r[0]]}`, custom: false,
@@ -2022,7 +2026,8 @@ Contoh: @ Travel | sunset orange, teal and sand | adventurous and free
 - Mood cukup 2-4 kata sifat TANPA kata "mood" (aplikasi sudah menambahkannya).
 
 PALET KATEGORI BARU (PENTING): palet harus selaras dan konsisten dengan kategori yang sudah ada.
-- Pelajari pola referensi di atas: warna lembut dan teredam (muted/earthy/pastel), saturasi sedang, tidak neon, tidak kontras ekstrem, semuanya enak dilihat di latar terang polos.
+- Pelajari pola referensi di atas: warna lembut dan teredam (muted/earthy/pastel), saturasi sedang, tidak neon, tidak kontras ekstrem.
+- Latar gambar selalu PUTIH MURNI (#FFFFFF) dan bukan bagian dari palet. Jangan pakai putih, krem, off-white, atau warna yang nyaris putih sebagai salah satu dari 3 warna, supaya objek tidak menyatu dengan latar saat background dihapus. Gunakan warna terang yang tetap berwarna (misalnya soft sand, pale sky blue).
 - Tiga warna dengan peran jelas: dominan (60%), pendukung (30%), aksen (10%).
 - Jangan menyalin palet yang sudah ada dan jangan memakai warna dominan yang sama dengan kategori lain, tetapi hasilnya harus terasa satu keluarga dengan yang lama.
 - Pilih palet yang cocok dengan tema kategori barunya (alam, makanan, teknologi, dst).
