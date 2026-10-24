@@ -346,7 +346,7 @@ body{background:radial-gradient(900px 520px at 6% -8%,rgba(124,111,232,.16),tran
 <div class="modal wide">
 <div class="modal-header"><div class="modal-title" id="detail-title">Detail</div><button class="modal-close" onclick="closeDetailModal()">✕</button></div>
 <div class="modal-body"><div class="detail-content" id="detail-content"></div></div>
-<div class="modal-footer"><button class="btn-modal" onclick="closeDetailModal()">Tutup</button><button class="btn-modal primary" id="detail-copy-btn">📋 Copy Semua</button></div>
+<div class="modal-footer"><button class="btn-modal" onclick="closeDetailModal()">Tutup</button><button class="btn-modal" id="detail-download-btn">⬇️ Download</button><button class="btn-modal primary" id="detail-copy-btn">📋 Copy Semua</button></div>
 </div>
 </div>
 <div class="toast" id="toast">
@@ -2097,6 +2097,7 @@ const renderCard = (item) => {
         </div>
         <div class="prompt-actions" onclick="event.stopPropagation()">
           <button class="btn-action" data-action="collapse" data-id="${item.id}" title="Ciutkan / buka">${isCollapsed(item.id) ? '▸' : '▾'}</button>
+          <button class="btn-action" data-action="download" data-id="${item.id}" title="Download file">⬇️</button>
           <button class="btn-action ${isBookmarked ? 'bookmarked' : ''}" data-action="bookmark" data-id="${item.id}" title="Bookmark">⭐</button>
           ${!isCore ? `<button class="btn-action danger" data-action="delete" data-id="${item.id}" title="Hapus">🗑</button>` : ''}
           <button class="btn-copy-main" data-action="copy" data-id="${item.id}">📋 Copy</button>
@@ -2168,6 +2169,9 @@ const renderLibrary = () => {
   container.querySelectorAll('[data-action="copy"]').forEach(btn => {
     btn.addEventListener('click', (e) => { e.stopPropagation(); copyItem(btn.dataset.id); });
   });
+  container.querySelectorAll('[data-action="download"]').forEach(btn => {
+    btn.addEventListener('click', (e) => { e.stopPropagation(); downloadItem(btn.dataset.id); });
+  });
   container.querySelectorAll('[data-action="bookmark"]').forEach(btn => {
     btn.addEventListener('click', (e) => { e.stopPropagation(); toggleBookmark(btn.dataset.id); });
   });
@@ -2187,6 +2191,20 @@ const copyItem = (id) => {
     const idx = state.uploaded.findIndex(i => i.id === id);
     if (idx !== -1) { state.uploaded[idx].lastUsed = Date.now(); persist(); render(); }
   }
+};
+
+const itemFileName = (item) => {
+  const ext = item.ext || '.txt';
+  const base = (item.name || 'prompt').replace(/[\\/:*?"<>|]+/g, '').trim().replace(/\s+/g, '-') || 'prompt';
+  return base.toLowerCase().endsWith(ext.toLowerCase()) ? base : base + ext;
+};
+
+const downloadItem = (id) => {
+  const item = getItemById(id);
+  if (!item) return;
+  const fname = itemFileName(item);
+  downloadText(fname, item.content || '');
+  showToast('File ter-download', `${fname} · ${(item.content || '').length.toLocaleString('id-ID')} karakter`);
 };
 
 const toggleBookmark = (id) => {
@@ -2273,6 +2291,7 @@ const openDetailModal = (id) => {
   document.getElementById('detail-title').textContent = item.name;
   document.getElementById('detail-content').textContent = item.content || '(kosong)';
   document.getElementById('detail-copy-btn').onclick = () => { copyItem(id); closeDetailModal(); };
+  document.getElementById('detail-download-btn').onclick = () => downloadItem(id);
   document.getElementById('detail-modal').classList.add('show');
 };
 const closeDetailModal = () => {
