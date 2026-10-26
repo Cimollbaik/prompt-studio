@@ -204,6 +204,17 @@ body{padding:12px}
 .stock-help code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--elevated);border:1px solid var(--border);border-radius:6px;padding:1px 6px;color:var(--gold)}
 .stock-preview{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--sage);margin-top:10px;min-height:16px}
 #stock-modal .modal-footer{flex-wrap:wrap}
+.bg-choices{display:flex;flex-direction:column;gap:10px}
+.bg-choice{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font-family:inherit;padding:12px 14px;border-radius:14px;border:1.5px solid var(--border);background:var(--elevated);color:var(--text);cursor:pointer;transition:all .15s}
+.bg-choice:hover{border-color:var(--gold);background:var(--gold-soft)}
+.bg-choice.sel{border-color:var(--gold)}
+.bg-choice:active{transform:scale(.98)}
+.bg-text{display:flex;flex-direction:column;gap:2px}
+.bg-text b{font-size:13.5px}
+.bg-text small{font-size:11.5px;color:var(--text-dim)}
+.bg-swatch{width:42px;height:42px;border-radius:10px;border:1px solid var(--border-hover);flex-shrink:0}
+.bg-swatch.white{background:#fff}
+.bg-swatch.checker{background-color:#fff;background-image:linear-gradient(45deg,#c9c9c9 25%,transparent 25%,transparent 75%,#c9c9c9 75%),linear-gradient(45deg,#c9c9c9 25%,transparent 25%,transparent 75%,#c9c9c9 75%);background-size:12px 12px;background-position:0 0,6px 6px}
 .content-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .tool-btn{font-family:inherit;font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:100px;border:1px solid var(--border);background:var(--card);color:var(--text-soft);cursor:pointer;transition:all .15s;white-space:nowrap}
 .tool-btn:hover{border-color:var(--gold);color:var(--gold)}
@@ -341,6 +352,17 @@ body{background:radial-gradient(900px 520px at 6% -8%,rgba(124,111,232,.16),tran
 </div>
 </div>
 <input type="file" id="stock-file" accept=".txt,.md,.csv" multiple style="display:none">
+</div>
+<div class="modal-overlay" id="stock-bg-modal">
+<div class="modal" style="max-width:420px">
+<div class="modal-header"><div class="modal-title">🎨 Pilih latar gambar</div><button class="modal-close" onclick="closeStockBgModal()">✕</button></div>
+<div class="modal-body">
+<div class="bg-choices">
+<button class="bg-choice" data-bg="white"><span class="bg-swatch white"></span><span class="bg-text"><b>Putih polos</b><small>Latar #FFFFFF satu warna rata</small></span></button>
+<button class="bg-choice" data-bg="transparent"><span class="bg-swatch checker"></span><span class="bg-text"><b>Transparan</b><small>Subjek saja tanpa latar (PNG alpha)</small></span></button>
+</div>
+</div>
+</div>
 </div>
 <div class="modal-overlay" id="detail-modal">
 <div class="modal wide">
@@ -1657,11 +1679,11 @@ const STOCK_CATS = {
   remote:    { label: 'Remote Work', color: '#7C6FE8' },
 };
 const STOCK_STYLE = {
-  eco:       'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of sage green, warm terracotta and cream white (60-30-10 rule), generous negative space, isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture) that can be cleanly removed for a transparent version, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
-  wellness:  'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of soft teal, lavender and warm sand (60-30-10 rule), calm balanced composition, generous negative space, isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture) that can be cleanly removed for a transparent version, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
-  diversity: 'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm coral, golden yellow and deep navy (60-30-10 rule), inclusive and joyful mood, generous negative space, isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture) that can be cleanly removed for a transparent version, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
-  food:      'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm mustard, brick red and cream (60-30-10 rule), appetizing warm mood, generous negative space, isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture) that can be cleanly removed for a transparent version, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
-  remote:    'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of dusty blue, soft amber and off-white (60-30-10 rule), calm productive mood, generous negative space, isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture) that can be cleanly removed for a transparent version, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
+  eco:       'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of sage green, warm terracotta and cream white (60-30-10 rule), generous negative space, {{BG}}, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
+  wellness:  'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of soft teal, lavender and warm sand (60-30-10 rule), calm balanced composition, generous negative space, {{BG}}, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
+  diversity: 'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm coral, golden yellow and deep navy (60-30-10 rule), inclusive and joyful mood, generous negative space, {{BG}}, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
+  food:      'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of warm mustard, brick red and cream (60-30-10 rule), appetizing warm mood, generous negative space, {{BG}}, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
+  remote:    'Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of dusty blue, soft amber and off-white (60-30-10 rule), calm productive mood, generous negative space, {{BG}}, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.',
 };
 const STOCK_RAW = [
   ["eco","Solar Panel Installation","A worker installing solar panels on a house rooftop under a bright sky, small sun icon radiating clean energy lines toward the panels."],
@@ -1866,6 +1888,26 @@ const STOCK_RAW = [
   ["remote","Digital Nomad Co-Living Space","A shared co-living house with several digital nomads working on laptops together in a communal living room with a shared kitchen."]
 ];
 const has = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+// ---------- Mode latar (dipilih saat klik Copy) ----------
+// Gaya kategori menyimpan token {{BG}}; token diganti sesuai pilihan saat prompt disalin.
+const STOCK_BG = {
+  white: {
+    label: 'Putih polos',
+    clause: 'isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture, no vignette, no frame), any scenery mentioned in the scene is drawn only as separate flat objects and never as a full backdrop panel',
+  },
+  transparent: {
+    label: 'Transparan',
+    clause: 'isolated on a fully transparent background (PNG with real alpha channel, nothing behind the subject, no backdrop, no fill, no floor, no ground shadow, no frame), no checkerboard pattern, no gray and white grid, any scenery mentioned in the scene is drawn only as separate flat objects and never as a full backdrop panel',
+  },
+};
+const STOCK_BG_TOKEN = '{{BG}}';
+// Gaya lama (tersimpan di backup/IndexedDB) yang masih memuat klausa latar putih tetap, diubah ke token
+const STOCK_LEGACY_BG_RE = /isolated on a plain solid white background \(pure #FFFFFF[^)]*\)(?: that can be cleanly removed for a transparent version)?/;
+const stockNormStyle = (st) => (st || '').replace(STOCK_LEGACY_BG_RE, STOCK_BG_TOKEN);
+const stockPromptFor = (it, bg) => it.prompt.split(STOCK_BG_TOKEN).join((STOCK_BG[bg] || STOCK_BG.white).clause);
+const stockPromptShown = (it) => it.prompt.split(STOCK_BG_TOKEN).join('[LATAR: dipilih saat Copy]');
+const stockStyleShown = (st) => (st || '').split(STOCK_BG_TOKEN).join('[LATAR: putih polos atau transparan, dipilih saat Copy]');
+
 const STOCK_DEFAULT_PALETTE = 'soft teal, warm sand and dusty rose';
 const STOCK_NEW_COLORS = ['#E8914B', '#4FB89E', '#C17A9E', '#8DB84F', '#5C8DE8', '#D4A24C', '#E85C7C'];
 const hexRgb = (h) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
@@ -1874,7 +1916,7 @@ const mixHex = (h, t, k) => '#' + hexRgb(h).map((v, i) => Math.round(v + (t[i] -
 // Gaya stock (persis seperti Stock Studio, latar putih). Kode hex di palet dibuang dari prompt.
 const STOCK_BASE_STYLE = (palette, mood) => {
   const pal = (palette || '').replace(/\s*#[0-9a-fA-F]{6}\b/g, '').replace(/\s+/g, ' ').trim();
-  return `Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of ${pal} (60-30-10 rule), ${mood ? mood + ' mood, ' : ''}generous negative space, isolated on a plain solid white background (pure #FFFFFF, one flat uniform color, no gradient, no shadow, no texture) that can be cleanly removed for a transparent version, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.`;
+  return `Flat vector illustration, minimalist stock illustration style, bold clean geometric shapes with soft rounded corners, color palette of ${pal} (60-30-10 rule), ${mood ? mood + ' mood, ' : ''}generous negative space, {{BG}}, safe vector rules: flat solid color fills only, smooth clean closed shapes with crisp edges, no gradients, no glow effects, no blur, no noise, no halftone, no semi-transparent layers, no tiny specks, dots, hairlines or stray fragments, no duplicate or hidden overlapping shapes, keep every object and supporting item described in the scene, no text, no watermark, high resolution, landscape orientation, wide horizontal composition, 16:9 aspect ratio.`;
 };
 
 let stockItems = [];
@@ -1888,6 +1930,7 @@ const rebuildStock = () => {
       if (m) { c.palette = m[1]; c.mood = m[2] || ''; }
     }
     if (c.palette) c.style = STOCK_BASE_STYLE(c.palette, c.mood || ''); // selalu pakai templat terbaru
+    else c.style = stockNormStyle(c.style);
     STOCK_CATS[k] = { label: c.label, color: c.color, custom: true };
   });
   const base = STOCK_RAW.map((r, i) => ({
@@ -1919,6 +1962,7 @@ const state = {
   toggled: new Set(),
   stockCat: 'all',
   stockHide: false,
+  stockBg: 'white',
   db: null
 };
 
@@ -2349,7 +2393,7 @@ const stockCardHtml = (it, done, copied, bookmarked) => {
       </div>
       <div class="stock-body">
       <div class="stock-subject">${esc(it.subject)}</div>
-      <div class="stock-prompt">${esc(it.prompt)}</div>
+      <div class="stock-prompt">${esc(stockPromptShown(it))}</div>
       <div class="stock-btns">
         <button class="stock-btn primary" data-saction="copydone" data-id="${it.id}">${done ? '📋 Copy lagi' : '✓ Copy & Selesai'}</button>
         ${done ? '' : `<button class="stock-btn" data-saction="copy" data-id="${it.id}">📋 Copy saja</button>`}
@@ -2396,7 +2440,7 @@ const renderStock = () => {
     </div>`;
 
   document.getElementById('page-title').textContent = 'Stock Generate';
-  document.getElementById('page-subtitle').textContent = `${state.stockDone.length}/${stockItems.length} frame selesai${state.stockCustom.length ? ' · ' + state.stockCustom.length + ' kustom' : ''} · klik "Copy & Selesai" lalu tempel ke generator gambar`;
+  document.getElementById('page-subtitle').textContent = `${state.stockDone.length}/${stockItems.length} frame selesai${state.stockCustom.length ? ' · ' + state.stockCustom.length + ' kustom' : ''} · klik "Copy & Selesai", pilih latar (putih/transparan), lalu tempel ke generator gambar`;
   document.getElementById('page-count').textContent = list.length + ' FRAME';
 
   const body = list.length
@@ -2451,13 +2495,30 @@ const render = () => {
 
 const stockById = (id) => stockItems.find(i => i.id === id);
 
-const stockCopy = async (id, markDone) => {
+// Klik Copy -> buka menu latar -> salin sesuai pilihan
+let stockBgPending = null;
+const stockCopy = (id, markDone) => {
+  if (!stockById(id)) return;
+  stockBgPending = { id, markDone };
+  document.querySelectorAll('#stock-bg-modal [data-bg]').forEach(b => b.classList.toggle('sel', b.dataset.bg === state.stockBg));
+  document.getElementById('stock-bg-modal').classList.add('show');
+};
+const closeStockBgModal = () => { stockBgPending = null; document.getElementById('stock-bg-modal').classList.remove('show'); };
+
+const stockCopyWithBg = async (bg) => {
+  const pend = stockBgPending;
+  if (!pend || !STOCK_BG[bg]) return;
+  const { id, markDone } = pend;
   const it = stockById(id);
+  closeStockBgModal();
   if (!it) return;
+  state.stockBg = bg;
+  if (state.db) dbSet('stockBg', bg).catch(() => {});
+  const text = stockPromptFor(it, bg);
   let ok = false;
-  try { await navigator.clipboard.writeText(it.prompt); ok = true; } catch (e) { /* fallback di bawah */ }
-  if (ok) showToast('Tersalin!', `${it.subject} · ${it.prompt.length.toLocaleString('id-ID')} karakter`);
-  else copyToClipboard(it.prompt, it.subject);
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { /* fallback di bawah */ }
+  if (ok) showToast('Tersalin!', `${it.subject} · latar ${STOCK_BG[bg].label.toLowerCase()} · ${text.length.toLocaleString('id-ID')} karakter`);
+  else copyToClipboard(text, it.subject);
   if (!state.stockCopied.includes(id)) state.stockCopied.push(id);
   if (markDone && !state.stockDone.includes(id)) state.stockDone.push(id);
   persist(); render();
@@ -2575,7 +2636,7 @@ const stockMakerPrompt = () => {
     const c = state.stockCustom.find(x => x.cat === k);
     return c ? `${k} | ${c.subject} | ${c.scene}` : null;
   }).filter(Boolean).join('\n');
-  const styleRef = keys.map(k => `- ${k} (${STOCK_CATS[k].label}): ${stockStyleOf(k)}`).join('\n');
+  const styleRef = keys.map(k => `- ${k} (${STOCK_CATS[k].label}): ${stockStyleShown(stockStyleOf(k))}`).join('\n');
   const subjects = stockItems.map(i => i.subject).join('; ');
 
   return `Buatkan 30 ide frame ILUSTRASI STOCK BARU untuk microstock (Adobe Stock), gaya flat vector.
@@ -2589,7 +2650,7 @@ kategori | Subjek | Deskripsi adegan
 - Subjek: 2-5 kata, bahasa Inggris. Deskripsi: 1-2 kalimat bahasa Inggris (sekitar 20-30 kata) yang menjelaskan apa yang digambar.
 - Jangan pakai karakter | di dalam teks.
 
-PENTING: aplikasi menambahkan sendiri gaya, palet, latar putih (bisa dihapus jadi transparan), aturan safe vector, "no text", dan "16:9" ke setiap deskripsi. Tulis HANYA adegannya. Jangan tulis "flat vector", palet warna, atau ukuran gambar di deskripsi.
+PENTING: aplikasi menambahkan sendiri gaya, palet, aturan latar (putih polos ATAU transparan, dipilih user saat klik Copy), aturan safe vector, "no text", dan "16:9" ke setiap deskripsi. Tulis HANYA adegannya. Jangan tulis "flat vector", palet warna, ukuran gambar, atau kata background/latar di deskripsi.
 
 Contoh baris yang benar (adegan saja):
 ${examples}
@@ -2607,7 +2668,7 @@ Contoh: @ Travel | sunset orange, muted teal and warm sand | adventurous and fre
 
 PALET KATEGORI BARU (PENTING): palet harus selaras dan konsisten dengan kategori yang sudah ada.
 - Pelajari pola referensi di atas: warna lembut dan teredam (muted/earthy/pastel), saturasi sedang, tidak neon, tidak kontras ekstrem.
-- Latar gambar selalu PUTIH POLOS (satu warna rata, mudah dihapus jadi transparan) dan bukan bagian dari palet. Jangan pakai putih, krem, off-white, atau warna yang nyaris putih sebagai salah satu dari 3 warna, supaya objek tidak menyatu dengan latar saat background dihapus. Gunakan warna terang yang tetap berwarna (misalnya soft sand, pale sky blue).
+- Latar gambar (putih polos atau transparan, dipilih saat Copy) bukan bagian dari palet. Jangan pakai putih, krem, off-white, atau warna yang nyaris putih sebagai salah satu dari 3 warna, supaya objek tidak menyatu dengan latar putih atau latar terang saat dipakai transparan. Gunakan warna terang yang tetap berwarna (misalnya soft sand, pale sky blue).
 - Tiga warna dengan peran jelas: dominan (60%), pendukung (30%), aksen (10%).
 - Jangan menyalin palet yang sudah ada dan jangan memakai warna dominan yang sama dengan kategori lain, tetapi hasilnya harus terasa satu keluarga dengan yang lama.
 - Pilih palet yang cocok dengan tema kategori barunya (alam, makanan, teknologi, dst).
@@ -2617,6 +2678,7 @@ ATURAN KONTEN:
 - Tanpa merek, logo, karakter berlisensi, orang nyata, atau teks/huruf di dalam gambar.
 - Adegan sederhana dan jelas: 2-4 objek utama yang besar. Hindari detail halus dan kerumunan; maksimal 3 orang per adegan.
 - Tiap adegan tetap menyertakan objek pendukung yang relevan, termasuk adegan indoor (perabot dan benda di sekitarnya tetap ditulis).
+- Adegan harus tetap bagus di latar putih maupun transparan: JANGAN menulis "in the background", "dark background", langit penuh, pemandangan penuh, lantai, atau bidang latar. Elemen pelengkap ditulis sebagai objek terpisah yang berdiri sendiri (contoh: "a palm tree and a small boat beside the desk", bukan "palm tree and ocean in the background").
 - Hindari klise microstock yang paling padat (bohlam ide, jabat tangan, globe, panah naik).
 - Periksa daftar subjek di bawah: jangan pakai subjek yang sama DAN jangan buat konsep yang mirip dengan yang ada di sana, termasuk antar frame baru.
 
@@ -2660,6 +2722,7 @@ const stockDelete = (id) => {
   showToast('Frame dihapus', it.subject);
 };
 
+document.querySelectorAll('#stock-bg-modal [data-bg]').forEach(b => b.addEventListener('click', () => stockCopyWithBg(b.dataset.bg)));
 document.getElementById('stock-text').addEventListener('input', previewStock);
 document.getElementById('stock-file').addEventListener('change', async (e) => {
   const ta = document.getElementById('stock-text');
@@ -2794,6 +2857,8 @@ const init = async () => {
     if (scu) state.stockCustom = scu;
     if (sca) state.stockCats = sca;
     state.compact = !!(await dbGet('compact'));
+    const sbg = await dbGet('stockBg');
+    if (sbg && STOCK_BG[sbg]) state.stockBg = sbg;
     state.lastView = await dbGet('lastView');
   } catch (e) { console.error('DB init failed:', e); }
   rebuildStock();
